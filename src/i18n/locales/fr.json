@@ -1,0 +1,381 @@
+{
+  "common": {
+    "continue": "Continuer",
+    "cancel": "Annuler",
+    "save": "Enregistrer",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "back": "Retour",
+    "next": "Suivant",
+    "done": "Terminé",
+    "loading": "Chargement...",
+    "error": "Erreur",
+    "retry": "Réessayer",
+    "or": "ou",
+    "copy": "Copier",
+    "copied": "Copié !"
+  },
+  "auth": {
+    "login": "Se connecter",
+    "signUp": "S'inscrire",
+    "logout": "Se déconnecter",
+    "email": "Email",
+    "password": "Mot de passe",
+    "confirmPassword": "Confirmer le mot de passe",
+    "forgotPassword": "Mot de passe oublié ?",
+    "noAccount": "Pas encore de compte ?",
+    "alreadyHaveAccount": "Déjà un compte ?",
+    "loginWithGoogle": "Continuer avec Google",
+    "loginWithApple": "Continuer avec Apple",
+    "welcomeBack": "Content de te revoir ! 👋",
+    "createAccountSubtitle": "Crée ton compte et commence à progresser ! 🚀",
+    "emailPlaceholder": "ton@email.com",
+    "passwordPlaceholder": "••••••••",
+    "fillAllFields": "Veuillez remplir tous les champs",
+    "passwordMismatch": "Les mots de passe ne correspondent pas",
+    "passwordTooShort": "Le mot de passe doit contenir au moins 6 caractères"
+  },
+  "welcome": {
+    "title": "Wingman",
+    "subtitle": "Ton coach de conversation IA",
+    "tagline": "La réponse parfaite, à chaque fois",
+    "cta": "Commencer",
+    "features": {
+      "analyze": "Analyse tes conversations en un clic",
+      "suggestions": "Reçois des suggestions personnalisées",
+      "skills": "Améliore tes skills de communication"
+    }
+  },
+  "onboarding": {
+    "language": {
+      "title": "Choisis ta langue",
+      "subtitle": "Tu peux changer ça plus tard dans les paramètres"
+    },
+    "goal": {
+      "title": "Quel est ton objectif ?",
+      "subtitle": "Ça nous aide à personnaliser ton expérience",
+      "dating": "Rencontres",
+      "datingDesc": "Deviens meilleur en séduction et crée des connexions",
+      "social": "Social",
+      "socialDesc": "Améliore tes conversations avec tes amis",
+      "professional": "Professionnel",
+      "professionalDesc": "Communique plus efficacement au travail"
+    },
+    "style": {
+      "title": "Quel est ton style ?",
+      "subtitle": "Comment préfères-tu communiquer ?",
+      "playful": "Joueur",
+      "playfulDesc": "Léger, fun et spirituel",
+      "direct": "Direct",
+      "directDesc": "Clair, confiant et droit au but",
+      "empathetic": "Empathique",
+      "empatheticDesc": "Chaleureux, compréhensif et à l'écoute"
+    },
+    "privacy": {
+      "title": "Ta vie privée compte",
+      "subtitle": "On prend tes données au sérieux",
+      "point1": "Tes captures sont chiffrées",
+      "point2": "On ne partage jamais tes conversations",
+      "point3": "Tu peux supprimer tes données à tout moment"
+    },
+    "permissions": {
+      "title": "Reste informé",
+      "subtitle": "Active les notifs pour recevoir des conseils",
+      "enable": "Activer les notifications",
+      "skip": "Plus tard"
+    }
+  },
+  "paywall": {
+    "title": "Débloque Wingman Pro",
+    "subtitle": "Commence ton essai gratuit de 7 jours",
+    "feature1": "Analyses illimitées",
+    "feature2": "Suggestions IA avancées",
+    "feature3": "Accès à la communauté",
+    "feature4": "Challenges & classements",
+    "trial": "7 jours gratuits, puis",
+    "monthly": "Mensuel",
+    "yearly": "Annuel",
+    "month": "mois",
+    "year": "an",
+    "recommended": "RECOMMANDÉ",
+    "moreFeatures": "autres fonctionnalités",
+    "trialTitle": "7 jours d'essai gratuit",
+    "trialSubtitle": "Tu ne seras débité qu'après la période d'essai",
+    "startTrial": "Démarrer l'essai gratuit",
+    "then": "puis",
+    "restore": "Restaurer",
+    "restoring": "Restauration...",
+    "skip": "Continuer sans",
+    "restoreSuccess": "Succès",
+    "restoreSuccessMessage": "Ton abonnement a été restauré !",
+    "noRestore": "Aucun achat",
+    "noRestoreMessage": "Aucun abonnement à restaurer.",
+    "terms": "En continuant, tu acceptes nos Conditions d'utilisation"
+  },
+  "coach": {
+    "title": "Coach",
+    "quickActions": "Accès rapide",
+    "onboarding": {
+       "title": "Comment ça marche ?",
+       "step1": "Capturez ou importez une conversation",
+       "step2": "Choisissez votre objectif & style",
+       "step3": "Obtenez la réponse parfaite"
+    },
+    "chat": {
+       "title": "Wingman Coach",
+       "subtitle": "Assistant Personnel",
+       "placeholder": "Répondez à Wingman...",
+       "screenshot": "Capture d'écran",
+       "sessionStart": "Début de la session",
+       "selectedReply": "Réponse sélectionnée"
+    },
+    "empty": {
+      "title": "Prêt à progresser ?",
+      "subtitle": "Envoie une capture de ta conversation",
+      "cta": "Analyser une conversation"
+    },
+    "sourcePicker": {
+      "title": "Analyser une conversation",
+      "subtitle": "Sélectionnez une source pour commencer",
+      "import": "Importer une capture",
+      "fromGallery": "Depuis votre galerie",
+      "takePhoto": "Prendre une photo",
+      "useCamera": "Utiliser l'appareil photo",
+      "privacy": "Confidentialité garantie. Vous pourrez flouter les noms & photos."
+    },
+    "upload": {
+      "title": "Choisir la source",
+      "camera": "Prendre une capture",
+      "gallery": "Choisir dans la galerie"
+    },
+    "preview": {
+      "title": "Aperçu",
+      "crop": "Recadrer",
+      "blur": "Flouter les visages",
+      "analyze": "Analyser"
+    },
+    "context": {
+      "title": "Dis-nous en plus",
+      "question1": "C'est quoi ta relation avec cette personne ?",
+      "question2": "Qu'est-ce que tu veux accomplir ?",
+      "placeholder": "Optionnel : Ajoute du contexte...",
+      "additionalContext": "Contexte supplémentaire (optionnel)",
+      "relationships": {
+        "match": "Match récent",
+        "crush": "Crush",
+        "ex": "Ex",
+        "friend": "Ami(e)",
+        "colleague": "Collègue",
+        "other": "Autre"
+      },
+      "objectives": {
+        "flirt": "Flirter",
+        "date": "Obtenir un date",
+        "reconnect": "Renouer contact",
+        "friendly": "Rester amical",
+        "professional": "Rester pro"
+      }
+    },
+    "processing": {
+      "title": "Analyse en cours...",
+      "step1": "Lecture de la conversation",
+      "step2": "Compréhension du contexte",
+      "step3": "Génération des suggestions"
+    },
+    "results": {
+      "title": "Suggestions",
+      "analysis": "Analyse",
+      "useThis": "Utiliser",
+      "refine": "Affiner",
+      "suggestions": "Suggestions Wingman",
+      "options": "options",
+      "chatRefine": "Chat / Affiner"
+    },
+    "editor": {
+      "title": "Affine ta réponse",
+      "placeholder": "Dis-moi comment l'améliorer...",
+      "regenerate": "Regénérer"
+    },
+    "outcome": {
+      "title": "Comment ça s'est passé ?",
+      "sent": "Je l'ai envoyé !",
+      "saved": "Gardé pour plus tard",
+      "discarded": "Pas cette fois",
+      "result": "Qu'est-ce qui s'est passé ?",
+      "positive": "Ça a bien marché ! 🎉",
+      "neutral": "Rien de spécial",
+      "negative": "Aurait pu être mieux",
+      "yourReply": "Ta réponse",
+      "whatDidYouDo": "Qu'as-tu fait ?",
+      "shareToCommunity": "Partager anonymement",
+      "shareSuccess": "Partagé !",
+      "shareSuccessMessage": "Ton analyse a été postée anonymement sur la communauté.",
+      "shareError": "Erreur",
+      "shareErrorMessage": "Impossible de partager pour le moment."
+    }
+  },
+  "community": {
+    "title": "Communauté",
+    "feed": "Fil",
+    "challenges": "Défis",
+    "leaderboard": "Classement",
+    "createPost": "Partage ta situation",
+    "emptyFeed": "Pas encore de posts. Sois le premier !",
+    "post": {
+      "replies": "{{count}} réponses",
+      "viewAll": "Voir toutes les réponses",
+      "addReply": "Suggérer une réponse...",
+      "anonymous": "Anonyme",
+      "unknownUser": "Utilisateur",
+      "viewConversation": "Voir la conversation"
+    },
+    "categories": {
+      "all": "Tous",
+      "dating": "Dating",
+      "social": "Social",
+      "pro": "Pro"
+    },
+    "placeholders": {
+      "challengesTitle": "Défis à venir",
+      "challengesSubtitle": "Les défis quotidiens arrivent bientôt !",
+      "leaderboardTitle": "Classement",
+      "leaderboardSubtitle": "Le classement sera disponible très bientôt !"
+    }
+  },
+  "history": {
+    "title": "Historique",
+    "empty": "Pas encore d'analyses",
+    "emptyDesc": "Tes conversations passées apparaîtront ici",
+    "notLoggedIn": "Non connecté",
+    "loginPrompt": "Connectez-vous pour voir votre historique.",
+    "results": {
+      "positive": "Réussi 🎉",
+      "neutral": "Neutre",
+      "negative": "À améliorer"
+    },
+    "context": {
+      "dating": "Analyse - Rencontre",
+      "social": "Analyse - Social",
+      "professional": "Analyse - Professionnel",
+      "default": "Analyse de conversation"
+    }
+  },
+  "profile": {
+    "title": "Profil",
+    "xp": "XP",
+    "level": "Niveau {{level}}",
+    "analyses": "Analyses",
+    "replies": "Réponses aidées",
+    "settings": "Paramètres",
+    "subscription": "Abonnement",
+    "wingmanFree": "Wingman Free",
+    "stats": {
+      "progression": "Progression",
+      "wingmanPoints": "Points Wingman",
+      "currentLevel": "Niveau actuel",
+      "next": "Prochain",
+      "streak": "Streak"
+    },
+    "logoutConfirm": "Es-tu sûr de vouloir te déconnecter ?"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "account": "Compte",
+    "language": "Langue",
+    "notifications": "Notifications",
+    "privacy": "Confidentialité",
+    "help": "Aide & Support",
+    "about": "À propos",
+    "logout": "Se déconnecter",
+    "deleteAccount": "Supprimer le compte",
+    "editProfile": {
+      "title": "Modifier le profil",
+      "changePhoto": "Appuie pour changer la photo",
+      "displayName": "Nom d'affichage",
+      "namePlaceholder": "Ton nom",
+      "username": "Pseudo",
+      "preferences": "Préférences de communication",
+      "mainGoal": "Objectif principal",
+      "style": "Style de communication",
+      "errorRequired": "Le nom d'affichage est requis",
+      "errorUpdate": "Impossible de mettre à jour le profil"
+    },
+    "notificationTypes": {
+      "pushTitle": "Notifications push",
+      "pushDesc": "Recevoir des notifications",
+      "title": "Types de notifications",
+      "replies": "Réponses communauté",
+      "repliesDesc": "Quand quelqu'un répond à ton post",
+      "challenges": "Défis quotidiens",
+      "challengesDesc": "Rappels pour les nouveaux défis",
+      "tips": "Conseils wingman",
+      "tipsDesc": "Astuces pour améliorer tes conversations"
+    },
+    "subscription": {
+      "wingmanPro": "Wingman PRO",
+      "trial": "ESSAI",
+      "active": "ACTIF",
+      "trialEnds": "Fin de l'essai : ",
+      "nextRenewal": "Prochain renouvellement : ",
+      "freeTrial": "Essai gratuit",
+      "autoRenewal": "Renouvellement automatique",
+      "includedFeatures": "Inclus dans ton abonnement",
+      "manageSubscription": "Gérer l'abonnement",
+      "disclaimer": "L'abonnement sera renouvelé automatiquement. Tu peux annuler à tout moment depuis les paramètres de ton compte Apple/Google.",
+      "upgradeToPro": "Passe à PRO",
+      "unlockFeatures": "Débloquer toutes les fonctionnalités",
+      "viewOffers": "Voir les offres",
+      "restoring": "Restauration...",
+      "restorePurchase": "Restaurer un achat",
+      "successTitle": "Succès",
+      "successMessage": "Ton abonnement a été restauré !",
+      "noPurchases": "Aucun achat",
+      "noPurchasesMessage": "Aucun abonnement à restaurer.",
+      "features": {
+        "unlimited": "Analyses illimitées",
+        "priority": "Réponses en priorité",
+        "stats": "Accès aux statistiques",
+        "challenges": "Défis exclusifs",
+        "earlyAccess": "Nouvelles fonctionnalités en avant-première"
+      },
+      "plans": {
+        "starter": {
+          "name": "Starter",
+          "features": {
+            "aiAnalysis": "Analyses coach IA",
+            "chat": "Chat avec le coach",
+            "community": "Accès communauté",
+            "historyLimit": "Historique limité (30 jours)",
+            "replyVariants": "3 variantes de réponse",
+            "toneSlider": "Ton slider avancé",
+            "coachMode": "Mode coach complet"
+          }
+        },
+        "pro": {
+          "name": "Pro",
+          "features": {
+            "unlimited": "Analyses illimitées",
+            "allVariants": "Toutes les variantes de réponse",
+            "fullHistory": "Historique complet",
+            "toneSlider": "Ton slider avancé",
+            "coachMode": "Mode coach complet",
+            "reviews": "Accès reviews complet",
+            "bestAI": "Meilleurs modèles IA"
+          }
+        },
+        "elite": {
+          "name": "Elite",
+          "features": {
+            "allPro": "Tout du plan Pro",
+            "priority": "Latence prioritaire",
+            "premiumCoach": "Mode coach premium (plan d'action)",
+            "scripts": "Scripts personnalisés",
+            "challenges": "Défis premium",
+            "audit": "Audit détaillé + stratégie",
+            "support": "Support prioritaire"
+          }
+        }
+      }
+    }
+  }
+}

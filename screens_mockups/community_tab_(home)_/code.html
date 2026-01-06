@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wingman - Community Tab</title>
+<!-- Google Fonts & Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c25f4",
+                        "primary-dark": "#7a1fd6",
+                        "primary-light": "#a352f6",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#2d1f3a",
+                        "surface-light": "#ffffff",
+                        "text-secondary": "#ad90cb",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        body {
+            font-family: "Plus Jakarta Sans", sans-serif;
+            /* Hide scrollbar for Chrome, Safari and Opera */
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
+        body::-webkit-scrollbar {
+            display: none;
+        }
+        .message-bubble-in {
+            border-radius: 12px 12px 12px 0px;
+        }
+        .message-bubble-out {
+            border-radius: 12px 12px 0px 12px;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white relative min-h-screen pb-24 overflow-x-hidden">
+<!-- Sticky Header -->
+<div class="sticky top-0 z-50 bg-background-light dark:bg-background-dark/95 backdrop-blur-md border-b border-gray-200 dark:border-white/5 pt-12 pb-2">
+<div class="flex items-center justify-between px-4 mb-2">
+<h1 class="text-2xl font-bold tracking-tight">Community</h1>
+<div class="flex gap-4">
+<span class="material-symbols-outlined text-text-secondary cursor-pointer hover:text-primary transition-colors">notifications</span>
+</div>
+</div>
+<!-- Segmented Control -->
+<div class="px-4 pb-2">
+<div class="flex h-10 w-full items-center rounded-xl bg-gray-200 dark:bg-[#362249] p-1">
+<button class="flex flex-1 cursor-pointer items-center justify-center rounded-lg bg-white dark:bg-background-dark shadow-sm text-primary dark:text-white text-sm font-semibold transition-all duration-200">
+                    Reviews
+                </button>
+<button class="flex flex-1 cursor-pointer items-center justify-center rounded-lg text-gray-500 dark:text-[#ad90cb] hover:text-gray-900 dark:hover:text-white text-sm font-medium transition-all duration-200">
+                    Challenges
+                </button>
+</div>
+</div>
+</div>
+<!-- Main Feed Content -->
+<main class="flex flex-col gap-4 px-4 py-4 max-w-lg mx-auto w-full">
+<!-- Info Banner -->
+<div class="flex items-start gap-3 p-3 rounded-lg bg-primary/10 border border-primary/20 mb-2">
+<span class="material-symbols-outlined text-primary text-xl mt-0.5">verified_user</span>
+<div>
+<p class="text-xs font-medium text-primary mb-0.5">Privacy First</p>
+<p class="text-xs text-text-secondary">All posts in the community are automatically anonymized. Your identity is safe here.</p>
+</div>
+</div>
+<!-- Post Card 1 -->
+<article class="flex flex-col bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-gray-100 dark:border-white/5">
+<!-- Card Header -->
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<div class="bg-gradient-to-br from-purple-400 to-indigo-600 h-10 w-10 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-inner" data-alt="Abstract gradient avatar">
+                        Anon
+                    </div>
+<div>
+<p class="text-sm font-semibold text-slate-800 dark:text-white">Anonymous User</p>
+<p class="text-xs text-text-secondary">2 hours ago</p>
+</div>
+</div>
+<button class="text-text-secondary hover:text-white">
+<span class="material-symbols-outlined text-xl">more_horiz</span>
+</button>
+</div>
+<!-- Context / Situation -->
+<div class="mb-4 space-y-3">
+<div class="flex flex-col gap-1">
+<span class="text-xs font-bold uppercase tracking-wider text-text-secondary ml-1">The Situation</span>
+<div class="self-start max-w-[90%] bg-gray-100 dark:bg-[#3d2e4d] text-slate-700 dark:text-gray-200 px-4 py-3 message-bubble-in text-sm leading-relaxed">
+                        She asked if I like pineapple on pizza. Is this a trap? 🍕
+                    </div>
+</div>
+<!-- Wingman Response -->
+<div class="flex flex-col gap-1 items-end">
+<div class="flex items-center gap-1 mr-1">
+<span class="material-symbols-outlined text-primary text-xs">smart_toy</span>
+<span class="text-xs font-bold uppercase tracking-wider text-primary">Wingman Suggested</span>
+</div>
+<div class="self-end max-w-[90%] bg-primary text-white px-4 py-3 message-bubble-out text-sm leading-relaxed shadow-lg shadow-primary/20 border border-primary-light">
+                        Only if you're paying for dinner 😉
+                    </div>
+</div>
+</div>
+<!-- Divider -->
+<div class="h-px w-full bg-gray-100 dark:bg-white/5 mb-4"></div>
+<!-- Interaction Bar -->
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between gap-2">
+<button class="flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-green-500/10 hover:bg-green-500/20 active:scale-95 transition-all group border border-transparent hover:border-green-500/30">
+<span class="text-xl group-hover:scale-110 transition-transform">🔥</span>
+<span class="text-[10px] font-bold text-green-500 mt-1">Bon (85%)</span>
+</button>
+<button class="flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-gray-500/10 hover:bg-gray-500/20 active:scale-95 transition-all group border border-transparent hover:border-gray-500/30">
+<span class="text-xl group-hover:scale-110 transition-transform">😐</span>
+<span class="text-[10px] font-bold text-gray-400 mt-1">Bof (10%)</span>
+</button>
+<button class="flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-red-500/10 hover:bg-red-500/20 active:scale-95 transition-all group border border-transparent hover:border-red-500/30">
+<span class="text-xl group-hover:scale-110 transition-transform">👎</span>
+<span class="text-[10px] font-bold text-red-500 mt-1">Mauvais (5%)</span>
+</button>
+</div>
+<button class="flex items-center gap-2 mt-1 text-text-secondary hover:text-primary transition-colors text-sm w-fit">
+<span class="material-symbols-outlined text-lg">chat_bubble</span>
+<span>12 Comments</span>
+</button>
+</div>
+</article>
+<!-- Post Card 2 -->
+<article class="flex flex-col bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-gray-100 dark:border-white/5">
+<!-- Card Header -->
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<div class="bg-gradient-to-bl from-pink-500 to-rose-500 h-10 w-10 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-inner" data-alt="Abstract pink gradient avatar">
+                        Anon
+                    </div>
+<div>
+<p class="text-sm font-semibold text-slate-800 dark:text-white">Anonymous User</p>
+<p class="text-xs text-text-secondary">5 hours ago</p>
+</div>
+</div>
+<button class="text-text-secondary hover:text-white">
+<span class="material-symbols-outlined text-xl">more_horiz</span>
+</button>
+</div>
+<!-- Context / Situation -->
+<div class="mb-4 space-y-3">
+<div class="flex flex-col gap-1">
+<span class="text-xs font-bold uppercase tracking-wider text-text-secondary ml-1">The Situation</span>
+<div class="self-start max-w-[90%] bg-gray-100 dark:bg-[#3d2e4d] text-slate-700 dark:text-gray-200 px-4 py-3 message-bubble-in text-sm leading-relaxed">
+                        Ghosted for 3 days then he says 'Hey'
+                    </div>
+</div>
+<!-- Wingman Response -->
+<div class="flex flex-col gap-1 items-end">
+<div class="flex items-center gap-1 mr-1">
+<span class="material-symbols-outlined text-primary text-xs">smart_toy</span>
+<span class="text-xs font-bold uppercase tracking-wider text-primary">Wingman Suggested</span>
+</div>
+<div class="self-end max-w-[90%] bg-primary text-white px-4 py-3 message-bubble-out text-sm leading-relaxed shadow-lg shadow-primary/20 border border-primary-light">
+                        New phone, who dis?
+                    </div>
+</div>
+</div>
+<!-- Divider -->
+<div class="h-px w-full bg-gray-100 dark:bg-white/5 mb-4"></div>
+<!-- Interaction Bar -->
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between gap-2">
+<button class="flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-green-500/5 hover:bg-green-500/10 active:scale-95 transition-all group border border-transparent hover:border-green-500/20">
+<span class="text-xl opacity-50 group-hover:opacity-100 grayscale group-hover:grayscale-0 transition-all">🔥</span>
+<span class="text-[10px] font-bold text-gray-500 group-hover:text-green-500 mt-1">Bon (20%)</span>
+</button>
+<button class="flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-yellow-500/10 hover:bg-yellow-500/20 active:scale-95 transition-all group border border-transparent hover:border-yellow-500/30">
+<span class="text-xl group-hover:scale-110 transition-transform">😐</span>
+<span class="text-[10px] font-bold text-yellow-500 mt-1">Bof (40%)</span>
+</button>
+<button class="flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-red-500/10 hover:bg-red-500/20 active:scale-95 transition-all group border border-transparent hover:border-red-500/30">
+<span class="text-xl group-hover:scale-110 transition-transform">👎</span>
+<span class="text-[10px] font-bold text-red-500 mt-1">Mauvais (40%)</span>
+</button>
+</div>
+<button class="flex items-center gap-2 mt-1 text-text-secondary hover:text-primary transition-colors text-sm w-fit">
+<span class="material-symbols-outlined text-lg">chat_bubble</span>
+<span>5 Comments</span>
+</button>
+</div>
+</article>
+<!-- Post Card 3 (Text Only Variant) -->
+<article class="flex flex-col bg-white dark:bg-surface-dark rounded-xl p-4 shadow-sm border border-gray-100 dark:border-white/5">
+<div class="flex items-center justify-between mb-4">
+<div class="flex items-center gap-3">
+<div class="bg-gradient-to-tr from-teal-400 to-cyan-600 h-10 w-10 rounded-full flex items-center justify-center text-white font-bold text-xs shadow-inner" data-alt="Abstract teal gradient avatar">
+                        Anon
+                    </div>
+<div>
+<p class="text-sm font-semibold text-slate-800 dark:text-white">Anonymous User</p>
+<p class="text-xs text-text-secondary">1 day ago</p>
+</div>
+</div>
+<button class="text-text-secondary hover:text-white">
+<span class="material-symbols-outlined text-xl">more_horiz</span>
+</button>
+</div>
+<div class="mb-4 space-y-3">
+<div class="flex flex-col gap-1">
+<span class="text-xs font-bold uppercase tracking-wider text-text-secondary ml-1">The Situation</span>
+<div class="self-start max-w-[90%] bg-gray-100 dark:bg-[#3d2e4d] text-slate-700 dark:text-gray-200 px-4 py-3 message-bubble-in text-sm leading-relaxed">
+                        Match with a cute architect. What's a good opener related to buildings?
+                    </div>
+</div>
+<div class="flex flex-col gap-1 items-end">
+<div class="flex items-center gap-1 mr-1">
+<span class="material-symbols-outlined text-primary text-xs">smart_toy</span>
+<span class="text-xs font-bold uppercase tracking-wider text-primary">Wingman Suggested</span>
+</div>
+<div class="self-end max-w-[90%] bg-primary text-white px-4 py-3 message-bubble-out text-sm leading-relaxed shadow-lg shadow-primary/20 border border-primary-light">
+                        I'd love to build a foundation with you, but let's start with a drink first. 🏗️
+                    </div>
+</div>
+</div>
+<div class="h-px w-full bg-gray-100 dark:bg-white/5 mb-4"></div>
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-between gap-2">
+<button class="flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-green-500/10 hover:bg-green-500/20 active:scale-95 transition-all group border border-transparent hover:border-green-500/30">
+<span class="text-xl group-hover:scale-110 transition-transform">🔥</span>
+<span class="text-[10px] font-bold text-green-500 mt-1">Bon (92%)</span>
+</button>
+<button class="flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-gray-500/5 hover:bg-gray-500/10 active:scale-95 transition-all group border border-transparent hover:border-gray-500/20">
+<span class="text-xl opacity-50 group-hover:opacity-100 grayscale group-hover:grayscale-0 transition-all">😐</span>
+<span class="text-[10px] font-bold text-gray-500 group-hover:text-yellow-500 mt-1">Bof (5%)</span>
+</button>
+<button class="flex-1 flex flex-col items-center justify-center py-2 px-1 rounded-lg bg-red-500/5 hover:bg-red-500/10 active:scale-95 transition-all group border border-transparent hover:border-red-500/20">
+<span class="text-xl opacity-50 group-hover:opacity-100 grayscale group-hover:grayscale-0 transition-all">👎</span>
+<span class="text-[10px] font-bold text-gray-500 group-hover:text-red-500 mt-1">Mauvais (3%)</span>
+</button>
+</div>
+<button class="flex items-center gap-2 mt-1 text-text-secondary hover:text-primary transition-colors text-sm w-fit">
+<span class="material-symbols-outlined text-lg">chat_bubble</span>
+<span>24 Comments</span>
+</button>
+</div>
+</article>
+<!-- Bottom Spacer -->
+<div class="h-20"></div>
+</main>
+<!-- Floating Action Button / Sticky CTA -->
+<div class="fixed bottom-24 right-4 z-40">
+<button class="bg-primary hover:bg-primary-dark text-white rounded-full px-5 py-3 shadow-xl shadow-primary/40 flex items-center gap-2 transition-transform hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined text-xl">edit_note</span>
+<span class="font-bold text-sm">Post a Review</span>
+</button>
+</div>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 w-full bg-background-light dark:bg-background-dark/95 backdrop-blur-lg border-t border-gray-200 dark:border-white/5 pb-6 pt-2 z-50">
+<div class="flex justify-around items-center h-full">
+<a class="flex flex-col items-center gap-1 group w-16" href="#">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-white transition-colors">smart_toy</span>
+<span class="text-[10px] font-medium text-gray-400 group-hover:text-white transition-colors">Coach</span>
+</a>
+<a class="flex flex-col items-center gap-1 group w-16" href="#">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-white transition-colors">history</span>
+<span class="text-[10px] font-medium text-gray-400 group-hover:text-white transition-colors">History</span>
+</a>
+<a class="flex flex-col items-center gap-1 group w-16" href="#">
+<div class="bg-primary/20 px-4 py-1 rounded-full flex flex-col items-center">
+<span class="material-symbols-outlined text-primary fill-current">groups</span>
+</div>
+<span class="text-[10px] font-bold text-primary">Community</span>
+</a>
+<a class="flex flex-col items-center gap-1 group w-16" href="#">
+<span class="material-symbols-outlined text-gray-400 group-hover:text-white transition-colors">person</span>
+<span class="text-[10px] font-medium text-gray-400 group-hover:text-white transition-colors">Profile</span>
+</a>
+</div>
+</nav>
+</body></html>

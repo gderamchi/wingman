@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wingman - Core Results</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c25f4",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#121212", 
+                        "surface-dark": "#1E1E1E",
+                        "surface-highlight": "#2a2a2a",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.375rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-white overflow-x-hidden antialiased selection:bg-primary selection:text-white">
+<div class="relative flex h-full min-h-screen w-full flex-col max-w-md mx-auto border-x border-white/5">
+<!-- Header -->
+<header class="sticky top-0 z-50 flex items-center justify-between bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md p-4 pb-2 border-b border-white/5">
+<button class="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-gray-900 dark:text-white" style="font-size: 24px;">arrow_back</span>
+</button>
+<h1 class="text-gray-900 dark:text-white text-lg font-bold tracking-tight">Wingman</h1>
+<div class="size-10"></div> <!-- Spacer for centering -->
+</header>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col p-4 gap-6">
+<!-- Analysis Summary Card -->
+<section class="relative overflow-hidden rounded-2xl bg-surface-dark border border-white/10 p-5 shadow-lg">
+<!-- Subtle Gradient Background Effect -->
+<div class="absolute -top-10 -right-10 size-32 bg-primary/20 blur-3xl rounded-full pointer-events-none"></div>
+<div class="absolute -bottom-10 -left-10 size-32 bg-blue-500/10 blur-3xl rounded-full pointer-events-none"></div>
+<div class="relative z-10">
+<div class="flex items-center gap-2 mb-3">
+<span class="material-symbols-outlined text-primary text-xl">psychology</span>
+<span class="text-xs font-semibold uppercase tracking-wider text-primary">Analysis</span>
+</div>
+<h2 class="text-2xl font-bold leading-snug mb-4 text-white">He's teasing you slightly.</h2>
+<div class="flex flex-wrap gap-2">
+<div class="flex items-center gap-1.5 rounded-lg bg-primary/20 border border-primary/30 px-3 py-1.5">
+<span class="material-symbols-outlined text-primary text-[16px]">favorite</span>
+<span class="text-primary text-xs font-semibold">Get a Date</span>
+</div>
+<div class="flex items-center gap-1.5 rounded-lg bg-white/10 border border-white/10 px-3 py-1.5">
+<span class="material-symbols-outlined text-gray-300 text-[16px]">sentiment_satisfied</span>
+<span class="text-gray-300 text-xs font-medium">Playful</span>
+</div>
+</div>
+</div>
+</section>
+<!-- Reply Cards Carousel -->
+<section class="flex flex-col gap-3">
+<div class="flex items-center justify-between px-1">
+<h3 class="text-sm font-medium text-gray-400">Suggestions</h3>
+<span class="text-xs text-primary cursor-pointer hover:underline">Regenerate all</span>
+</div>
+<!-- Scroll Container -->
+<div class="flex flex-col gap-4">
+<!-- Card 1 -->
+<div class="group relative flex flex-col gap-3 rounded-2xl bg-surface-dark border border-white/5 p-4 transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
+<div class="flex-1">
+<p class="text-base text-gray-100 font-medium leading-relaxed">"Haha, bold assumption! I might just surprise you."</p>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-white/5 mt-1">
+<div class="flex gap-1">
+<button class="flex items-center justify-center p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="flex items-center justify-center p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors" title="Variants">
+<span class="material-symbols-outlined text-[20px]">autorenew</span>
+</button>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-primary hover:bg-primary/90 text-white font-medium text-sm transition-colors shadow-md shadow-primary/20">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+<span>Copy</span>
+</button>
+</div>
+</div>
+<!-- Card 2 -->
+<div class="group relative flex flex-col gap-3 rounded-2xl bg-surface-dark border border-white/5 p-4 transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
+<div class="flex-1">
+<p class="text-base text-gray-100 font-medium leading-relaxed">"Is that a challenge? 😉"</p>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-white/5 mt-1">
+<div class="flex gap-1">
+<button class="flex items-center justify-center p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="flex items-center justify-center p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors" title="Variants">
+<span class="material-symbols-outlined text-[20px]">autorenew</span>
+</button>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-highlight hover:bg-surface-highlight/80 text-white font-medium text-sm transition-colors border border-white/5">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+<span>Copy</span>
+</button>
+</div>
+</div>
+<!-- Card 3 -->
+<div class="group relative flex flex-col gap-3 rounded-2xl bg-surface-dark border border-white/5 p-4 transition-all hover:border-primary/30 hover:shadow-lg hover:shadow-primary/5">
+<div class="flex-1">
+<p class="text-base text-gray-100 font-medium leading-relaxed">"I'm not so sure about that... convince me."</p>
+</div>
+<div class="flex items-center justify-between pt-2 border-t border-white/5 mt-1">
+<div class="flex gap-1">
+<button class="flex items-center justify-center p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors" title="Edit">
+<span class="material-symbols-outlined text-[20px]">edit</span>
+</button>
+<button class="flex items-center justify-center p-2 rounded-lg text-gray-400 hover:text-white hover:bg-white/10 transition-colors" title="Variants">
+<span class="material-symbols-outlined text-[20px]">autorenew</span>
+</button>
+</div>
+<button class="flex items-center gap-2 px-4 py-2 rounded-lg bg-surface-highlight hover:bg-surface-highlight/80 text-white font-medium text-sm transition-colors border border-white/5">
+<span class="material-symbols-outlined text-[18px]">content_copy</span>
+<span>Copy</span>
+</button>
+</div>
+</div>
+</div>
+</section>
+<!-- Refinement Controls -->
+<section class="mt-2 rounded-2xl bg-surface-dark border border-white/5 p-5 flex flex-col gap-6">
+<!-- Tone Slider -->
+<div class="flex flex-col gap-3">
+<div class="flex justify-between items-center text-sm">
+<span class="text-gray-400 font-medium">Tone</span>
+<span class="text-primary font-bold">Balanced</span>
+</div>
+<div class="relative h-6 flex items-center w-full group">
+<!-- Track -->
+<div class="absolute w-full h-1.5 bg-white/10 rounded-full overflow-hidden">
+<div class="h-full bg-gradient-to-r from-purple-400/30 to-primary w-1/2"></div>
+</div>
+<!-- Thumb -->
+<div class="absolute left-1/2 -translate-x-1/2 size-5 bg-white rounded-full shadow-lg shadow-black/50 border-2 border-primary cursor-pointer hover:scale-110 transition-transform"></div>
+</div>
+<div class="flex justify-between text-xs text-gray-500 font-medium px-1">
+<span>Soft</span>
+<span>Direct</span>
+</div>
+</div>
+<!-- Divider -->
+<div class="h-px w-full bg-white/5"></div>
+<!-- Humour Toggle -->
+<div class="flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-gray-400">sentiment_very_satisfied</span>
+<span class="text-sm font-medium text-gray-300">Humour</span>
+</div>
+<!-- iOS Style Toggle -->
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-11 h-6 bg-white/10 peer-focus:outline-none rounded-full peer peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-primary"></div>
+</label>
+</div>
+</section>
+</main>
+<!-- Footer Feedback -->
+<footer class="sticky bottom-0 z-40 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-lg border-t border-white/5 p-4 pb-8">
+<div class="flex flex-col items-center gap-3">
+<p class="text-sm text-gray-400 font-medium">Does this sound like you?</p>
+<div class="flex gap-4 w-full justify-center">
+<button class="flex items-center justify-center size-12 rounded-full border border-white/10 bg-white/5 hover:bg-white/10 hover:scale-105 transition-all active:scale-95 text-gray-300 hover:text-white">
+<span class="material-symbols-outlined">thumb_down</span>
+</button>
+<button class="flex items-center justify-center size-12 rounded-full border border-primary/30 bg-primary/10 hover:bg-primary/20 hover:scale-105 transition-all active:scale-95 text-primary">
+<span class="material-symbols-outlined">thumb_up</span>
+</button>
+</div>
+<!-- Privacy Note -->
+<div class="mt-2 flex items-center gap-1.5 opacity-40">
+<span class="material-symbols-outlined text-[14px] text-gray-400">lock</span>
+<span class="text-[10px] uppercase tracking-widest text-gray-400 font-semibold">Processed on device</span>
+</div>
+</div>
+</footer>
+</div>
+</body></html>

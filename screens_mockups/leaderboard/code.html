@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wingman Leaderboard</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c25f4",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#2d1b3e",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px", "2xl": "1rem"},
+                    boxShadow: {
+                        "neon": "0 0 10px rgba(140, 37, 244, 0.5), 0 0 20px rgba(140, 37, 244, 0.3)",
+                    }
+                },
+            },
+        }
+    </script>
+<style>
+        .hide-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .hide-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        .glass-panel {
+            background: rgba(45, 27, 62, 0.7);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-white h-screen flex flex-col overflow-hidden">
+<!-- Main Scrollable Content -->
+<div class="flex-1 overflow-y-auto hide-scrollbar pb-64 relative">
+<!-- Header & Timer -->
+<div class="p-5 pt-8 flex items-center justify-between sticky top-0 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md z-20 border-b border-gray-200 dark:border-white/5">
+<div>
+<h1 class="text-2xl font-bold tracking-tight">Leaderboard</h1>
+<p class="text-xs text-gray-500 dark:text-gray-400 font-medium mt-0.5">Weekly League</p>
+</div>
+<div class="flex flex-col items-end">
+<div class="flex items-center gap-1.5 bg-primary/10 rounded-lg px-2 py-1">
+<span class="material-symbols-outlined text-primary text-sm">schedule</span>
+<span class="text-primary text-xs font-bold font-mono">2d 14h 32m</span>
+</div>
+<span class="text-[10px] text-gray-500 dark:text-gray-400 mt-1">Resets Sunday</span>
+</div>
+</div>
+<!-- Tier Carousel -->
+<div class="mt-4 mb-2">
+<div class="flex overflow-x-auto hide-scrollbar snap-x snap-mandatory px-5 gap-3 pb-2">
+<!-- Previous Tier (Peeking) -->
+<div class="snap-center shrink-0 w-[140px] opacity-40 scale-90 transition-all">
+<div class="bg-gradient-to-br from-gray-300 to-gray-400 rounded-2xl p-4 flex flex-col items-center justify-center h-32 relative overflow-hidden">
+<div class="absolute inset-0 bg-black/10"></div>
+<span class="material-symbols-outlined text-white text-4xl mb-1 drop-shadow-lg">military_tech</span>
+<p class="text-white font-bold">Silver</p>
+</div>
+</div>
+<!-- Current Tier (Active) -->
+<div class="snap-center shrink-0 w-[160px]">
+<div class="bg-gradient-to-br from-yellow-400 via-yellow-500 to-yellow-600 rounded-2xl p-4 flex flex-col items-center justify-center h-36 relative shadow-lg shadow-yellow-500/20 ring-2 ring-yellow-300/50">
+<div class="absolute top-2 right-2 bg-black/20 text-white text-[10px] px-2 py-0.5 rounded-full font-bold">Current</div>
+<span class="material-symbols-outlined text-white text-5xl mb-2 drop-shadow-md">trophy</span>
+<p class="text-white text-lg font-bold tracking-wide">Gold</p>
+<p class="text-yellow-100 text-xs font-medium">Top 20%</p>
+</div>
+</div>
+<!-- Next Tier (Locked) -->
+<div class="snap-center shrink-0 w-[140px] opacity-40 grayscale scale-90">
+<div class="bg-gradient-to-br from-cyan-400 to-blue-500 rounded-2xl p-4 flex flex-col items-center justify-center h-32 relative overflow-hidden">
+<span class="material-symbols-outlined text-white text-4xl mb-1">diamond</span>
+<p class="text-white font-bold">Diamond</p>
+<span class="material-symbols-outlined text-white/80 text-lg absolute bottom-2">lock</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Filter Segmented Control -->
+<div class="px-5 py-2">
+<div class="flex h-10 w-full items-center justify-center rounded-lg bg-gray-200 dark:bg-white/5 p-1">
+<button class="flex-1 h-full rounded-[4px] bg-white dark:bg-surface-dark shadow-sm text-gray-900 dark:text-white text-sm font-semibold transition-all">
+                    Global
+                </button>
+<button class="flex-1 h-full rounded-[4px] text-gray-500 dark:text-gray-400 text-sm font-medium flex items-center justify-center gap-1.5 opacity-60 cursor-not-allowed">
+                    Friends <span class="material-symbols-outlined text-xs">lock</span>
+</button>
+</div>
+</div>
+<!-- Top 3 Podium -->
+<div class="px-5 pt-8 pb-4 relative">
+<!-- Glow effect behind podium -->
+<div class="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-full h-full bg-primary/10 blur-3xl rounded-full -z-10"></div>
+<div class="flex items-end justify-center gap-4 text-center">
+<!-- Rank 2 -->
+<div class="flex flex-col items-center w-1/3">
+<div class="relative mb-2">
+<div class="w-20 h-20 rounded-full p-1 bg-gradient-to-tr from-gray-300 to-gray-500 shadow-lg">
+<div class="w-full h-full rounded-full bg-gray-800 bg-cover bg-center" data-alt="Abstract neon gradient avatar for 2nd place" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBYWqc0UWL3xa8R_MUZF_etKoD2efW-CxDnzV3dy5MwaeokR2MwluFtVuhkCiQfNpd6AFh8L7q52TE8aCUAQJ_t8kCetGEt9e44awimjW7lr89zYqpgV4c2HFflYxZMVksm6l6QSBehDaMwaRlRqyT4Ecmi7Ynk36HMD4u44xl11gjjNu5o3GtN_UfNoz4ao2FsdEEySJTcA_ysDYV0kDW8QHfK0P7TusRVI48Tqvl0byjA_50A8jtVLI_DN1fh-UgFZq--FcpLs50');"></div>
+</div>
+<div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-surface-dark border border-gray-600 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold text-gray-300">2</div>
+</div>
+<p class="text-sm font-bold truncate w-full text-white">CyberPunk</p>
+<p class="text-xs text-primary font-medium">2,100 pts</p>
+</div>
+<!-- Rank 1 -->
+<div class="flex flex-col items-center w-1/3 -mt-6 z-10">
+<div class="relative mb-3">
+<div class="absolute -top-6 left-1/2 -translate-x-1/2 text-yellow-400 animate-bounce">
+<span class="material-symbols-outlined text-3xl filled">crown</span>
+</div>
+<div class="w-24 h-24 rounded-full p-1 bg-gradient-to-tr from-yellow-300 via-yellow-500 to-yellow-600 shadow-neon">
+<div class="w-full h-full rounded-full bg-gray-800 bg-cover bg-center" data-alt="Abstract golden geometric avatar for 1st place" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA1TJRcw0lnkZQ_upI1h74aeA08oCqrwthWnN1IRNukbw256U9DI0dYj6qJZzxBKldE5vVWEwU8rYRoDAAq13JbKHxca8evAamMvYd_OgI3qcijuOXc3Ijcylv0gWd0M6BtSV_XgLaVRKdvW_PrjRYGd2q2O-5dZRarlMseaV_fgMsq-2xM63V9zTWH82Q1-PjuEKn8W92nbJRI2dSXaDg0odlRhTsErvik7GLxle3Juva4Xb1aXk4ukICYCnwbLsGu2G4OJaD3U_M');"></div>
+</div>
+<div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-yellow-500 text-black rounded-full w-7 h-7 flex items-center justify-center text-sm font-bold shadow-md">1</div>
+</div>
+<p class="text-base font-bold truncate w-full text-white">NeoSoul</p>
+<p class="text-sm text-yellow-400 font-bold">2,450 pts</p>
+</div>
+<!-- Rank 3 -->
+<div class="flex flex-col items-center w-1/3">
+<div class="relative mb-2">
+<div class="w-20 h-20 rounded-full p-1 bg-gradient-to-tr from-orange-400 to-red-500 shadow-lg">
+<div class="w-full h-full rounded-full bg-gray-800 bg-cover bg-center" data-alt="Abstract colorful fluid art avatar for 3rd place" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuAd9R49_CfS4AQ4s3nFhiuQDKJiZm0B4c32SJhhVZSij4TTNzgoxgcB96X2hBQUI_qOcNZAh-0Uy4bVDIvodSXbfwbmBHnZho0ZPb8cz9g4BBwqfBZrs4FpN3iu7SwanoBnuz7FWp6vpA0ZohhBAAJXRBdwKxfCsKoQGTyyb3oJ-xKIIcA5xXZqpwZQhmWNZzjRB742PcDddvKhmrIJD-r3lQHJTBHCOOnE5rH54N0ba2wPFLZqadY1tusSUoR0QGvo4pEnkPtMMnc');"></div>
+</div>
+<div class="absolute -bottom-3 left-1/2 -translate-x-1/2 bg-surface-dark border border-orange-500/50 rounded-full w-6 h-6 flex items-center justify-center text-xs font-bold text-orange-300">3</div>
+</div>
+<p class="text-sm font-bold truncate w-full text-white">Glitch</p>
+<p class="text-xs text-primary font-medium">1,950 pts</p>
+</div>
+</div>
+</div>
+<!-- Leaderboard List (Rank 4-10) -->
+<div class="px-5 space-y-3 mt-4">
+<!-- List Item Template -->
+<div class="flex items-center gap-4 p-3 rounded-xl bg-white dark:bg-white/5 border border-transparent dark:border-white/5 shadow-sm">
+<span class="text-sm font-bold text-gray-400 w-6 text-center">4</span>
+<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 bg-cover bg-center" data-alt="Abstract blue avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCjXsmStTUO5ZtB4-v6EEBdXtHQWN7yKlHTGYwamuJw106UOMInhYyOc_yn-lcJBIpBD8LuGkqD12cPv7BcSY_b4IOOaFRJVYggrPUU4aPgBl5gHGf__0dGh8wW9fyLH32JccQh47XcY4XMu6YkXAOfBEkmNvZHKCXVt9NL8SjnWWUIjDd1MjJbm38F0DcJc6qF8XgkgXLuxfHiNdEerLFcnR6lNoswNbC3NcUbhzApOvmYYz1QY2LSd7ztbBLhHKWxLID_E_Fl5fk');"></div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold text-gray-900 dark:text-white truncate">VaporWave</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-primary">1,820</p>
+<p class="text-[10px] text-gray-500 uppercase">pts</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-3 rounded-xl bg-white dark:bg-white/5 border border-transparent dark:border-white/5 shadow-sm">
+<span class="text-sm font-bold text-gray-400 w-6 text-center">5</span>
+<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 bg-cover bg-center" data-alt="Abstract paint splash avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCvSVAKGuUAJl-etXVHpLX5HbYkeGsu-wvynq1eQsqzYYfmcrglpcOSE4KhiE5DhfTdx4_sguWqtr5zgQmx4wz1aY6H-ouO17L0gINY7d33dd_y_Hpq9OzfweNGDrxKazpLRMnYLUhtqvydScUDA_461FFXha5nzvKS6I2gE_k6DETje9vlXoW-VFA7fikrknAgHZ3e3VnGPIC6DWtOWfUYb6Unhs4VTRkSX0nKmdkWbIswFRM9SWbWtAYyZ9conmwte0gTcAI_3VA');"></div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold text-gray-900 dark:text-white truncate">PixelHeart</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-primary">1,650</p>
+<p class="text-[10px] text-gray-500 uppercase">pts</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-3 rounded-xl bg-white dark:bg-white/5 border border-transparent dark:border-white/5 shadow-sm">
+<span class="text-sm font-bold text-gray-400 w-6 text-center">6</span>
+<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 bg-cover bg-center" data-alt="Abstract pattern avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuA5BPYcyKal9W8dOQLEE4ST87QVnBNN0nfihnWMxSYKgNnwcbVk7VcF_u86MKbZqy7jv4uoOMrrJg67G_NnF-s5WUDk9v7DiFHREWxoM527z2vmTS7E_k09jI0JzPdGN7U0T-xLKi8aIk40iS4j7yi2sc3ptbzmyLuCZuRqgqjgNi4le97IEQcrY8vAF5LI4XUwstXi6NLjWi7mmbIAkou_QM9kXHAV53Wvqhv0BZwhQiUyt0QREJdpxYhUdl5dO3QhXrcpNC_D9Ys');"></div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold text-gray-900 dark:text-white truncate">SynthPop</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-primary">1,410</p>
+<p class="text-[10px] text-gray-500 uppercase">pts</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-3 rounded-xl bg-white dark:bg-white/5 border border-transparent dark:border-white/5 shadow-sm">
+<span class="text-sm font-bold text-gray-400 w-6 text-center">7</span>
+<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 bg-cover bg-center" data-alt="Abstract dark aesthetic avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB_zG08lKnkFBqctDuAtjZx_8NyTB-dcJVvaTBh4jB0Zubmu1i653U2PWh1dBUqBONgcqHC_6fCl3Y2mhFJ0E75UQ4TjyWax9EvjDMUUM8G3gXN4evqaERaaTirJnsww7pUJdq_CpxWbvLETwe0Qbz6Q681NcOsGUYJe22zmDbZ_rmfQcRMdc4IkcZJfrTRICeRnW3GKWPEyiUWVfIW4UgtH0wOVUKjmB7hQ3N-J9IX1Iq7gvHkhhO2HLn4bez0Mu0tLZpf6GJ79FI');"></div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold text-gray-900 dark:text-white truncate">NightRider</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-primary">1,300</p>
+<p class="text-[10px] text-gray-500 uppercase">pts</p>
+</div>
+</div>
+<div class="flex items-center gap-4 p-3 rounded-xl bg-white dark:bg-white/5 border border-transparent dark:border-white/5 shadow-sm">
+<span class="text-sm font-bold text-gray-400 w-6 text-center">8</span>
+<div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 bg-cover bg-center" data-alt="Abstract pastel gradient avatar" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuCD_K-vl5Zn1Wz_vdLFnNb2sBmsOEqZ4PqwpX61vasHWA5qV6AsNqGjYwSvlw-mGxFEibPIa3A4RwuAtt8c3OFGhtpDdUnegouSUlifcDrkYGbx5gpgp7_66rgTCkhIeLRnoef-FAWoduEIsQ7LLG9EPO6__ZBtnAVFihkcsGJytzhI0QDUypF7MS8uF6dtvE7g0LrMHmfLF-as-vB0N10j7PEMYcfi7gSt7N1jdnm07trKWcNiM9jJOVroZGNgQEsFK5DdQV0lbZ4');"></div>
+<div class="flex-1 min-w-0">
+<p class="text-sm font-semibold text-gray-900 dark:text-white truncate">PastelGoth</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-primary">1,250</p>
+<p class="text-[10px] text-gray-500 uppercase">pts</p>
+</div>
+</div>
+</div>
+<!-- Bottom spacing for fixed elements -->
+<div class="h-24"></div>
+</div>
+<!-- Fixed Bottom Area -->
+<div class="fixed bottom-0 w-full z-30">
+<!-- Floating Action Button Area -->
+<div class="absolute bottom-[144px] w-full flex justify-center pointer-events-none">
+<button class="pointer-events-auto bg-primary hover:bg-primary/90 text-white font-bold py-3 px-6 rounded-full shadow-neon flex items-center gap-2 transform transition hover:scale-105 active:scale-95">
+<span class="material-symbols-outlined">bolt</span>
+<span>Gagner des points</span>
+</button>
+</div>
+<!-- Sticky User Row -->
+<div class="glass-panel px-5 py-3 shadow-[0_-5px_20px_rgba(0,0,0,0.3)]">
+<div class="flex items-center gap-4 p-3 rounded-xl bg-primary/20 border border-primary/30 relative overflow-hidden">
+<!-- Highlight effect for user -->
+<div class="absolute inset-0 bg-primary/5 pointer-events-none"></div>
+<span class="text-sm font-bold text-white w-6 text-center">42</span>
+<div class="w-10 h-10 rounded-full bg-gray-700 border-2 border-primary p-0.5">
+<div class="w-full h-full rounded-full bg-cover bg-center" data-alt="User profile avatar, abstract or uploaded" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB_lAM1sCdskGC65RqFVVdZFPEknfLZYtYFec2KZjbolOSQuhjS3469TNAQYRPmKyW8bxmgvhkEQEcxknWsDq45OWhL7iP-V3uHGe9J3_7-MHVxaES3dw-IfpeAPeZIBRqK6lXlqiDSF_vDw8RVZR2yal5bk822EPnssBvb6be6ld68IisKhvpHhoOxZfsFwMfxivxEqTj9Csz2hRY8D84bS5hrnOyrsZlKUy-cD_HID0dbJSp0Yu4iPV1kMzjGnBLQBt2XyFbF4A0');"></div>
+</div>
+<div class="flex-1 min-w-0 flex flex-col justify-center">
+<div class="flex items-center gap-2">
+<p class="text-sm font-bold text-white truncate">You</p>
+<span class="text-[10px] bg-primary text-white px-1.5 rounded-sm font-bold uppercase tracking-wider">Silver</span>
+</div>
+<p class="text-xs text-primary/80 truncate">Top 45% • Keep going!</p>
+</div>
+<div class="text-right">
+<p class="text-sm font-bold text-white">450</p>
+<p class="text-[10px] text-gray-400 uppercase">pts</p>
+</div>
+</div>
+</div>
+<!-- Bottom Navigation -->
+<div class="bg-background-light dark:bg-background-dark border-t border-gray-200 dark:border-white/5 pb-6 pt-3 px-6 flex justify-between items-end">
+<button class="flex flex-col items-center gap-1 w-16 group text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">school</span>
+<span class="text-[10px] font-medium">Coach</span>
+</button>
+<button class="flex flex-col items-center gap-1 w-16 group text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">history</span>
+<span class="text-[10px] font-medium">History</span>
+</button>
+<button class="flex flex-col items-center gap-1 w-16 text-primary relative">
+<div class="absolute -top-1 right-3 w-2 h-2 bg-red-500 rounded-full border-2 border-background-dark"></div>
+<span class="material-symbols-outlined text-2xl filled">groups</span>
+<span class="text-[10px] font-bold">Community</span>
+</button>
+<button class="flex flex-col items-center gap-1 w-16 group text-gray-400 dark:text-gray-500 hover:text-primary dark:hover:text-white transition-colors">
+<span class="material-symbols-outlined text-2xl group-hover:scale-110 transition-transform">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</button>
+</div>
+</div>
+</body></html>

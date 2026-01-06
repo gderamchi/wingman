@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wingman - Processing</title>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Tailwind Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c25f4",
+                        "primary-dark": "#6b1cb0",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#2a2133",
+                    },
+                    fontFamily: {
+                        "display": ["Space Grotesk", "sans-serif"],
+                        "body": ["Noto Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                    animation: {
+                        'pulse-slow': 'pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                        'spin-slow': 'spin 8s linear infinite',
+                    }
+                },
+            },
+        }
+    </script>
+<!-- Google Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&amp;family=Noto+Sans:wght@300;400;500;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        .step-line {
+            transition: all 0.5s ease;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display overflow-hidden selection:bg-primary selection:text-white h-screen w-full flex flex-col">
+<!-- Background Gradient Effect -->
+<div class="fixed inset-0 pointer-events-none overflow-hidden">
+<div class="absolute top-[-10%] left-[-10%] w-[50%] h-[40%] bg-primary/20 blur-[100px] rounded-full"></div>
+<div class="absolute bottom-[-10%] right-[-10%] w-[50%] h-[40%] bg-primary/10 blur-[100px] rounded-full"></div>
+</div>
+<!-- Main Content Container -->
+<div class="relative z-10 flex flex-col h-full max-w-md mx-auto w-full px-6 pt-8 pb-6">
+<!-- Header / Logo Area -->
+<div class="flex justify-center mb-8">
+<div class="flex items-center gap-2 opacity-80">
+<span class="material-symbols-outlined text-primary text-2xl">rocket_launch</span>
+<span class="text-lg font-bold tracking-tight">Wingman</span>
+</div>
+</div>
+<!-- Central Animation Hub -->
+<div class="flex-1 flex flex-col items-center justify-center min-h-[200px] py-4">
+<div class="relative flex items-center justify-center w-40 h-40">
+<!-- Outer spinning ring -->
+<div class="absolute inset-0 rounded-full border border-primary/20 border-t-primary animate-spin-slow"></div>
+<!-- Inner pulsing glow -->
+<div class="absolute inset-2 rounded-full bg-primary/10 animate-pulse-slow"></div>
+<!-- Core circle with shadow -->
+<div class="relative z-10 flex items-center justify-center w-24 h-24 rounded-full bg-gradient-to-br from-primary to-primary-dark shadow-[0_0_30px_rgba(140,37,244,0.6)]">
+<span class="material-symbols-outlined text-5xl text-white drop-shadow-md animate-pulse">psychology</span>
+</div>
+<!-- Floating particles decoration -->
+<div class="absolute top-0 right-4 w-2 h-2 bg-white rounded-full opacity-60 animate-ping"></div>
+<div class="absolute bottom-4 left-4 w-1.5 h-1.5 bg-primary rounded-full opacity-80"></div>
+</div>
+<p class="mt-6 text-primary/80 text-sm font-medium tracking-widest uppercase">Analyzing Conversation</p>
+</div>
+<!-- Progress Timeline -->
+<div class="flex flex-col w-full max-w-xs mx-auto mb-8">
+<!-- Step 1: Completed -->
+<div class="grid grid-cols-[32px_1fr] gap-x-4 group">
+<div class="flex flex-col items-center">
+<div class="flex items-center justify-center w-8 h-8 rounded-full bg-primary/20 text-primary transition-all duration-500">
+<span class="material-symbols-outlined text-lg">check_circle</span>
+</div>
+<div class="w-[2px] bg-primary h-full min-h-[24px] mt-1 step-line"></div>
+</div>
+<div class="pb-6 pt-1">
+<p class="text-white/60 text-base font-medium leading-tight">Lecture du screenshot</p>
+</div>
+</div>
+<!-- Step 2: Active -->
+<div class="grid grid-cols-[32px_1fr] gap-x-4 group">
+<div class="flex flex-col items-center">
+<div class="relative flex items-center justify-center w-8 h-8">
+<div class="absolute inset-0 bg-primary/40 rounded-full animate-ping opacity-75"></div>
+<div class="relative flex items-center justify-center w-8 h-8 rounded-full bg-primary text-white shadow-[0_0_10px_rgba(140,37,244,0.5)]">
+<span class="material-symbols-outlined text-lg">sync</span>
+</div>
+</div>
+<div class="w-[2px] bg-white/10 h-full min-h-[24px] mt-1 step-line"></div>
+</div>
+<div class="pb-6 pt-1">
+<p class="text-white text-lg font-bold leading-tight drop-shadow-sm">Compréhension du contexte</p>
+</div>
+</div>
+<!-- Step 3: Pending -->
+<div class="grid grid-cols-[32px_1fr] gap-x-4 group">
+<div class="flex flex-col items-center">
+<div class="flex items-center justify-center w-8 h-8 rounded-full bg-surface-dark border border-white/10 text-white/20">
+<span class="material-symbols-outlined text-lg">chat</span>
+</div>
+</div>
+<div class="pt-1">
+<p class="text-white/30 text-base font-medium leading-tight">Génération de réponses</p>
+</div>
+</div>
+</div>
+<!-- Tip Carousel (Single Card View) -->
+<div class="w-full mt-auto">
+<div class="relative overflow-hidden rounded-2xl bg-surface-dark/80 backdrop-blur-sm border border-white/5 p-4 shadow-xl">
+<div class="flex items-start gap-4">
+<!-- Tip Image -->
+<div class="w-16 h-16 shrink-0 rounded-xl bg-cover bg-center bg-no-repeat shadow-inner" data-alt="Abstract gradient illustration representing AI learning and adaptation with purple hues" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuBZV__yI8ILNMnIWTh1_gfnZJ1s5tTvjfxkRm0WO7-mx1qPoNJCNJMHdHvhyt8mpWsVTNiphnaUDJbn8Uws1eZmYAPcyP4OqVP9aEqkhyf9dgJDI2FPPqz98Hx-Hs6st9upjDEeCECaelfH-v0iHoJBl-0niAIw_SnESaWBxUOa4vdlaGTCR65_dsLls4t4Bpb2kXnQSjWdAThOb5-jHNiUjA_DWwykaCiRdE8VggATnZWyNabl-H2wbi-mvTzbckp5-7H7q0w4KMY');"></div>
+<!-- Tip Content -->
+<div class="flex-1">
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-primary text-sm">lightbulb</span>
+<p class="text-white text-sm font-bold uppercase tracking-wide">Did you know?</p>
+</div>
+<p class="text-[#ad90cb] text-sm leading-relaxed font-body">
+                            Plus tu reviens enregistrer la réponse, plus ton coach s’adapte.
+                        </p>
+</div>
+</div>
+<!-- Pagination Dots -->
+<div class="flex justify-center gap-1.5 mt-4">
+<div class="w-1.5 h-1.5 rounded-full bg-primary"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-white/20"></div>
+<div class="w-1.5 h-1.5 rounded-full bg-white/20"></div>
+</div>
+</div>
+</div>
+<!-- Footer / Privacy -->
+<div class="mt-6 flex flex-col items-center justify-center gap-2">
+<div class="flex items-center gap-1.5 text-white/40 bg-white/5 px-3 py-1.5 rounded-full">
+<span class="material-symbols-outlined text-sm" style="font-size: 16px;">lock</span>
+<p class="text-xs font-medium tracking-wide">Processing securely on device</p>
+</div>
+</div>
+</div>
+</body></html>

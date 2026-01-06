@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wingman - Coach Tab</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c25f4",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#261834", 
+                        "surface-border": "#4d3168",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for webkit */
+        ::-webkit-scrollbar {
+            width: 0px;
+            background: transparent;
+        }
+        
+        /* Glassmorphism utility */
+        .glass {
+            background: rgba(25, 16, 34, 0.85);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-white antialiased selection:bg-primary selection:text-white">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden pb-24">
+<!-- Top App Bar -->
+<header class="flex items-center justify-between p-4 pb-2 sticky top-0 z-10 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm">
+<h2 class="text-xl font-bold leading-tight tracking-[-0.015em] flex-1 text-slate-900 dark:text-white">Hello, ready to chat?</h2>
+<div class="flex w-12 items-center justify-end">
+<button class="flex items-center justify-center rounded-lg h-10 w-10 text-slate-500 dark:text-slate-300 hover:bg-black/5 dark:hover:bg-white/5 transition-colors">
+<span class="material-symbols-outlined text-[24px]">settings</span>
+</button>
+</div>
+</header>
+<!-- Main Content Scroll Area -->
+<main class="flex flex-col gap-2">
+<!-- Hero Card -->
+<div class="p-4 @container">
+<div class="flex flex-col items-stretch justify-start rounded-xl shadow-lg bg-white dark:bg-surface-dark overflow-hidden border border-slate-200 dark:border-surface-border/30 relative group">
+<!-- Decorative background glow -->
+<div class="absolute top-0 right-0 -mr-16 -mt-16 w-64 h-64 rounded-full bg-primary/20 blur-3xl pointer-events-none"></div>
+<!-- Image Section -->
+<div class="w-full h-48 bg-cover bg-center relative" data-alt="Abstract vibrant purple and blue gradient waves representing AI data flow" style='background-image: url("https://lh3.googleusercontent.com/aida-public/AB6AXuAVHhjKGmdlzLzl69nSic85_jhAr9O4o_fl_kPE3W_epywQ0PGVH_RqTUfIeQoS4KW-WKOiEiR2OZx6c8e7EKuzb6Iyo1LNKRvf7eEA7Th1oWLgqGp4jJSAGykoYGwNpMOaYmqOPxo0ACOL1ldSflFx9aTFyvx236yPkCvNORboJ5bv43D2xsK9VzmXT8u4ap0q8wcKaS_NAZAPYHBIhyvYpOHZkVtgz7ab_n-5qz9vXlSLoS4uKw0qZdg-Ds0HPD2nPmEkNBkc2g8");'>
+<div class="absolute inset-0 bg-gradient-to-t from-white dark:from-surface-dark to-transparent"></div>
+</div>
+<!-- Content Section -->
+<div class="flex w-full grow flex-col items-start justify-center gap-3 p-5 -mt-12 relative z-10">
+<div class="h-12 w-12 rounded-xl bg-primary flex items-center justify-center shadow-lg shadow-primary/30 mb-1">
+<span class="material-symbols-outlined text-white text-[28px]">smart_toy</span>
+</div>
+<div>
+<h3 class="text-2xl font-bold leading-tight tracking-tight text-slate-900 dark:text-white mb-1">Unlock your dating potential</h3>
+<p class="text-slate-500 dark:text-slate-400 text-base font-normal leading-relaxed">Upload a screenshot of your chat to get instant AI advice and reply suggestions.</p>
+</div>
+<button class="w-full mt-2 cursor-pointer items-center justify-center overflow-hidden rounded-xl h-12 px-6 bg-primary hover:bg-primary/90 transition-colors text-white text-base font-bold leading-normal shadow-lg shadow-primary/25 flex gap-2">
+<span class="material-symbols-outlined text-[20px]">add_a_photo</span>
+<span class="truncate">Analyser une conversation</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Privacy Note (MetaText) -->
+<div class="px-6 flex justify-center items-center gap-2 opacity-80">
+<span class="material-symbols-outlined text-slate-400 dark:text-[#ad90cb] text-[16px]">lock</span>
+<p class="text-slate-500 dark:text-[#ad90cb] text-xs font-medium leading-normal">Screenshots are processed privately</p>
+</div>
+<div class="h-2"></div>
+<!-- Secondary Actions (TextGrid) -->
+<div class="grid grid-cols-2 gap-3 px-4">
+<button class="flex flex-col gap-3 rounded-xl border border-slate-200 dark:border-surface-border bg-white dark:bg-surface-dark p-4 items-start hover:border-primary/50 transition-colors text-left group">
+<div class="h-10 w-10 rounded-lg bg-orange-100 dark:bg-orange-500/10 flex items-center justify-center text-orange-600 dark:text-orange-400 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]">visibility</span>
+</div>
+<div>
+<h2 class="text-slate-900 dark:text-white text-sm font-bold leading-tight">Voir exemples</h2>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">See what's possible</p>
+</div>
+</button>
+<button class="flex flex-col gap-3 rounded-xl border border-slate-200 dark:border-surface-border bg-white dark:bg-surface-dark p-4 items-start hover:border-primary/50 transition-colors text-left group">
+<div class="h-10 w-10 rounded-lg bg-teal-100 dark:bg-teal-500/10 flex items-center justify-center text-teal-600 dark:text-teal-400 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined text-[24px]">lightbulb</span>
+</div>
+<div>
+<h2 class="text-slate-900 dark:text-white text-sm font-bold leading-tight">Conseil rapide</h2>
+<p class="text-slate-500 dark:text-slate-400 text-xs mt-1">Instant text tips</p>
+</div>
+</button>
+</div>
+<div class="h-4"></div>
+<!-- Recent Activity Header -->
+<div class="flex items-center justify-between px-4 pb-2 pt-2">
+<h2 class="text-slate-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Dernières analyses</h2>
+</div>
+<!-- Empty State Section -->
+<div class="px-4">
+<div class="flex flex-col items-center justify-center rounded-xl border border-dashed border-slate-300 dark:border-surface-border bg-slate-50 dark:bg-surface-dark/30 py-12 px-4 text-center">
+<div class="h-16 w-16 rounded-full bg-slate-200 dark:bg-surface-border/50 flex items-center justify-center mb-4">
+<span class="material-symbols-outlined text-slate-400 dark:text-slate-500 text-[32px]">history_edu</span>
+</div>
+<h3 class="text-slate-700 dark:text-slate-200 text-base font-semibold mb-1">No analyses yet</h3>
+<p class="text-slate-500 dark:text-slate-400 text-sm max-w-[200px]">Your recent conversation breakdowns will appear here.</p>
+</div>
+</div>
+<!-- Spacer for scroll -->
+<div class="h-8"></div>
+</main>
+<!-- Bottom Navigation Bar -->
+<nav class="fixed bottom-0 w-full glass z-50 px-6 py-2 pb-5">
+<div class="flex justify-between items-center max-w-md mx-auto">
+<!-- Tab: Coach (Active) -->
+<button class="flex flex-col items-center justify-center gap-1 w-16">
+<div class="flex items-center justify-center w-12 h-8 rounded-full bg-primary/20 text-primary">
+<span class="material-symbols-outlined text-[24px] fill-1">psychology</span>
+</div>
+<span class="text-[10px] font-bold text-primary">Coach</span>
+</button>
+<!-- Tab: History -->
+<button class="flex flex-col items-center justify-center gap-1 w-16 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+<div class="flex items-center justify-center w-12 h-8">
+<span class="material-symbols-outlined text-[24px]">history</span>
+</div>
+<span class="text-[10px] font-medium">History</span>
+</button>
+<!-- Tab: Community -->
+<button class="flex flex-col items-center justify-center gap-1 w-16 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+<div class="flex items-center justify-center w-12 h-8">
+<span class="material-symbols-outlined text-[24px]">groups</span>
+</div>
+<span class="text-[10px] font-medium">Community</span>
+</button>
+<!-- Tab: Profile -->
+<button class="flex flex-col items-center justify-center gap-1 w-16 text-slate-400 dark:text-slate-500 hover:text-slate-600 dark:hover:text-slate-300 transition-colors">
+<div class="flex items-center justify-center w-12 h-8">
+<span class="material-symbols-outlined text-[24px]">person</span>
+</div>
+<span class="text-[10px] font-medium">Profile</span>
+</button>
+</div>
+</nav>
+</div>
+</body></html>

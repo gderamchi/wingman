@@ -1,0 +1,7 @@
+Starting project at /Users/guillaume_deramchi/Documents/wingman
+› Port 8081 is running this app in another window
+  /Users/guillaume_deramchi/Documents/wingman (pid 78587)
+Input is required, but 'npx expo' is in non-interactive mode.
+Required input:
+> Use port 8083 instead?
+› Skipping dev server

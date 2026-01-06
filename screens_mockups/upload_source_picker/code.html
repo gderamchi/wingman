@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wingman - Upload Source Picker</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Symbols -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+            extend: {
+                colors: {
+                "primary": "#8c25f4",
+                "background-light": "#f7f5f8",
+                "background-dark": "#191022",
+                "surface-dark": "#231630", // Slightly lighter than background-dark for the sheet
+                },
+                fontFamily: {
+                "display": ["Plus Jakarta Sans", "sans-serif"]
+                },
+                borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "3xl": "1.5rem", "full": "9999px"},
+            },
+            },
+        }
+    </script>
+<style>
+        .material-symbols-outlined {
+            font-variation-settings: 'FILL' 1, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+        }
+        /* Custom scrollbar hiding */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        /* Glassmorphism for the sheet */
+        .glass-sheet {
+            background: linear-gradient(180deg, #231630 0%, #191022 100%);
+            box-shadow: 0px -4px 24px rgba(0, 0, 0, 0.25);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-white overflow-hidden h-screen w-full relative selection:bg-primary/30">
+<!-- Background App Simulation (Blurred) -->
+<div aria-hidden="true" class="absolute inset-0 z-0 flex flex-col opacity-40 blur-sm pointer-events-none">
+<!-- Header Mock -->
+<div class="h-16 flex items-center justify-between px-4 border-b border-white/5">
+<div class="w-8 h-8 rounded-full bg-white/10"></div>
+<div class="h-4 w-32 rounded bg-white/10"></div>
+<div class="w-8 h-8 rounded-full bg-white/10"></div>
+</div>
+<!-- Chat Area Mock -->
+<div class="flex-1 p-4 space-y-6 overflow-y-auto no-scrollbar">
+<div class="flex gap-3">
+<div class="w-10 h-10 rounded-full bg-gray-600 shrink-0" data-alt="User avatar placeholder"></div>
+<div class="bg-white/10 p-4 rounded-2xl rounded-tl-none max-w-[70%]">
+<div class="h-2 w-full bg-white/10 rounded mb-2"></div>
+<div class="h-2 w-4/5 bg-white/10 rounded"></div>
+</div>
+</div>
+<div class="flex gap-3 flex-row-reverse">
+<div class="w-10 h-10 rounded-full bg-primary shrink-0" data-alt="User avatar placeholder"></div>
+<div class="bg-primary/20 p-4 rounded-2xl rounded-tr-none max-w-[70%]">
+<div class="h-2 w-full bg-white/20 rounded mb-2"></div>
+<div class="h-2 w-3/4 bg-white/20 rounded"></div>
+</div>
+</div>
+<div class="flex gap-3">
+<div class="w-10 h-10 rounded-full bg-gray-600 shrink-0" data-alt="User avatar placeholder"></div>
+<div class="bg-white/10 p-4 rounded-2xl rounded-tl-none max-w-[70%]">
+<div class="h-2 w-full bg-white/10 rounded mb-2"></div>
+<div class="h-2 w-2/3 bg-white/10 rounded"></div>
+</div>
+</div>
+</div>
+</div>
+<!-- Dark Overlay Backdrop -->
+<div class="absolute inset-0 bg-black/60 z-10 transition-opacity duration-300 backdrop-blur-[2px]"></div>
+<!-- Bottom Sheet Container -->
+<div class="absolute bottom-0 left-0 w-full z-20 flex flex-col justify-end">
+<!-- Sheet Content -->
+<div class="glass-sheet w-full rounded-t-[32px] border-t border-white/10 pb-8 relative overflow-hidden transform transition-transform duration-300 ease-out translate-y-0">
+<!-- Handle -->
+<div class="w-full flex justify-center pt-3 pb-2 cursor-grab active:cursor-grabbing">
+<div class="h-1.5 w-12 rounded-full bg-white/20"></div>
+</div>
+<!-- Header -->
+<div class="px-6 pt-2 pb-6 text-center">
+<h2 class="text-white text-2xl font-bold tracking-tight leading-tight">Analyze Conversation</h2>
+<p class="text-white/40 text-sm font-medium mt-1">Select a source to begin</p>
+</div>
+<!-- Actions List -->
+<div class="px-4 space-y-3">
+<!-- Action 1: Screenshot -->
+<button class="w-full group relative flex items-center gap-4 bg-surface-dark dark:bg-[#2a1d36] hover:bg-primary/10 active:scale-[0.99] transition-all duration-200 p-4 rounded-2xl border border-white/5 hover:border-primary/30">
+<!-- Icon Container -->
+<div class="flex items-center justify-center rounded-xl bg-primary/20 text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300 shrink-0 size-12">
+<span class="material-symbols-outlined text-[26px]">add_photo_alternate</span>
+</div>
+<!-- Text Content -->
+<div class="flex flex-col items-start flex-1 min-w-0">
+<span class="text-white text-lg font-semibold leading-snug truncate group-hover:text-primary transition-colors">Import a screenshot</span>
+<span class="text-white/40 text-xs font-medium truncate">From your gallery</span>
+</div>
+<!-- Chevron -->
+<div class="shrink-0 text-white/20 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</button>
+<!-- Action 2: Camera -->
+<button class="w-full group relative flex items-center gap-4 bg-surface-dark dark:bg-[#2a1d36] hover:bg-primary/10 active:scale-[0.99] transition-all duration-200 p-4 rounded-2xl border border-white/5 hover:border-primary/30">
+<!-- Icon Container -->
+<div class="flex items-center justify-center rounded-xl bg-primary/20 text-primary group-hover:bg-primary group-hover:text-white transition-colors duration-300 shrink-0 size-12">
+<span class="material-symbols-outlined text-[26px]">photo_camera</span>
+</div>
+<!-- Text Content -->
+<div class="flex flex-col items-start flex-1 min-w-0">
+<span class="text-white text-lg font-semibold leading-snug truncate group-hover:text-primary transition-colors">Take a photo</span>
+<span class="text-white/40 text-xs font-medium truncate">Use your camera</span>
+</div>
+<!-- Chevron -->
+<div class="shrink-0 text-white/20 group-hover:text-primary transition-colors">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</button>
+</div>
+<!-- Footer / Privacy Note -->
+<div class="mt-8 px-6 text-center">
+<div class="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/5">
+<span class="material-symbols-outlined text-green-400 text-[18px]">security</span>
+<p class="text-[#ad90cb] text-xs font-medium leading-normal text-left">
+                        We prioritize your privacy. You can blur names &amp; photos before analysis.
+                    </p>
+</div>
+</div>
+<!-- Home Indicator Area Spacing -->
+<div class="h-6"></div>
+</div>
+</div>
+</body></html>

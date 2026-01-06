@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wingman - History</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c25f4",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#121212", 
+                        "surface-dark": "#1E1E1E",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: { "DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px" },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hiding for clean UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white overflow-hidden h-screen flex flex-col">
+<!-- Header Section -->
+<header class="flex-none px-4 pt-6 pb-2 bg-background-light dark:bg-background-dark sticky top-0 z-10">
+<div class="flex items-center justify-between mb-4">
+<h2 class="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">History</h2>
+<button class="flex items-center justify-center w-10 h-10 rounded-full bg-gray-200 dark:bg-surface-dark text-slate-600 dark:text-gray-300 hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
+<span class="material-symbols-outlined">tune</span>
+</button>
+</div>
+<!-- Search Bar -->
+<div class="relative mb-4">
+<div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+<span class="material-symbols-outlined text-gray-500">search</span>
+</div>
+<input class="block w-full pl-10 pr-3 py-3 rounded-xl border-none bg-white dark:bg-surface-dark text-slate-900 dark:text-white placeholder-gray-500 focus:ring-2 focus:ring-primary focus:outline-none text-base" placeholder="Search aliases or goals..." type="text"/>
+</div>
+<!-- Filter Chips -->
+<div class="flex gap-3 overflow-x-auto no-scrollbar pb-2">
+<button class="flex shrink-0 items-center justify-center px-5 py-2 rounded-full bg-primary text-white text-sm font-semibold shadow-lg shadow-primary/25 transition-transform active:scale-95">
+                All
+            </button>
+<button class="flex shrink-0 items-center justify-center px-5 py-2 rounded-full bg-gray-200 dark:bg-surface-dark border border-transparent dark:border-gray-700 text-slate-700 dark:text-gray-300 text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
+                Pending
+            </button>
+<button class="flex shrink-0 items-center justify-center px-5 py-2 rounded-full bg-gray-200 dark:bg-surface-dark border border-transparent dark:border-gray-700 text-slate-700 dark:text-gray-300 text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
+                Worked
+            </button>
+<button class="flex shrink-0 items-center justify-center px-5 py-2 rounded-full bg-gray-200 dark:bg-surface-dark border border-transparent dark:border-gray-700 text-slate-700 dark:text-gray-300 text-sm font-medium hover:bg-gray-300 dark:hover:bg-gray-700 transition-colors">
+                Didn't Work
+            </button>
+</div>
+</header>
+<!-- Scrollable List Content -->
+<main class="flex-1 overflow-y-auto no-scrollbar px-4 pb-24 space-y-3">
+<!-- List Item 1: Worked -->
+<div class="group flex items-center gap-4 bg-white dark:bg-surface-dark p-4 rounded-2xl active:bg-gray-50 dark:active:bg-[#252525] transition-colors cursor-pointer border border-transparent dark:border-gray-800">
+<!-- Privacy Avatar: Abstract Gradient -->
+<div class="relative shrink-0 w-[60px] h-[60px] rounded-full bg-gradient-to-br from-primary to-indigo-600 flex items-center justify-center shadow-lg shadow-primary/20" data-alt="Abstract gradient avatar representing an anonymous user">
+<span class="text-white text-lg font-bold">HP</span>
+</div>
+<div class="flex flex-1 flex-col justify-center min-w-0">
+<div class="flex justify-between items-start mb-1">
+<p class="text-slate-900 dark:text-white text-base font-bold truncate">Hinge Profile #4</p>
+<span class="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full font-medium whitespace-nowrap">Worked</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[16px] text-gray-400">flag</span>
+<p class="text-gray-500 dark:text-gray-400 text-sm truncate">Goal: Recover convo</p>
+</div>
+<p class="text-gray-400 dark:text-gray-500 text-xs font-medium">Oct 20 • 10:15 AM</p>
+</div>
+<div class="shrink-0 text-gray-300 dark:text-gray-600">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+<!-- List Item 2: Pending -->
+<div class="group flex items-center gap-4 bg-white dark:bg-surface-dark p-4 rounded-2xl active:bg-gray-50 dark:active:bg-[#252525] transition-colors cursor-pointer border border-transparent dark:border-gray-800">
+<!-- Privacy Avatar -->
+<div class="relative shrink-0 w-[60px] h-[60px] rounded-full bg-gradient-to-br from-amber-400 to-orange-600 flex items-center justify-center shadow-lg shadow-orange-500/20" data-alt="Abstract gradient avatar orange for anonymous user">
+<span class="text-white text-lg font-bold">CS</span>
+</div>
+<div class="flex flex-1 flex-col justify-center min-w-0">
+<div class="flex justify-between items-start mb-1">
+<p class="text-slate-900 dark:text-white text-base font-bold truncate">Coffee Shop Match</p>
+<span class="text-xs text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-full font-medium whitespace-nowrap">Pending</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[16px] text-gray-400">flag</span>
+<p class="text-gray-500 dark:text-gray-400 text-sm truncate">Goal: Get a Date</p>
+</div>
+<p class="text-gray-400 dark:text-gray-500 text-xs font-medium">Yesterday • 8:30 PM</p>
+</div>
+<div class="shrink-0 text-gray-300 dark:text-gray-600">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+<!-- List Item 3: Didn't Work -->
+<div class="group flex items-center gap-4 bg-white dark:bg-surface-dark p-4 rounded-2xl active:bg-gray-50 dark:active:bg-[#252525] transition-colors cursor-pointer border border-transparent dark:border-gray-800">
+<!-- Privacy Avatar -->
+<div class="relative shrink-0 w-[60px] h-[60px] rounded-full bg-gradient-to-br from-gray-600 to-slate-800 flex items-center justify-center" data-alt="Abstract gradient avatar dark grey for anonymous user">
+<span class="text-white text-lg font-bold">MD</span>
+</div>
+<div class="flex flex-1 flex-col justify-center min-w-0">
+<div class="flex justify-between items-start mb-1">
+<p class="text-slate-900 dark:text-white text-base font-bold truncate">Mystery Date A</p>
+<span class="text-xs text-gray-500 bg-gray-500/10 px-2 py-0.5 rounded-full font-medium whitespace-nowrap">Didn't Work</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[16px] text-gray-400">flag</span>
+<p class="text-gray-500 dark:text-gray-400 text-sm truncate">Goal: First Impression</p>
+</div>
+<p class="text-gray-400 dark:text-gray-500 text-xs font-medium">Oct 18 • 6:45 PM</p>
+</div>
+<div class="shrink-0 text-gray-300 dark:text-gray-600">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+<!-- List Item 4: Worked -->
+<div class="group flex items-center gap-4 bg-white dark:bg-surface-dark p-4 rounded-2xl active:bg-gray-50 dark:active:bg-[#252525] transition-colors cursor-pointer border border-transparent dark:border-gray-800">
+<!-- Privacy Avatar -->
+<div class="relative shrink-0 w-[60px] h-[60px] rounded-full bg-gradient-to-br from-emerald-400 to-teal-600 flex items-center justify-center shadow-lg shadow-emerald-500/20" data-alt="Abstract gradient avatar green for anonymous user">
+<span class="text-white text-lg font-bold">GC</span>
+</div>
+<div class="flex flex-1 flex-col justify-center min-w-0">
+<div class="flex justify-between items-start mb-1">
+<p class="text-slate-900 dark:text-white text-base font-bold truncate">Gym Crush</p>
+<span class="text-xs text-primary bg-primary/10 px-2 py-0.5 rounded-full font-medium whitespace-nowrap">Worked</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[16px] text-gray-400">flag</span>
+<p class="text-gray-500 dark:text-gray-400 text-sm truncate">Goal: Ask for Number</p>
+</div>
+<p class="text-gray-400 dark:text-gray-500 text-xs font-medium">Oct 12 • 2:10 PM</p>
+</div>
+<div class="shrink-0 text-gray-300 dark:text-gray-600">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+<!-- List Item 5: Pending -->
+<div class="group flex items-center gap-4 bg-white dark:bg-surface-dark p-4 rounded-2xl active:bg-gray-50 dark:active:bg-[#252525] transition-colors cursor-pointer border border-transparent dark:border-gray-800">
+<!-- Privacy Avatar -->
+<div class="relative shrink-0 w-[60px] h-[60px] rounded-full bg-gradient-to-br from-purple-400 to-pink-500 flex items-center justify-center shadow-lg shadow-pink-500/20" data-alt="Abstract gradient avatar pink for anonymous user">
+<span class="text-white text-lg font-bold">LB</span>
+</div>
+<div class="flex flex-1 flex-col justify-center min-w-0">
+<div class="flex justify-between items-start mb-1">
+<p class="text-slate-900 dark:text-white text-base font-bold truncate">Library Bump</p>
+<span class="text-xs text-amber-500 bg-amber-500/10 px-2 py-0.5 rounded-full font-medium whitespace-nowrap">Pending</span>
+</div>
+<div class="flex items-center gap-2 mb-1">
+<span class="material-symbols-outlined text-[16px] text-gray-400">flag</span>
+<p class="text-gray-500 dark:text-gray-400 text-sm truncate">Goal: Break the ice</p>
+</div>
+<p class="text-gray-400 dark:text-gray-500 text-xs font-medium">Oct 10 • 11:45 AM</p>
+</div>
+<div class="shrink-0 text-gray-300 dark:text-gray-600">
+<span class="material-symbols-outlined">chevron_right</span>
+</div>
+</div>
+<!-- Empty space for scroll -->
+<div class="h-8"></div>
+</main>
+<!-- Bottom Navigation -->
+<nav class="flex-none bg-white dark:bg-surface-dark border-t border-gray-100 dark:border-gray-800 pt-2 pb-6 px-4">
+<div class="grid grid-cols-4 gap-1">
+<button class="flex flex-col items-center justify-center gap-1 p-2 rounded-xl text-gray-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[26px]">smart_toy</span>
+<span class="text-[10px] font-medium">Coach</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 p-2 rounded-xl text-primary">
+<span class="material-symbols-outlined text-[26px] fill-current">history</span>
+<span class="text-[10px] font-bold">History</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 p-2 rounded-xl text-gray-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[26px]">forum</span>
+<span class="text-[10px] font-medium">Community</span>
+</button>
+<button class="flex flex-col items-center justify-center gap-1 p-2 rounded-xl text-gray-400 hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[26px]">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</button>
+</div>
+</nav>
+<!-- Floating Action Button (Optional but fits the context nicely) -->
+<button class="fixed bottom-24 right-4 w-14 h-14 bg-primary rounded-full shadow-xl shadow-primary/40 flex items-center justify-center text-white z-20 hover:scale-105 transition-transform active:scale-95">
+<span class="material-symbols-outlined text-[28px]">add_comment</span>
+</button>
+</body></html>

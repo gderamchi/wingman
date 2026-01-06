@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wingman Settings</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:ital,wght@0,200..800;1,200..800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c25f4",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#191022",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#2d1e36",
+                        "surface-highlight-dark": "#362249",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem", 
+                        "lg": "0.5rem", 
+                        "xl": "0.75rem", 
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-slate-900 dark:text-white min-h-screen">
+<!-- Main Container -->
+<div class="relative flex flex-col w-full max-w-md mx-auto min-h-screen overflow-hidden bg-background-light dark:bg-background-dark shadow-2xl">
+<!-- Top App Bar -->
+<header class="sticky top-0 z-10 flex items-center justify-between px-4 py-4 bg-background-light/90 dark:bg-background-dark/90 backdrop-blur-md border-b border-gray-200 dark:border-white/5">
+<button class="flex items-center justify-center w-10 h-10 -ml-2 rounded-full text-slate-900 dark:text-white hover:bg-black/5 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-[28px]">chevron_left</span>
+</button>
+<h1 class="text-lg font-bold tracking-tight text-center flex-1 pr-8">Settings</h1>
+</header>
+<!-- Content Scroll Area -->
+<main class="flex-1 overflow-y-auto px-4 pb-8">
+<!-- Section 1: App Experience -->
+<div class="mt-6">
+<h3 class="px-2 pb-2 text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase">App Experience</h3>
+<div class="overflow-hidden bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-100 dark:border-white/5 divide-y divide-gray-100 dark:divide-white/5">
+<!-- Dark Mode Toggle -->
+<div class="flex items-center justify-between p-4 min-h-[64px]">
+<div class="flex items-center gap-4">
+<div class="flex items-center justify-center w-10 h-10 rounded-full bg-indigo-50 dark:bg-surface-highlight-dark text-indigo-600 dark:text-indigo-300">
+<span class="material-symbols-outlined text-[22px]">dark_mode</span>
+</div>
+<div class="flex flex-col">
+<span class="text-base font-medium leading-snug">Dark Mode</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-[50px] h-[30px] bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-[26px] after:w-[26px] after:transition-all dark:border-gray-600 peer-checked:bg-primary shadow-inner"></div>
+</label>
+</div>
+<!-- Trial Reminder Toggle -->
+<div class="flex items-center justify-between p-4 min-h-[64px]">
+<div class="flex items-center gap-4">
+<div class="flex items-center justify-center w-10 h-10 rounded-full bg-pink-50 dark:bg-surface-highlight-dark text-pink-600 dark:text-pink-300">
+<span class="material-symbols-outlined text-[22px]">notifications_active</span>
+</div>
+<div class="flex flex-col">
+<span class="text-base font-medium leading-snug">Trial Reminder</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">Notify before trial ends</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-[50px] h-[30px] bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-[26px] after:w-[26px] after:transition-all dark:border-gray-600 peer-checked:bg-primary shadow-inner"></div>
+</label>
+</div>
+</div>
+</div>
+<!-- Section 2: Privacy & Safety -->
+<div class="mt-8">
+<h3 class="px-2 pb-2 text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase flex items-center gap-2">
+                    Privacy &amp; Safety
+                    <span class="material-symbols-outlined text-[16px] text-primary">shield_lock</span>
+</h3>
+<div class="overflow-hidden bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-100 dark:border-white/5 divide-y divide-gray-100 dark:divide-white/5">
+<!-- Auto-blur Names -->
+<div class="flex items-center justify-between p-4 min-h-[64px]">
+<div class="flex items-center gap-4">
+<div class="flex items-center justify-center w-10 h-10 rounded-full bg-blue-50 dark:bg-surface-highlight-dark text-blue-600 dark:text-blue-300">
+<span class="material-symbols-outlined text-[22px]">blur_on</span>
+</div>
+<div class="flex flex-col max-w-[180px]">
+<span class="text-base font-medium leading-snug">Auto-blur Names</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">Blur names in uploads</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input checked="" class="sr-only peer" type="checkbox" value=""/>
+<div class="w-[50px] h-[30px] bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-[26px] after:w-[26px] after:transition-all dark:border-gray-600 peer-checked:bg-primary shadow-inner"></div>
+</label>
+</div>
+<!-- AI Training Data -->
+<div class="flex items-center justify-between p-4 min-h-[64px]">
+<div class="flex items-center gap-4">
+<div class="flex items-center justify-center w-10 h-10 rounded-full bg-purple-50 dark:bg-surface-highlight-dark text-primary dark:text-purple-300">
+<span class="material-symbols-outlined text-[22px]">model_training</span>
+</div>
+<div class="flex flex-col max-w-[180px]">
+<span class="text-base font-medium leading-snug">AI Training</span>
+<span class="text-xs text-slate-500 dark:text-slate-400">Don't use my data for training</span>
+</div>
+</div>
+<label class="relative inline-flex items-center cursor-pointer">
+<input class="sr-only peer" type="checkbox" value=""/>
+<div class="w-[50px] h-[30px] bg-gray-200 peer-focus:outline-none rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-[26px] after:w-[26px] after:transition-all dark:border-gray-600 peer-checked:bg-primary shadow-inner"></div>
+</label>
+</div>
+</div>
+<p class="px-4 pt-2 text-xs text-slate-400 dark:text-slate-500 leading-relaxed">
+                    Wingman values your privacy. Enabling the option above ensures your interactions are excluded from our general model improvement datasets.
+                </p>
+</div>
+<!-- Section 3: Information -->
+<div class="mt-8">
+<h3 class="px-2 pb-2 text-xs font-bold tracking-wider text-slate-500 dark:text-slate-400 uppercase">Information</h3>
+<div class="overflow-hidden bg-surface-light dark:bg-surface-dark rounded-2xl shadow-sm border border-gray-100 dark:border-white/5 divide-y divide-gray-100 dark:divide-white/5">
+<!-- Support Link -->
+<a class="flex items-center justify-between p-4 active:bg-gray-50 dark:active:bg-white/5 transition-colors group" href="#">
+<div class="flex items-center gap-4">
+<div class="flex items-center justify-center w-10 h-10 rounded-full bg-teal-50 dark:bg-surface-highlight-dark text-teal-600 dark:text-teal-300">
+<span class="material-symbols-outlined text-[22px]">support_agent</span>
+</div>
+<span class="text-base font-medium">Support</span>
+</div>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors">chevron_right</span>
+</a>
+<!-- Privacy Policy Link -->
+<a class="flex items-center justify-between p-4 active:bg-gray-50 dark:active:bg-white/5 transition-colors group" href="#">
+<div class="flex items-center gap-4">
+<div class="flex items-center justify-center w-10 h-10 rounded-full bg-orange-50 dark:bg-surface-highlight-dark text-orange-600 dark:text-orange-300">
+<span class="material-symbols-outlined text-[22px]">verified_user</span>
+</div>
+<span class="text-base font-medium">Privacy Policy</span>
+</div>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors">chevron_right</span>
+</a>
+<!-- Terms of Service Link -->
+<a class="flex items-center justify-between p-4 active:bg-gray-50 dark:active:bg-white/5 transition-colors group" href="#">
+<div class="flex items-center gap-4">
+<div class="flex items-center justify-center w-10 h-10 rounded-full bg-slate-100 dark:bg-surface-highlight-dark text-slate-600 dark:text-slate-300">
+<span class="material-symbols-outlined text-[22px]">gavel</span>
+</div>
+<span class="text-base font-medium">Terms of Service</span>
+</div>
+<span class="material-symbols-outlined text-slate-300 dark:text-slate-600 group-hover:text-primary transition-colors">chevron_right</span>
+</a>
+</div>
+</div>
+<!-- Footer -->
+<div class="mt-10 mb-6 flex flex-col items-center gap-4">
+<button class="text-red-500 font-semibold text-sm py-2 px-6 rounded-lg hover:bg-red-50 dark:hover:bg-red-900/10 transition-colors w-full bg-surface-light dark:bg-surface-dark border border-transparent hover:border-red-200 dark:hover:border-red-900/30">
+                    Log Out
+                </button>
+<div class="flex flex-col items-center">
+<p class="text-xs text-slate-400 dark:text-slate-600">Wingman v1.0.2</p>
+</div>
+</div>
+</main>
+</div>
+</body></html>

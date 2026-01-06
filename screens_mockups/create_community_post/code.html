@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wingman - Create Community Post</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c25f4",
+                        "primary-dark": "#7a1fd6",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#261834",
+                        "surface-border": "#4d3168",
+                        "text-muted": "#ad90cb",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar for better mobile feel if content overflows */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display min-h-screen flex flex-col items-center justify-center">
+<!-- Mobile Container -->
+<div class="relative flex h-full min-h-screen w-full max-w-md flex-col bg-background-light dark:bg-background-dark shadow-2xl overflow-x-hidden mx-auto border-x border-surface-border/20">
+<!-- Header -->
+<header class="flex items-center px-4 py-4 justify-between bg-background-light dark:bg-background-dark sticky top-0 z-50 backdrop-blur-md bg-opacity-90 dark:bg-opacity-90">
+<button aria-label="Cancel" class="text-gray-900 dark:text-white flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-surface-dark transition-colors">
+<span class="material-symbols-outlined text-2xl">close</span>
+</button>
+<h2 class="text-gray-900 dark:text-white text-lg font-bold leading-tight tracking-[-0.015em]">Create Post</h2>
+<div class="size-10"></div> <!-- Spacer to center title -->
+</header>
+<!-- Main Content -->
+<main class="flex-1 flex flex-col px-4 pb-24 space-y-6">
+<!-- Input Method Toggle (Segmented Control) -->
+<div class="flex h-12 w-full items-center justify-center rounded-xl bg-gray-200 dark:bg-surface-dark p-1">
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-background-dark has-[:checked]:shadow-sm transition-all duration-200 text-gray-500 dark:text-text-muted has-[:checked]:text-primary dark:has-[:checked]:text-white text-sm font-semibold leading-normal">
+<span class="material-symbols-outlined mr-2 text-[20px]">add_a_photo</span>
+<span class="truncate">Upload Screenshot</span>
+<input checked="" class="invisible w-0 absolute" name="input-method" type="radio" value="screenshot"/>
+</label>
+<label class="flex cursor-pointer h-full grow items-center justify-center overflow-hidden rounded-lg px-2 has-[:checked]:bg-white dark:has-[:checked]:bg-background-dark has-[:checked]:shadow-sm transition-all duration-200 text-gray-500 dark:text-text-muted has-[:checked]:text-primary dark:has-[:checked]:text-white text-sm font-semibold leading-normal">
+<span class="material-symbols-outlined mr-2 text-[20px]">edit_note</span>
+<span class="truncate">Paste Text</span>
+<input class="invisible w-0 absolute" name="input-method" type="radio" value="text"/>
+</label>
+</div>
+<!-- Upload Area (Empty State) -->
+<div class="flex flex-col">
+<div class="relative group cursor-pointer flex flex-col items-center gap-4 rounded-xl border-2 border-dashed border-gray-300 dark:border-surface-border hover:border-primary dark:hover:border-primary bg-gray-50 dark:bg-surface-dark/50 px-6 py-12 transition-colors">
+<div class="flex size-14 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-3xl">cloud_upload</span>
+</div>
+<div class="flex flex-col items-center gap-1 text-center">
+<p class="text-gray-900 dark:text-white text-lg font-bold">Upload Conversation</p>
+<p class="text-gray-500 dark:text-text-muted text-sm">Tap to select a screenshot from your gallery</p>
+</div>
+</div>
+</div>
+<!-- Anonymization Toggle -->
+<div class="flex items-center gap-4 bg-gray-100 dark:bg-surface-dark rounded-xl px-4 py-3 justify-between border border-transparent dark:border-surface-border/50">
+<div class="flex items-center gap-3">
+<div class="text-primary bg-primary/20 flex items-center justify-center rounded-lg size-10 shrink-0">
+<span class="material-symbols-outlined">visibility_off</span>
+</div>
+<div class="flex flex-col">
+<p class="text-gray-900 dark:text-white text-sm font-semibold leading-tight">Blur Names &amp; Photos</p>
+<p class="text-gray-500 dark:text-text-muted text-xs">Recommended for privacy</p>
+</div>
+</div>
+<div class="shrink-0">
+<label class="relative flex h-[28px] w-[48px] cursor-pointer items-center rounded-full border-none bg-gray-300 dark:bg-surface-border p-0.5 has-[:checked]:justify-end has-[:checked]:bg-primary transition-colors">
+<div class="h-full aspect-square rounded-full bg-white shadow-md"></div>
+<input checked="" class="invisible absolute" type="checkbox"/>
+</label>
+</div>
+</div>
+<!-- Goal Selection -->
+<div class="flex flex-col gap-2">
+<label class="text-gray-900 dark:text-white text-sm font-bold ml-1">Objective / Goal</label>
+<div class="relative">
+<select class="appearance-none w-full cursor-pointer rounded-xl border border-gray-300 dark:border-surface-border bg-white dark:bg-surface-dark px-4 py-3.5 pr-10 text-gray-900 dark:text-white focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary text-sm font-medium">
+<option disabled="" selected="" value="">Select your objective...</option>
+<option value="date">Get a date</option>
+<option value="recover">Recover from awkwardness</option>
+<option value="revive">Revive conversation</option>
+<option value="humor">Make them laugh</option>
+</select>
+<div class="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-gray-500 dark:text-text-muted">
+<span class="material-symbols-outlined">expand_more</span>
+</div>
+</div>
+</div>
+<!-- Context Input -->
+<div class="flex flex-col gap-2">
+<label class="text-gray-900 dark:text-white text-sm font-bold ml-1">
+                    My Draft / Context
+                    <span class="font-normal text-gray-500 dark:text-text-muted text-xs ml-1">(Optional)</span>
+</label>
+<textarea class="w-full resize-none rounded-xl border border-gray-300 dark:border-surface-border bg-white dark:bg-surface-dark px-4 py-3 text-gray-900 dark:text-white placeholder:text-gray-400 dark:placeholder:text-text-muted focus:border-primary focus:outline-none focus:ring-1 focus:ring-primary text-sm min-h-[100px]" placeholder="What I replied / what I hesitate to send..."></textarea>
+</div>
+</main>
+<!-- Sticky Footer CTA -->
+<footer class="fixed bottom-0 left-0 right-0 w-full max-w-md mx-auto bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-md border-t border-gray-200 dark:border-surface-border/50 p-4 z-40">
+<div class="flex flex-col gap-3">
+<div class="flex items-center justify-center gap-1.5 opacity-80">
+<span class="material-symbols-outlined text-primary text-xs">shield</span>
+<p class="text-xs text-gray-500 dark:text-text-muted font-medium">Your data is anonymized before posting.</p>
+</div>
+<button class="flex w-full cursor-pointer items-center justify-center rounded-xl bg-primary hover:bg-primary-dark active:scale-[0.98] transition-all h-12 px-6 text-white text-base font-bold tracking-wide shadow-lg shadow-primary/25">
+                    Publish Anonymously
+                </button>
+</div>
+</footer>
+</div>
+</body></html>

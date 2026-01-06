@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wingman - Refine Reply</title>
+<!-- Fonts -->
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<!-- Material Icons -->
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<!-- Tailwind CSS -->
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<!-- Theme Configuration -->
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c25f4",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#191022",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        /* Hide scrollbar for clean horizontal scrolling */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark text-slate-900 dark:text-white font-display antialiased selection:bg-primary/30">
+<div class="relative flex flex-col h-screen max-w-md mx-auto overflow-hidden bg-background-light dark:bg-background-dark shadow-2xl">
+<!-- Header -->
+<header class="flex items-center justify-between px-4 py-3 bg-background-light dark:bg-background-dark shrink-0 z-10">
+<button class="flex items-center justify-center w-10 h-10 -ml-2 rounded-full hover:bg-black/5 dark:hover:bg-white/10 transition-colors text-slate-900 dark:text-white">
+<span class="material-symbols-outlined text-[24px]">arrow_back</span>
+</button>
+<h1 class="text-lg font-bold leading-tight tracking-tight text-center flex-1 pr-8 text-slate-900 dark:text-white">
+                Refine Reply
+            </h1>
+</header>
+<!-- Main Content Area -->
+<main class="flex-1 flex flex-col px-4 pt-2 pb-6 overflow-y-auto no-scrollbar">
+<!-- Editable Canvas -->
+<div class="flex-1 flex flex-col min-h-[200px] bg-white dark:bg-[#2d1b4e] rounded-xl shadow-sm border border-slate-200 dark:border-white/5 relative mb-6 transition-all focus-within:ring-2 focus-within:ring-primary/50 focus-within:border-primary">
+<div class="flex-1 p-4">
+<label class="sr-only" for="reply-editor">Your Reply</label>
+<textarea class="w-full h-full bg-transparent border-none resize-none focus:ring-0 text-base leading-relaxed placeholder:text-slate-400 dark:placeholder:text-white/40 text-slate-800 dark:text-white p-0" id="reply-editor" placeholder="Type your reply here...">Hey! I saw you like hiking too. Have you ever been to Yosemite? I was thinking of going there next month!</textarea>
+</div>
+<!-- Character Count / Metadata -->
+<div class="px-4 py-2 flex justify-between items-center text-xs font-medium text-slate-400 dark:text-white/40 border-t border-slate-100 dark:border-white/5 bg-slate-50/50 dark:bg-black/10 rounded-b-xl">
+<div class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">lock</span>
+<span>Private &amp; Secure</span>
+</div>
+<span>104 chars</span>
+</div>
+</div>
+<!-- Modifier Chips - Horizontal Scroll -->
+<div class="mb-6">
+<h3 class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-white/40 mb-3 px-1">Refine Tone &amp; Length</h3>
+<div class="flex gap-3 overflow-x-auto no-scrollbar pb-1 -mx-4 px-4 scroll-smooth snap-x snap-mandatory">
+<!-- Chip: Shorter -->
+<button class="group flex items-center justify-center gap-2 px-4 h-9 rounded-full bg-white dark:bg-[#2d1b4e] border border-slate-200 dark:border-white/10 shrink-0 snap-start active:scale-95 transition-all hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/20">
+<span class="material-symbols-outlined text-[18px] text-slate-600 dark:text-white group-hover:text-primary">remove</span>
+<span class="text-sm font-medium text-slate-700 dark:text-white">Shorter</span>
+</button>
+<!-- Chip: Longer -->
+<button class="group flex items-center justify-center gap-2 px-4 h-9 rounded-full bg-white dark:bg-[#2d1b4e] border border-slate-200 dark:border-white/10 shrink-0 snap-start active:scale-95 transition-all hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/20">
+<span class="material-symbols-outlined text-[18px] text-slate-600 dark:text-white group-hover:text-primary">add</span>
+<span class="text-sm font-medium text-slate-700 dark:text-white">Longer</span>
+</button>
+<!-- Chip: Funnier -->
+<button class="group flex items-center justify-center gap-2 px-4 h-9 rounded-full bg-white dark:bg-[#2d1b4e] border border-slate-200 dark:border-white/10 shrink-0 snap-start active:scale-95 transition-all hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/20">
+<span class="material-symbols-outlined text-[18px] text-slate-600 dark:text-white group-hover:text-primary">sentiment_satisfied</span>
+<span class="text-sm font-medium text-slate-700 dark:text-white">Funnier</span>
+</button>
+<!-- Chip: Teasing -->
+<button class="group flex items-center justify-center gap-2 px-4 h-9 rounded-full bg-white dark:bg-[#2d1b4e] border border-slate-200 dark:border-white/10 shrink-0 snap-start active:scale-95 transition-all hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/20">
+<span class="material-symbols-outlined text-[18px] text-slate-600 dark:text-white group-hover:text-primary">sentiment_very_satisfied</span>
+<span class="text-sm font-medium text-slate-700 dark:text-white">Teasing</span>
+</button>
+<!-- Chip: Romantic -->
+<button class="group flex items-center justify-center gap-2 px-4 h-9 rounded-full bg-white dark:bg-[#2d1b4e] border border-slate-200 dark:border-white/10 shrink-0 snap-start active:scale-95 transition-all hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/20">
+<span class="material-symbols-outlined text-[18px] text-slate-600 dark:text-white group-hover:text-primary">favorite</span>
+<span class="text-sm font-medium text-slate-700 dark:text-white">Romantic</span>
+</button>
+<!-- Chip: Serious -->
+<button class="group flex items-center justify-center gap-2 px-4 h-9 rounded-full bg-white dark:bg-[#2d1b4e] border border-slate-200 dark:border-white/10 shrink-0 snap-start active:scale-95 transition-all hover:border-primary/50 hover:bg-primary/5 dark:hover:bg-primary/20">
+<span class="material-symbols-outlined text-[18px] text-slate-600 dark:text-white group-hover:text-primary">business_center</span>
+<span class="text-sm font-medium text-slate-700 dark:text-white">Serious</span>
+</button>
+</div>
+</div>
+<!-- Spacer pushes buttons to bottom if there's vertical room, otherwise they just stack -->
+<div class="mt-auto"></div>
+<!-- Action Buttons -->
+<div class="flex flex-col gap-3 mt-4">
+<!-- Secondary Action: Generate More -->
+<button class="flex w-full items-center justify-center gap-2 h-11 px-4 rounded-xl bg-transparent border border-primary/30 text-primary dark:text-white dark:border-white/20 hover:bg-primary/5 dark:hover:bg-white/5 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[20px]">autorenew</span>
+<span class="text-sm font-bold tracking-wide">Generate 3 more</span>
+</button>
+<!-- Primary Action: Copy Message -->
+<button class="flex w-full items-center justify-center gap-2 h-12 px-5 rounded-xl bg-primary text-white shadow-lg shadow-primary/25 hover:bg-primary/90 hover:shadow-primary/40 active:scale-[0.98] transition-all">
+<span class="material-symbols-outlined text-[20px]">content_copy</span>
+<span class="text-base font-bold tracking-wide">Copy message</span>
+</button>
+</div>
+</main>
+<!-- Bottom Safe Area Spacer (for mobile) -->
+<div class="h-6 bg-background-light dark:bg-background-dark shrink-0"></div>
+</div>
+</body></html>

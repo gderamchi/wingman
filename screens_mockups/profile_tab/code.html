@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Wingman Profile</title>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c25f4",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#2a1f36",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "2xl": "1rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .safe-area-bottom {
+            padding-bottom: env(safe-area-inset-bottom, 20px);
+        }
+        /* Glassmorphism utility */
+        .glass-panel {
+            background: rgba(42, 31, 54, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
+        }
+        .light .glass-panel {
+            background: rgba(255, 255, 255, 0.8);
+            border: 1px solid rgba(0, 0, 0, 0.05);
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-slate-900 dark:text-white antialiased min-h-screen selection:bg-primary selection:text-white">
+<div class="mx-auto flex h-full min-h-screen w-full flex-col max-w-md overflow-x-hidden relative pb-28">
+<!-- Top Bar -->
+<header class="flex items-center justify-center p-4 pt-6 sticky top-0 z-20 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm border-b border-transparent dark:border-white/5 transition-colors duration-300">
+<h1 class="text-lg font-bold tracking-tight">Profile</h1>
+</header>
+<!-- Profile Header -->
+<div class="relative flex flex-col items-center pt-8 pb-6 px-4">
+<!-- Glow Effect behind avatar -->
+<div class="absolute top-10 left-1/2 -translate-x-1/2 h-32 w-32 bg-primary/20 blur-3xl rounded-full pointer-events-none"></div>
+<div class="relative mb-4 group cursor-pointer">
+<div class="h-28 w-28 rounded-full bg-cover bg-center border-[3px] border-surface-light dark:border-surface-dark shadow-xl" data-alt="Abstract vibrant neon fluid art avatar representing privacy" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuB3usVbibMJYaX5AsOwbwq17xz9Vj60F-GjZJjhPt1flk73asclCUN0wlFEG4hcwCiIWRTkSDm-mjkCMKzKHuimz7r5kWvon0r5FPB_yBHQslGPhPSO4ZRhqFVlnjAIrq5vjlYWVypPZuK0pKc4KVNDM0bdh_ACVInZ1QMRqX_LHS7P18Hbbbrxpi5QldA_uUHu7-y6nZIreufk5wk_FS4ocpel9hmacWhZ0Yd-J2OyYqO47YY3jGK3DQL5V7fcnQ2ecuj6xZ9e6vQ');">
+</div>
+<!-- Level Badge -->
+<div class="absolute -bottom-1 -right-1 flex h-8 w-8 items-center justify-center rounded-full bg-primary text-white border-[3px] border-background-light dark:border-background-dark shadow-md z-10">
+<span class="text-xs font-extrabold">5</span>
+</div>
+</div>
+<div class="flex flex-col items-center justify-center text-center gap-1">
+<div class="flex items-center gap-1">
+<p class="text-2xl font-bold leading-tight tracking-tight">NeonCasanova</p>
+<span class="material-symbols-outlined text-primary text-[20px] filled" style="font-variation-settings: 'FILL' 1;">verified</span>
+</div>
+<p class="text-primary font-medium text-sm bg-primary/10 px-3 py-1 rounded-full">Charisma Apprentice</p>
+</div>
+</div>
+<!-- Level Progress Card -->
+<div class="px-4 mb-6">
+<div class="bg-surface-light dark:bg-surface-dark rounded-2xl p-5 shadow-sm border border-slate-100 dark:border-white/5">
+<div class="flex justify-between items-end mb-3">
+<div class="flex flex-col gap-1">
+<p class="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">Level Progress</p>
+<p class="text-base font-bold dark:text-white">1,250 Wingman Points</p>
+</div>
+<p class="text-xs font-medium text-primary">75%</p>
+</div>
+<div class="relative h-2.5 w-full rounded-full bg-slate-100 dark:bg-slate-700 overflow-hidden">
+<div class="absolute top-0 left-0 h-full rounded-full bg-primary shadow-[0_0_10px_rgba(140,37,244,0.5)]" style="width: 75%;"></div>
+</div>
+<div class="flex justify-between items-center mt-3">
+<p class="text-xs text-slate-500 dark:text-slate-400">Current Level</p>
+<p class="text-xs font-medium text-slate-600 dark:text-slate-300">Next: Charisma Master</p>
+</div>
+</div>
+</div>
+<!-- Stats Grid -->
+<div class="px-4 mb-8">
+<div class="grid grid-cols-3 gap-3">
+<!-- Analyses -->
+<div class="flex flex-col gap-2 rounded-2xl p-4 bg-surface-light dark:bg-surface-dark shadow-sm border border-slate-100 dark:border-white/5 items-center justify-center text-center group">
+<div class="h-10 w-10 rounded-full bg-blue-500/10 flex items-center justify-center text-blue-500 mb-1 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">query_stats</span>
+</div>
+<div>
+<p class="text-xl font-bold leading-none mb-1">142</p>
+<p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Analyses</p>
+</div>
+</div>
+<!-- Success Rate -->
+<div class="flex flex-col gap-2 rounded-2xl p-4 bg-surface-light dark:bg-surface-dark shadow-sm border border-slate-100 dark:border-white/5 items-center justify-center text-center group">
+<div class="h-10 w-10 rounded-full bg-emerald-500/10 flex items-center justify-center text-emerald-500 mb-1 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined">check_circle</span>
+</div>
+<div>
+<p class="text-xl font-bold leading-none mb-1">85%</p>
+<p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Success</p>
+</div>
+</div>
+<!-- Streak -->
+<div class="flex flex-col gap-2 rounded-2xl p-4 bg-surface-light dark:bg-surface-dark shadow-sm border border-slate-100 dark:border-white/5 items-center justify-center text-center group">
+<div class="h-10 w-10 rounded-full bg-orange-500/10 flex items-center justify-center text-orange-500 mb-1 group-hover:scale-110 transition-transform">
+<span class="material-symbols-outlined filled" style="font-variation-settings: 'FILL' 1;">local_fire_department</span>
+</div>
+<div>
+<p class="text-xl font-bold leading-none mb-1">12</p>
+<p class="text-[10px] font-semibold uppercase tracking-wide text-slate-400">Streak</p>
+</div>
+</div>
+</div>
+</div>
+<!-- Settings List -->
+<div class="px-4 flex flex-col gap-3">
+<h3 class="ml-1 text-xs font-bold uppercase tracking-wider text-slate-400 dark:text-slate-500 mb-1">Account</h3>
+<!-- Subscription Item -->
+<button class="flex items-center gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-slate-100 dark:border-white/5 active:scale-[0.98] transition-all">
+<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-primary/10 text-primary">
+<span class="material-symbols-outlined filled" style="font-variation-settings: 'FILL' 1;">diamond</span>
+</div>
+<div class="flex flex-col items-start flex-1">
+<p class="text-sm font-semibold text-slate-900 dark:text-white">Manage Subscription</p>
+<p class="text-xs text-primary font-medium">Wingman Pro Active</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-xl">chevron_right</span>
+</button>
+<!-- Language Item -->
+<button class="flex items-center gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-slate-100 dark:border-white/5 active:scale-[0.98] transition-all">
+<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700/50 text-slate-500 dark:text-slate-300">
+<span class="material-symbols-outlined">language</span>
+</div>
+<div class="flex flex-col items-start flex-1">
+<p class="text-sm font-semibold text-slate-900 dark:text-white">Language</p>
+</div>
+<div class="flex items-center gap-2">
+<p class="text-sm text-slate-500">English</p>
+<span class="material-symbols-outlined text-slate-400 text-xl">chevron_right</span>
+</div>
+</button>
+<!-- Settings Item -->
+<button class="flex items-center gap-4 bg-surface-light dark:bg-surface-dark p-4 rounded-xl shadow-sm border border-slate-100 dark:border-white/5 active:scale-[0.98] transition-all">
+<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-slate-100 dark:bg-slate-700/50 text-slate-500 dark:text-slate-300">
+<span class="material-symbols-outlined">settings</span>
+</div>
+<div class="flex flex-col items-start flex-1">
+<p class="text-sm font-semibold text-slate-900 dark:text-white">Settings</p>
+</div>
+<span class="material-symbols-outlined text-slate-400 text-xl">chevron_right</span>
+</button>
+<p class="text-center text-xs text-slate-400 dark:text-slate-600 mt-4 mb-2">Wingman v2.4.1 (Build 890)</p>
+</div>
+<!-- Bottom Navigation -->
+<nav class="fixed bottom-0 left-0 right-0 z-50 px-6 pb-6 pt-3 bg-background-light/85 dark:bg-[#130c1a]/85 backdrop-blur-xl border-t border-slate-200/50 dark:border-white/5 safe-area-bottom">
+<div class="flex items-center justify-between">
+<!-- Coach Tab -->
+<button class="flex flex-col items-center gap-1 group text-slate-400 dark:text-slate-500 hover:text-primary dark:hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[26px] group-hover:scale-110 transition-transform duration-200">smart_toy</span>
+<span class="text-[10px] font-medium">Coach</span>
+</button>
+<!-- History Tab -->
+<button class="flex flex-col items-center gap-1 group text-slate-400 dark:text-slate-500 hover:text-primary dark:hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[26px] group-hover:scale-110 transition-transform duration-200">history</span>
+<span class="text-[10px] font-medium">History</span>
+</button>
+<!-- Community Tab -->
+<button class="flex flex-col items-center gap-1 group text-slate-400 dark:text-slate-500 hover:text-primary dark:hover:text-primary transition-colors">
+<span class="material-symbols-outlined text-[26px] group-hover:scale-110 transition-transform duration-200">forum</span>
+<span class="text-[10px] font-medium">Community</span>
+</button>
+<!-- Profile Tab (Active) -->
+<button class="flex flex-col items-center gap-1 group text-primary dark:text-primary transition-colors relative">
+<!-- Active Indicator Dot -->
+<span class="absolute -top-1 right-0 h-1.5 w-1.5 rounded-full bg-primary animate-pulse"></span>
+<span class="material-symbols-outlined text-[26px] filled group-hover:scale-110 transition-transform duration-200" style="font-variation-settings: 'FILL' 1;">person</span>
+<span class="text-[10px] font-medium">Profile</span>
+</button>
+</div>
+</nav>
+</div>
+</body></html>

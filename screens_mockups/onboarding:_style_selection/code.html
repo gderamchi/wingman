@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Onboarding: Style Selection</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c25f4",
+                        "primary-dark": "#7a1ed6",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#191022",
+                        "surface-dark": "#2d1b3d",
+                        "surface-light": "#ffffff",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {
+                        "DEFAULT": "0.25rem",
+                        "lg": "0.5rem",
+                        "xl": "0.75rem",
+                        "2xl": "1rem",
+                        "full": "9999px"
+                    },
+                },
+            },
+        }
+    </script>
+<style>
+        /* Custom scrollbar hide for cleaner UI */
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        /* Custom radio styling simulation */
+        input:checked + div {
+            border-color: #8c25f4;
+            background-color: rgba(140, 37, 244, 0.15);
+        }
+        input:checked + div .icon-wrapper {
+            background-color: #8c25f4;
+            color: white;
+        }
+        input:checked + div .text-label {
+            color: #ffffff;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display antialiased text-slate-900 dark:text-white selection:bg-primary selection:text-white">
+<div class="relative flex h-full min-h-screen w-full flex-col overflow-x-hidden max-w-md mx-auto shadow-2xl bg-background-light dark:bg-background-dark">
+<!-- Progress Indicators -->
+<div class="flex w-full flex-row items-center justify-center gap-2 pt-8 pb-4 px-6">
+<div class="h-1.5 w-8 rounded-full bg-slate-200 dark:bg-[#4d3168]"></div>
+<div class="h-1.5 w-8 rounded-full bg-primary shadow-[0_0_8px_rgba(140,37,244,0.6)]"></div>
+<div class="h-1.5 w-8 rounded-full bg-slate-200 dark:bg-[#4d3168]"></div>
+<div class="h-1.5 w-8 rounded-full bg-slate-200 dark:bg-[#4d3168]"></div>
+</div>
+<!-- Header Section -->
+<div class="flex flex-col items-center px-6 pt-4 pb-6">
+<h1 class="text-3xl font-bold tracking-tight text-center mb-2">Choose your Vibe</h1>
+<p class="text-slate-500 dark:text-slate-400 text-center text-base font-normal leading-relaxed">
+                How do you usually like to reply?
+            </p>
+</div>
+<!-- Selection Area -->
+<div class="px-6 pb-6">
+<div class="grid grid-cols-3 gap-3">
+<!-- Option 1: Soft -->
+<label class="cursor-pointer group relative">
+<input class="peer sr-only" name="vibe" type="radio" value="soft"/>
+<div class="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-slate-200 dark:border-[#362249] bg-white dark:bg-[#251833] p-4 transition-all duration-300 hover:border-primary/50 h-32">
+<div class="icon-wrapper flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 dark:bg-[#362249] text-slate-600 dark:text-[#ad90cb] transition-colors">
+<span class="material-symbols-outlined text-[20px]">cloud</span>
+</div>
+<span class="text-label text-sm font-semibold text-slate-600 dark:text-slate-300 transition-colors">Soft</span>
+</div>
+</label>
+<!-- Option 2: Playful (Selected) -->
+<label class="cursor-pointer group relative">
+<input checked="" class="peer sr-only" name="vibe" type="radio" value="playful"/>
+<div class="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-slate-200 dark:border-[#362249] bg-white dark:bg-[#251833] p-4 transition-all duration-300 hover:border-primary/50 h-32">
+<div class="icon-wrapper flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 dark:bg-[#362249] text-slate-600 dark:text-[#ad90cb] transition-colors">
+<span class="material-symbols-outlined text-[20px]">sentiment_satisfied</span>
+</div>
+<span class="text-label text-sm font-semibold text-slate-600 dark:text-slate-300 transition-colors">Playful</span>
+</div>
+</label>
+<!-- Option 3: Bold -->
+<label class="cursor-pointer group relative">
+<input class="peer sr-only" name="vibe" type="radio" value="bold"/>
+<div class="flex flex-col items-center justify-center gap-3 rounded-2xl border-2 border-slate-200 dark:border-[#362249] bg-white dark:bg-[#251833] p-4 transition-all duration-300 hover:border-primary/50 h-32">
+<div class="icon-wrapper flex h-10 w-10 items-center justify-center rounded-full bg-slate-100 dark:bg-[#362249] text-slate-600 dark:text-[#ad90cb] transition-colors">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+</div>
+<span class="text-label text-sm font-semibold text-slate-600 dark:text-slate-300 transition-colors">Bold</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Preview Area -->
+<div class="flex-1 px-6 flex flex-col justify-start">
+<div class="relative w-full rounded-3xl bg-gradient-to-br from-slate-100 to-white dark:from-[#251833] dark:to-[#1a1023] p-6 shadow-sm border border-slate-100 dark:border-[#362249]">
+<div class="absolute -top-3 left-6 bg-primary text-white text-[10px] font-bold px-3 py-1 rounded-full tracking-wider uppercase shadow-lg shadow-primary/30">
+                    Preview
+                </div>
+<!-- Chat UI Simulation -->
+<div class="flex flex-col gap-4 mt-2">
+<!-- Received Message -->
+<div class="flex gap-3 items-end">
+<div class="h-8 w-8 rounded-full bg-cover bg-center flex-shrink-0" data-alt="Profile picture of a smiling woman" style="background-image: url('https://lh3.googleusercontent.com/aida-public/AB6AXuDUgwkGenhLynOVJ-6RU4qDUmUkHVlVF0aJ9iEBWAKo2yFRYjMeoApT7ZXWRDxv-km2RudBbakyvtbgTFvcxPzvCQ24AsAimzOMoZ9zFGVgY5_CHtVwhiH6Hkx6Bt3zrZBlzjEAq4CrjLe3b6r40qxJTyT6rNg6j-XbStPbp1Nub1gz3lSuCR7rsTniEAZKmyMu09kPEChyARkCrzAIGc6BOLB5b9ZxpE6o7YXR0i3KDQuWB8X4_c3IdfqlFkp6LYW-P3gtN7qvqTA')"></div>
+<div class="bg-slate-200 dark:bg-[#362249] rounded-2xl rounded-bl-none px-4 py-3 max-w-[85%]">
+<p class="text-sm text-slate-800 dark:text-slate-200">How was your Monday?</p>
+</div>
+</div>
+<!-- AI Suggested Reply (Active) -->
+<div class="flex gap-3 items-end justify-end">
+<div class="bg-primary/10 dark:bg-primary/20 border border-primary/20 rounded-2xl rounded-br-none px-4 py-3 max-w-[90%] relative group cursor-pointer transition-transform active:scale-[0.98]">
+<p class="text-sm font-medium text-slate-900 dark:text-white leading-relaxed">
+                                So, did you survive Monday or do we need a rescue mission? 😜
+                            </p>
+<!-- Typing Indicator visual decoration -->
+<div class="absolute -bottom-6 right-0 flex items-center gap-1 opacity-60">
+<span class="text-[10px] text-primary font-medium">AI Suggested</span>
+<span class="material-symbols-outlined text-[12px] text-primary">auto_awesome</span>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
+<!-- Bottom Action Area -->
+<div class="w-full mt-auto p-6 bg-background-light dark:bg-background-dark relative z-10">
+<!-- Helper Text -->
+<div class="flex items-start justify-center gap-2 mb-6 opacity-70">
+<span class="material-symbols-outlined text-slate-500 dark:text-[#ad90cb] text-sm mt-0.5">info</span>
+<p class="text-xs text-center text-slate-500 dark:text-[#ad90cb] max-w-[280px]">
+                    Tu pourras changer à chaque suggestion.<br/>
+<span class="italic opacity-70">(You can change this with each suggestion.)</span>
+</p>
+</div>
+<!-- CTA Button -->
+<button class="w-full rounded-xl bg-primary hover:bg-primary-dark text-white font-bold h-14 text-lg shadow-lg shadow-primary/25 transition-all transform active:scale-[0.98] flex items-center justify-center gap-2">
+                Continuer
+            </button>
+<!-- Privacy Badge -->
+<div class="flex items-center justify-center gap-1.5 mt-5">
+<span class="material-symbols-outlined text-xs text-slate-400 dark:text-slate-600">lock</span>
+<span class="text-[10px] font-semibold text-slate-400 dark:text-slate-600 tracking-wider uppercase">Private &amp; Secure</span>
+</div>
+</div>
+</div>
+</body></html>

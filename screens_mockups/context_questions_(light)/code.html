@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Context Questions</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com" rel="preconnect"/>
+<link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#8c25f4",
+                        "background-light": "#f7f5f8",
+                        "background-dark": "#191022",
+                        "surface-light": "#ffffff",
+                        "surface-dark": "#2a1b36",
+                        "text-secondary-light": "#6b7280",
+                        "text-secondary-dark": "#ad90cb",
+                    },
+                    fontFamily: {
+                        "display": ["Plus Jakarta Sans", "sans-serif"]
+                    },
+                    borderRadius: {"DEFAULT": "0.25rem", "lg": "0.5rem", "xl": "0.75rem", "full": "9999px"},
+                },
+            },
+        }
+    </script>
+<style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+    </style>
+<style>
+    body {
+      min-height: max(884px, 100dvh);
+    }
+  </style>
+  </head>
+<body class="bg-background-light dark:bg-background-dark font-display text-gray-900 dark:text-white transition-colors duration-200">
+<div class="relative flex h-full min-h-screen w-full max-w-md mx-auto flex-col overflow-x-hidden shadow-2xl">
+<!-- Header -->
+<div class="flex items-center px-4 py-4 justify-between sticky top-0 z-10 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-sm">
+<h2 class="text-lg font-bold leading-tight tracking-tight flex-1">Context check</h2>
+<button class="flex size-10 shrink-0 items-center justify-center rounded-full hover:bg-gray-200 dark:hover:bg-white/10 transition-colors">
+<span class="material-symbols-outlined text-2xl">close</span>
+</button>
+</div>
+<!-- Progress / Quick Setup Indicator -->
+<div class="px-6 pb-2">
+<div class="flex items-center gap-2">
+<div class="h-1.5 w-8 rounded-full bg-primary"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-gray-300 dark:bg-surface-dark"></div>
+<div class="h-1.5 w-1.5 rounded-full bg-gray-300 dark:bg-surface-dark"></div>
+<span class="ml-2 text-xs font-semibold uppercase tracking-widest text-text-secondary-light dark:text-text-secondary-dark">Quick Setup</span>
+</div>
+</div>
+<!-- Main Content -->
+<div class="flex-1 flex flex-col px-6 pt-6 pb-10 gap-8">
+<!-- Title -->
+<div>
+<h1 class="text-3xl font-bold leading-tight mb-2">Help Wingman<br/><span class="text-primary">understand</span></h1>
+<p class="text-text-secondary-light dark:text-text-secondary-dark text-sm leading-relaxed">Providing a little context helps our AI craft the perfect, most authentic response for you.</p>
+</div>
+<!-- Question 1: Who is talking? -->
+<div class="flex flex-col gap-3">
+<h3 class="text-base font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">chat_bubble</span>
+                    Who sent the last message?
+                </h3>
+<div class="flex w-full gap-4">
+<!-- Option: Me -->
+<label class="group relative flex-1 cursor-pointer">
+<input class="peer sr-only" name="sender" type="radio" value="me"/>
+<div class="h-28 flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-transparent bg-surface-light dark:bg-surface-dark p-4 shadow-sm transition-all hover:bg-gray-50 dark:hover:bg-[#362249] peer-checked:bg-primary/10 peer-checked:border-primary peer-checked:shadow-md">
+<span class="material-symbols-outlined text-3xl text-gray-400 dark:text-text-secondary-dark peer-checked:text-primary transition-colors">person</span>
+<span class="font-semibold text-sm text-gray-600 dark:text-gray-300 peer-checked:text-primary">Me</span>
+</div>
+<div class="absolute top-3 right-3 opacity-0 peer-checked:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+</div>
+</label>
+<!-- Option: The Other -->
+<label class="group relative flex-1 cursor-pointer">
+<input checked="" class="peer sr-only" name="sender" type="radio" value="other"/>
+<div class="h-28 flex flex-col items-center justify-center gap-2 rounded-xl border-2 border-transparent bg-surface-light dark:bg-surface-dark p-4 shadow-sm transition-all hover:bg-gray-50 dark:hover:bg-[#362249] peer-checked:bg-primary/10 peer-checked:border-primary peer-checked:shadow-md">
+<span class="material-symbols-outlined text-3xl text-gray-400 dark:text-text-secondary-dark peer-checked:text-primary transition-colors">diversity_3</span>
+<span class="font-semibold text-sm text-gray-600 dark:text-gray-300 peer-checked:text-primary">The Other</span>
+</div>
+<div class="absolute top-3 right-3 opacity-0 peer-checked:opacity-100 transition-opacity">
+<span class="material-symbols-outlined text-primary text-lg">check_circle</span>
+</div>
+</label>
+</div>
+</div>
+<!-- Question 2: Relationship? -->
+<div class="flex flex-col gap-3">
+<h3 class="text-base font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">favorite</span>
+                    What is your relationship?
+                </h3>
+<div class="flex flex-wrap gap-3">
+<!-- Chip: Match (Active) -->
+<label class="cursor-pointer">
+<input checked="" class="peer sr-only" name="relationship" type="radio" value="match"/>
+<div class="px-5 py-2.5 rounded-lg border border-transparent bg-surface-light dark:bg-surface-dark text-sm font-medium text-gray-600 dark:text-gray-300 shadow-sm transition-all hover:scale-105 peer-checked:bg-primary peer-checked:text-white peer-checked:shadow-lg peer-checked:shadow-primary/30">
+                            Match
+                        </div>
+</label>
+<!-- Chip: Date -->
+<label class="cursor-pointer">
+<input class="peer sr-only" name="relationship" type="radio" value="date"/>
+<div class="px-5 py-2.5 rounded-lg border border-transparent bg-surface-light dark:bg-surface-dark text-sm font-medium text-gray-600 dark:text-gray-300 shadow-sm transition-all hover:scale-105 peer-checked:bg-primary peer-checked:text-white peer-checked:shadow-lg peer-checked:shadow-primary/30">
+                            Date
+                        </div>
+</label>
+<!-- Chip: Ex -->
+<label class="cursor-pointer">
+<input class="peer sr-only" name="relationship" type="radio" value="ex"/>
+<div class="px-5 py-2.5 rounded-lg border border-transparent bg-surface-light dark:bg-surface-dark text-sm font-medium text-gray-600 dark:text-gray-300 shadow-sm transition-all hover:scale-105 peer-checked:bg-primary peer-checked:text-white peer-checked:shadow-lg peer-checked:shadow-primary/30">
+                            Ex
+                        </div>
+</label>
+<!-- Chip: Other -->
+<label class="cursor-pointer">
+<input class="peer sr-only" name="relationship" type="radio" value="other"/>
+<div class="px-5 py-2.5 rounded-lg border border-transparent bg-surface-light dark:bg-surface-dark text-sm font-medium text-gray-600 dark:text-gray-300 shadow-sm transition-all hover:scale-105 peer-checked:bg-primary peer-checked:text-white peer-checked:shadow-lg peer-checked:shadow-primary/30">
+                            Other
+                        </div>
+</label>
+</div>
+</div>
+<!-- Question 3: Goal? -->
+<div class="flex flex-col gap-3">
+<h3 class="text-base font-bold flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-xl">flag</span>
+                    Current Goal
+                </h3>
+<div class="group relative flex w-full items-center justify-between rounded-xl bg-surface-light dark:bg-surface-dark p-4 shadow-sm cursor-pointer hover:bg-gray-50 dark:hover:bg-[#362249] transition-colors border border-gray-200 dark:border-transparent">
+<div class="flex items-center gap-4">
+<div class="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-primary/10 text-primary">
+<span class="material-symbols-outlined text-xl">calendar_today</span>
+</div>
+<div class="flex flex-col">
+<span class="text-xs font-bold uppercase tracking-wider text-text-secondary-light dark:text-text-secondary-dark">Objective</span>
+<span class="text-base font-bold text-gray-900 dark:text-white">Get a Date</span>
+</div>
+</div>
+<span class="material-symbols-outlined text-gray-400 group-hover:text-primary transition-colors">edit</span>
+</div>
+</div>
+</div>
+<!-- Footer Actions -->
+<div class="sticky bottom-0 mt-auto w-full bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md p-6 border-t border-gray-200/50 dark:border-white/5">
+<div class="flex flex-col gap-4">
+<button class="flex w-full items-center justify-center gap-2 rounded-xl bg-primary py-4 font-bold text-white shadow-lg shadow-primary/40 transition-transform active:scale-95 hover:shadow-primary/60 hover:shadow-xl">
+<span class="material-symbols-outlined">auto_awesome</span>
+                    Launch Analysis
+                </button>
+<a class="w-full text-center text-sm font-medium text-text-secondary-light dark:text-text-secondary-dark hover:text-gray-900 dark:hover:text-white transition-colors" href="#">
+                    Skip for now
+                </a>
+</div>
+<div class="mt-6 flex items-center justify-center gap-1.5 text-xs text-text-secondary-light dark:text-text-secondary-dark opacity-60">
+<span class="material-symbols-outlined text-sm">lock</span>
+<span>100% Private &amp; Secure</span>
+</div>
+</div>
+</div>
+</body></html>
