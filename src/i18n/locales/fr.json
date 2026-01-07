@@ -114,104 +114,35 @@
   },
   "coach": {
     "title": "Coach",
-    "quickActions": "Accès rapide",
-    "onboarding": {
-       "title": "Comment ça marche ?",
-       "step1": "Capturez ou importez une conversation",
-       "step2": "Choisissez votre objectif & style",
-       "step3": "Obtenez la réponse parfaite"
-    },
     "chat": {
-       "title": "Wingman Coach",
-       "subtitle": "Assistant Personnel",
-       "placeholder": "Répondez à Wingman...",
-       "screenshot": "Capture d'écran",
-       "sessionStart": "Début de la session",
-       "selectedReply": "Réponse sélectionnée"
+      "title": "Wingman Coach"
+    },
+    "questions": {
+      "title": "Questions de clarification"
+    },
+    "suggestions": {
+      "title": "Suggestions de réponses"
+    },
+    "input": {
+      "placeholder": "Répondez à Wingman..."
+    },
+    "loading": {
+      "analyzing": "Analyse en cours...",
+      "findingBest": "Je trouve la meilleure réponse...",
+      "craftingReply": "Je peaufine les suggestions...",
+      "thinkingTone": "Je réfléchis au bon ton...",
+      "almostReady": "Presque prêt..."
     },
     "empty": {
       "title": "Prêt à progresser ?",
-      "subtitle": "Envoie une capture de ta conversation",
-      "cta": "Analyser une conversation"
+      "subtitle": "Envoie une capture de ta conversation pour commencer."
     },
-    "sourcePicker": {
-      "title": "Analyser une conversation",
-      "subtitle": "Sélectionnez une source pour commencer",
-      "import": "Importer une capture",
-      "fromGallery": "Depuis votre galerie",
-      "takePhoto": "Prendre une photo",
-      "useCamera": "Utiliser l'appareil photo",
-      "privacy": "Confidentialité garantie. Vous pourrez flouter les noms & photos."
-    },
-    "upload": {
-      "title": "Choisir la source",
-      "camera": "Prendre une capture",
-      "gallery": "Choisir dans la galerie"
-    },
-    "preview": {
-      "title": "Aperçu",
-      "crop": "Recadrer",
-      "blur": "Flouter les visages",
-      "analyze": "Analyser"
-    },
-    "context": {
-      "title": "Dis-nous en plus",
-      "question1": "C'est quoi ta relation avec cette personne ?",
-      "question2": "Qu'est-ce que tu veux accomplir ?",
-      "placeholder": "Optionnel : Ajoute du contexte...",
-      "additionalContext": "Contexte supplémentaire (optionnel)",
-      "relationships": {
-        "match": "Match récent",
-        "crush": "Crush",
-        "ex": "Ex",
-        "friend": "Ami(e)",
-        "colleague": "Collègue",
-        "other": "Autre"
-      },
-      "objectives": {
-        "flirt": "Flirter",
-        "date": "Obtenir un date",
-        "reconnect": "Renouer contact",
-        "friendly": "Rester amical",
-        "professional": "Rester pro"
-      }
-    },
-    "processing": {
-      "title": "Analyse en cours...",
-      "step1": "Lecture de la conversation",
-      "step2": "Compréhension du contexte",
-      "step3": "Génération des suggestions"
-    },
-    "results": {
-      "title": "Suggestions",
-      "analysis": "Analyse",
-      "useThis": "Utiliser",
-      "refine": "Affiner",
-      "suggestions": "Suggestions Wingman",
-      "options": "options",
-      "chatRefine": "Chat / Affiner"
-    },
-    "editor": {
-      "title": "Affine ta réponse",
-      "placeholder": "Dis-moi comment l'améliorer...",
-      "regenerate": "Regénérer"
-    },
-    "outcome": {
-      "title": "Comment ça s'est passé ?",
-      "sent": "Je l'ai envoyé !",
-      "saved": "Gardé pour plus tard",
-      "discarded": "Pas cette fois",
-      "result": "Qu'est-ce qui s'est passé ?",
-      "positive": "Ça a bien marché ! 🎉",
-      "neutral": "Rien de spécial",
-      "negative": "Aurait pu être mieux",
-      "yourReply": "Ta réponse",
-      "whatDidYouDo": "Qu'as-tu fait ?",
-      "shareToCommunity": "Partager anonymement",
-      "shareSuccess": "Partagé !",
-      "shareSuccessMessage": "Ton analyse a été postée anonymement sur la communauté.",
-      "shareError": "Erreur",
-      "shareErrorMessage": "Impossible de partager pour le moment."
+    "threads": {
+      "title": "Conversations",
+      "new": "Nouvelle conversation",
+      "newConversation": "Nouvelle conversation",
+      "empty": "Aucune conversation",
+      "deleteConfirm": "Supprimer cette conversation ?"
     }
   },
   "community": {

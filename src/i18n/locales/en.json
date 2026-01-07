@@ -114,84 +114,35 @@
   },
   "coach": {
     "title": "Coach",
+    "chat": {
+      "title": "Wingman Coach"
+    },
+    "questions": {
+      "title": "Clarification questions"
+    },
+    "suggestions": {
+      "title": "Reply suggestions"
+    },
+    "input": {
+      "placeholder": "Reply to Wingman..."
+    },
+    "loading": {
+      "analyzing": "Analyzing...",
+      "findingBest": "Finding the best reply...",
+      "craftingReply": "Crafting your suggestions...",
+      "thinkingTone": "Thinking about the right tone...",
+      "almostReady": "Almost ready..."
+    },
     "empty": {
       "title": "Ready to level up?",
-      "subtitle": "Upload a screenshot of your conversation",
-      "cta": "Analyze a conversation"
+      "subtitle": "Send a screenshot of your conversation to start."
     },
-    "sourcePicker": {
-      "title": "Analyze a conversation",
-      "subtitle": "Select a source to get started",
-      "import": "Import a screenshot",
-      "fromGallery": "From your gallery",
-      "takePhoto": "Take a photo",
-      "useCamera": "Use camera",
-      "privacy": "Privacy guaranteed. You can blur names & photos."
-    },
-    "upload": {
-      "title": "Choose source",
-      "camera": "Take a screenshot",
-      "gallery": "Choose from gallery"
-    },
-    "preview": {
-      "title": "Preview",
-      "crop": "Crop",
-      "blur": "Blur faces",
-      "analyze": "Analyze"
-    },
-    "context": {
-      "title": "Tell us more",
-      "question1": "What's your relationship with this person?",
-      "question2": "What do you want to achieve?",
-      "placeholder": "Optional: Add any context...",
-      "additionalContext": "Additional context (optional)",
-      "relationships": {
-        "match": "Recent match",
-        "crush": "Crush",
-        "ex": "Ex",
-        "friend": "Friend",
-        "colleague": "Colleague",
-        "other": "Other"
-      },
-      "objectives": {
-        "flirt": "Flirt",
-        "date": "Get a date",
-        "reconnect": "Reconnect",
-        "friendly": "Stay friendly",
-        "professional": "Stay professional"
-      }
-    },
-    "processing": {
-      "title": "Analyzing...",
-      "step1": "Reading conversation",
-      "step2": "Understanding context",
-      "step3": "Generating suggestions"
-    },
-    "results": {
-      "title": "Suggestions",
-      "analysis": "Analysis",
-      "useThis": "Use this",
-      "refine": "Refine",
-      "suggestions": "Wingman Suggestions",
-      "options": "options",
-      "chatRefine": "Chat / Refine"
-    },
-    "editor": {
-      "title": "Refine your reply",
-      "placeholder": "Tell me how to improve it...",
-      "regenerate": "Regenerate"
-    },
-    "outcome": {
-      "title": "How did it go?",
-      "sent": "I sent it!",
-      "saved": "Saved for later",
-      "discarded": "Not this time",
-      "result": "What happened?",
-      "positive": "It went well! 🎉",
-      "neutral": "Nothing special",
-      "negative": "Could have been better",
-      "yourReply": "Your reply",
-      "whatDidYouDo": "What did you do?"
+    "threads": {
+      "title": "Conversations",
+      "new": "New conversation",
+      "newConversation": "New conversation",
+      "empty": "No conversations",
+      "deleteConfirm": "Delete this conversation?"
     }
   },
   "community": {

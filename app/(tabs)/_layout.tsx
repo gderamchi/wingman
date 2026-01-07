@@ -29,16 +29,16 @@ export default function TabLayout() {
       <Tabs.Screen
         name="index"
         options={{
-          title: t("coach.title"),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="chatbubble-ellipses" size={size} color={color} />
-          ),
+          href: null,
         }}
       />
       <Tabs.Screen
         name="coach"
         options={{
-          href: null,
+          title: t("coach.title"),
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="chatbubble-ellipses" size={size} color={color} />
+          ),
         }}
       />
       <Tabs.Screen
