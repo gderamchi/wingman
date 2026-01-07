@@ -4,7 +4,64 @@
  * Enhanced with principle citation and platform context
  */
 
-import type { StructuredCoachResponse, ThreadMetadata, UserPreferences } from '../types';
+import type { StructuredCoachResponse, ThreadContext, ThreadMetadata, UserPreferences } from '../types';
+
+/**
+ * Format thread context for injection into prompts
+ */
+function formatThreadContextForPrompt(context?: ThreadContext): string {
+  if (!context || context.completenessScore < 20) {
+    return `⚠️ CONTEXTE NON ÉTABLI - Tu DOIS poser des questions avant de conseiller.`;
+  }
+
+  const parts: string[] = ['CONTEXTE UTILISATEUR CONFIRMÉ:'];
+
+  if (context.targetInfo.relationship) {
+    const relationLabels: Record<string, string> = {
+      match: 'Match sur app',
+      friend: 'Ami(e)',
+      colleague: 'Collègue',
+      stranger: 'Rencontre IRL',
+      ex: 'Ex',
+      unknown: 'Inconnu',
+    };
+    parts.push(`- Relation: ${relationLabels[context.targetInfo.relationship] || context.targetInfo.relationship}`);
+  }
+
+  if (context.targetInfo.platform) {
+    parts.push(`- Plateforme: ${context.targetInfo.platform}`);
+  }
+
+  if (context.conversationGoal && context.conversationGoal !== 'unknown') {
+    const goalLabels: Record<string, string> = {
+      get_date: 'Obtenir un date',
+      revive: 'Relancer la conversation',
+      seduce: 'Séduire',
+      friendzone_escape: 'Sortir de la friendzone',
+      just_chatting: 'Discussion simple',
+    };
+    parts.push(`- Objectif: ${goalLabels[context.conversationGoal] || context.conversationGoal}`);
+  }
+
+  if (context.targetInfo.knownDuration) {
+    const durationLabels: Record<string, string> = {
+      just_met: 'Vient de matcher',
+      days: 'Quelques jours',
+      weeks: 'Quelques semaines',
+      months: 'Plusieurs mois',
+      years: 'Des années',
+    };
+    parts.push(`- Depuis: ${durationLabels[context.targetInfo.knownDuration] || context.targetInfo.knownDuration}`);
+  }
+
+  if (context.lastMessageFrom) {
+    parts.push(`- Dernier message de: ${context.lastMessageFrom === 'user' ? 'Utilisateur' : "L'autre personne"}`);
+  }
+
+  parts.push(`- Score de contexte: ${context.completenessScore}%`);
+
+  return parts.join('\n');
+}
 
 /**
  * Build system prompt for ongoing conversation
@@ -14,7 +71,8 @@ export function buildCoachSystemPrompt(
   preferences: UserPreferences,
   ragContext: string = '',
   principles: string = '',
-  platformContext: string = ''
+  platformContext: string = '',
+  threadContext?: ThreadContext
 ): string {
   const goalDescriptions: Record<string, string> = {
     dating: 'rencontres amoureuses et séduction',
@@ -25,15 +83,18 @@ export function buildCoachSystemPrompt(
   const styleDescriptions: Record<string, string> = {
     playful: 'léger et taquin',
     direct: 'direct et efficace',
-    empathetic: 'empathique et à l\'écoute',
+    empathetic: "empathique et à l'écoute",
   };
 
   const now = new Date();
   const dateContext = `DATE/HEURE ACTUELLE: ${now.toLocaleDateString('fr-FR')} ${now.toLocaleTimeString('fr-FR')}`;
+  const formattedThreadContext = formatThreadContextForPrompt(threadContext);
 
   return `Tu es Wingman, un coach de conversation expert et bienveillant. Tu aides les utilisateurs à améliorer leur communication.
 
 ${dateContext}
+
+${formattedThreadContext}
 
 CONTEXTE DÉCLARÉ:
 - Objectif: ${goalDescriptions[metadata.goal] || metadata.goal}
@@ -84,7 +145,8 @@ export function buildAnalysisPrompt(
   preferences: UserPreferences,
   ragContext: string = '',
   principles: string = '',
-  platformContext: string = ''
+  platformContext: string = '',
+  threadContext?: ThreadContext
 ): string {
   const goalDescriptions: Record<string, string> = {
     dating: 'rencontres amoureuses et séduction',
@@ -95,10 +157,14 @@ export function buildAnalysisPrompt(
   const styleDescriptions: Record<string, string> = {
     playful: 'léger et taquin',
     direct: 'direct et efficace',
-    empathetic: 'empathique et à l\'écoute',
+    empathetic: "empathique et à l'écoute",
   };
 
+  const formattedThreadContext = formatThreadContextForPrompt(threadContext);
+
   return `Tu es Wingman, un coach de conversation expert. Tu analyses des captures d'écran et audios.
+
+${formattedThreadContext}
 
 CONTEXTE VISÉ:
 - Objectif: ${goalDescriptions[metadata.goal] || metadata.goal}

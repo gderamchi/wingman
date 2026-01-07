@@ -5,14 +5,17 @@ import { blackboxAI } from '@/src/core/api/blackbox';
 
 import { Directory, File, Paths } from 'expo-file-system';
 import * as storage from '../services/coachStorage';
+import { createDefaultThreadContext, questionService } from '../services/questionService';
 import { ragClient } from '../services/ragClient';
 import type {
-    CoachMessage,
-    CoachStoreState,
-    CoachThread,
-    MessageAttachment,
-    UserFeedback,
-    UserPreferences
+  CoachMessage,
+  CoachStoreState,
+  CoachThread,
+  ContextualQuestion,
+  MessageAttachment,
+  ThreadContext,
+  UserFeedback,
+  UserPreferences
 } from '../types';
 import { buildAnalysisPrompt, buildCoachSystemPrompt, parseStructuredResponse } from './coachPrompts';
 
@@ -55,6 +58,13 @@ interface CoachStoreActions {
   sendMessage: (content: string) => Promise<void>;
   sendMediaForAnalysis: (attachments: MessageAttachment[], userComment?: string) => Promise<void>;
   submitFeedback: (messageId: string, rating: 'helpful' | 'not_helpful', reason?: string) => Promise<void>;
+
+  // Context Questions (Proactive Question System - Iterative)
+  getNextQuestion: () => ContextualQuestion | null;
+  answerContextQuestion: (questionId: string, answer: string) => Promise<void>;
+  injectNextQuestionAsMessage: () => Promise<void>;
+  hasEnoughContext: () => boolean;
+  getThreadContext: () => ThreadContext | null;
 
   // Attachments
   setPendingAttachments: (attachments: MessageAttachment[]) => void;
@@ -119,6 +129,7 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
         goal: goal as CoachThread['metadata']['goal'],
         style: style as CoachThread['metadata']['style'],
       },
+      context: createDefaultThreadContext(),
     };
 
     const threads = [newThread, ...get().threads];
@@ -127,6 +138,9 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
 
     await storage.saveThread(newThread);
     await storage.saveActiveThreadId(newThread.id);
+
+    // Auto-inject the first question to start the conversation
+    await get().injectNextQuestionAsMessage();
 
     return newThread.id;
   },
@@ -208,7 +222,7 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
 
       // Build messages for AI
       const aiMessages: Message[] = [
-        { role: 'system', content: buildCoachSystemPrompt(thread.metadata, preferences, ragContext, principles, platformContext) },
+        { role: 'system', content: buildCoachSystemPrompt(thread.metadata, preferences, ragContext, principles, platformContext, thread.context) },
         ...updatedMessages.map((m) => ({
           role: m.role as 'user' | 'assistant' | 'system',
           content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
@@ -269,8 +283,8 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
     const thread = get().getActiveThread();
     if (!thread) return;
 
-    // Use user's comment if provided, otherwise use default placeholder
-    const messageContent = userComment?.trim();
+    // Use user's comment if provided, otherwise use empty string
+    const messageContent = userComment?.trim() || '';
 
     // Process attachments: Save to storage and remove base64
     const storedAttachments: MessageAttachment[] = await Promise.all(
@@ -324,7 +338,7 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
       const platformContext = ragClient.formatPlatformContext(undefined);
 
       // Build analysis prompt
-      const systemPrompt = buildAnalysisPrompt(thread.metadata, preferences, ragContext, principles, platformContext);
+      const systemPrompt = buildAnalysisPrompt(thread.metadata, preferences, ragContext, principles, platformContext, thread.context);
 
       // Construct content array with original base64 for AI
       // Note: We use the `attachments` argument which still has base64
@@ -380,6 +394,15 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
       // Parse structured response
       const structuredResponse = parseStructuredResponse(responseContent);
 
+      // Smart detection: Update context from AI analysis (auto-detect platform, etc.)
+      let updatedContextFromAnalysis = updatedThread.context || createDefaultThreadContext();
+      if (structuredResponse) {
+        updatedContextFromAnalysis = questionService.updateContextFromAnalysis(
+          updatedContextFromAnalysis,
+          structuredResponse
+        );
+      }
+
       // Add assistant message
       const assistantMessage: CoachMessage = {
         id: generateId(),
@@ -392,6 +415,7 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
       const finalThread = {
         ...updatedThread,
         messages: [...updatedMessages, assistantMessage],
+        context: updatedContextFromAnalysis,
         updatedAt: new Date().toISOString(),
         title: 'Analyse de conversation',
       };
@@ -479,6 +503,118 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
     await storage.saveThread(updatedThread);
   },
 
+  // ============================================================
+  // Context Questions (Proactive Question System)
+  // ============================================================
+
+  // ============================================================
+  // Context Questions (Proactive Question System - Iterative)
+  // ============================================================
+
+  // Get the NEXT question to ask (one at a time)
+  getNextQuestion: () => {
+    const thread = get().getActiveThread();
+    if (!thread) return null;
+
+    const context = thread.context || createDefaultThreadContext();
+    return questionService.getNextQuestion(context);
+  },
+
+  // Answer a context question and inject next question as message
+  answerContextQuestion: async (questionId, answer) => {
+    const { threads } = get();
+    const thread = get().getActiveThread();
+    if (!thread) return;
+
+    const currentContext = thread.context || createDefaultThreadContext();
+    const updatedContext = questionService.processAnswer(currentContext, questionId, answer);
+
+    // Add user's answer as a message
+    const userMessage: CoachMessage = {
+      id: generateId(),
+      threadId: thread.id,
+      role: 'user',
+      content: answer, // Store the raw answer value
+      createdAt: new Date().toISOString(),
+    };
+
+    const updatedMessages = [...thread.messages, userMessage];
+
+    const updatedThread = {
+      ...thread,
+      messages: updatedMessages,
+      context: updatedContext,
+      updatedAt: new Date().toISOString(),
+    };
+
+    set({
+      threads: threads.map((t) => (t.id === thread.id ? updatedThread : t)),
+    });
+
+    await storage.saveThread(updatedThread);
+
+    // Automatically inject next question if needed
+    await get().injectNextQuestionAsMessage();
+  },
+
+  // Inject the next question as an assistant message
+  injectNextQuestionAsMessage: async () => {
+    const { threads } = get();
+    const thread = get().getActiveThread();
+    if (!thread) return;
+
+    const context = thread.context || createDefaultThreadContext();
+    const nextQuestion = questionService.getNextQuestion(context);
+
+    if (!nextQuestion) {
+      // No more questions needed - context is complete!
+      return;
+    }
+
+    // Check if this is the first question (for encouragement message)
+    const isFirstQuestion = thread.messages.length === 0 ||
+      !thread.messages.some(m => m.role === 'assistant');
+
+    // Create assistant message with the question
+    const questionContent = questionService.formatQuestionAsMessage(nextQuestion, isFirstQuestion);
+
+    const assistantMessage: CoachMessage = {
+      id: generateId(),
+      threadId: thread.id,
+      role: 'assistant',
+      content: questionContent,
+      createdAt: new Date().toISOString(),
+    };
+
+    const updatedThread = {
+      ...thread,
+      messages: [...thread.messages, assistantMessage],
+      updatedAt: new Date().toISOString(),
+    };
+
+    set({
+      threads: threads.map((t) => (t.id === thread.id ? updatedThread : t)),
+    });
+
+    await storage.saveThread(updatedThread);
+  },
+
+  // Check if we have enough context
+  hasEnoughContext: () => {
+    const thread = get().getActiveThread();
+    if (!thread) return false;
+
+    const context = thread.context || createDefaultThreadContext();
+    return questionService.hasEnoughContext(context);
+  },
+
+  // Get the current thread context
+  getThreadContext: () => {
+    const thread = get().getActiveThread();
+    if (!thread) return null;
+    return thread.context || null;
+  },
+
   // Reset store (without clearing storage)
   reset: () => {
     set({
@@ -498,3 +634,8 @@ export const useActiveThread = () =>
 export const useThreads = () => useCoachStore((s) => s.threads);
 export const useIsCoachLoading = () => useCoachStore((s) => s.isLoading);
 export const usePendingAttachments = () => useCoachStore((s) => s.pendingAttachments);
+
+// Context Question Selectors (Iterative)
+export const useNextQuestion = () => useCoachStore((s) => s.getNextQuestion());
+export const useHasEnoughContext = () => useCoachStore((s) => s.hasEnoughContext());
+export const useThreadContext = () => useCoachStore((s) => s.getThreadContext());
