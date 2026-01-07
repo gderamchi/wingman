@@ -262,6 +262,17 @@ export interface RetrievedExample {
 }
 
 // ============================================================
+// Loading Phase Types
+// ============================================================
+
+export type LoadingPhase =
+  | 'connecting'
+  | 'analyzing'
+  | 'thinking'
+  | 'generating'
+  | 'finalizing';
+
+// ============================================================
 // Store State Types
 // ============================================================
 
@@ -274,8 +285,11 @@ export interface CoachStoreState {
   pendingAttachments: MessageAttachment[];
   /** Is AI currently responding */
   isLoading: boolean;
+  /** Current loading phase */
+  loadingPhase: LoadingPhase | null;
   /** Error message if any */
   error: string | null;
   /** User preferences */
   preferences: UserPreferences;
 }
+

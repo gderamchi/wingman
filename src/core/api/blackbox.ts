@@ -7,7 +7,7 @@ export class BlackboxAIClient {
   private model: string;
   private apiUrl: string = 'https://api.blackbox.ai/chat/completions';
 
-  constructor(apiKey?: string, model: string = 'blackboxai/google/gemini-2.5-flash') {
+  constructor(apiKey?: string, model: string = 'blackboxai/google/gemini-3-pro-preview') {
     this.apiKey = apiKey || process.env.EXPO_PUBLIC_BLACKBOX_API_KEY || '';
     this.model = model;
 

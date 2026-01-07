@@ -8,10 +8,12 @@ import React, { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { ContextSummary } from '../types';
+import { ChunkReplyButton } from './ChunkReplyButton';
 
 interface CoachCardProps {
   summary: ContextSummary;
   initiallyExpanded?: boolean;
+  onReply?: (content: string) => void;
 }
 
 const STAGE_LABELS: Record<string, string> = {
@@ -25,7 +27,7 @@ const STAGE_LABELS: Record<string, string> = {
   other: '💭 Autre',
 };
 
-export function CoachCard({ summary, initiallyExpanded = false }: CoachCardProps) {
+export function CoachCard({ summary, initiallyExpanded = false, onReply }: CoachCardProps) {
   const [isExpanded, setIsExpanded] = useState(initiallyExpanded);
 
   return (
@@ -57,6 +59,14 @@ export function CoachCard({ summary, initiallyExpanded = false }: CoachCardProps
         <View style={styles.expandedContent}>
           {/* Summary */}
           <Text style={styles.summary}>{summary.summary}</Text>
+
+          {/* Reply to summary button */}
+          {onReply && (
+            <ChunkReplyButton
+              chunkContent={summary.summary}
+              onReply={onReply}
+            />
+          )}
 
           {/* Risk warning */}
           {summary.mainRisk && (

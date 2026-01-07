@@ -160,9 +160,13 @@ export function buildAnalysisPrompt(
     empathetic: "empathique et à l'écoute",
   };
 
+  const now = new Date();
+  const dateContext = `DATE/HEURE ACTUELLE: ${now.toLocaleDateString('fr-FR')} ${now.toLocaleTimeString('fr-FR')}`;
   const formattedThreadContext = formatThreadContextForPrompt(threadContext);
 
   return `Tu es Wingman, un coach de conversation expert. Tu analyses des captures d'écran et audios.
+
+${dateContext}
 
 ${formattedThreadContext}
 
@@ -197,6 +201,12 @@ Exemples de doutes légitimes :
 - "Est-ce bien toi qui as envoyé les messages à droite ?"
 - "Tu parles à qui précisément ici ?"
 - "C'est quoi ton objectif avec cette personne ?"
+
+ANTI-HALLUCINATION (TRÈS IMPORTANT):
+- Ne cite JAMAIS un message que tu n'as pas lu mot pour mot dans la capture.
+- Si tu n'es pas sûr d'un détail, dis "Je ne vois pas clairement..." plutôt que d'inventer.
+- Tes insights doivent être basés UNIQUEMENT sur le contenu visible.
+- Ne fais AUCUNE supposition sur des messages non visibles.
 
 FLUX DE DÉCISION STRICT:
 

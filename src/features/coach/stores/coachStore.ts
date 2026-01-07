@@ -95,6 +95,7 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
   activeThreadId: null,
   pendingAttachments: [],
   isLoading: false,
+  loadingPhase: null,
   error: null,
   preferences: DEFAULT_PREFERENCES,
 
@@ -204,10 +205,14 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
     set({
       threads: threads.map((t) => (t.id === thread.id ? updatedThread : t)),
       isLoading: true,
+      loadingPhase: 'connecting',
       error: null,
     });
 
     try {
+      // Update phase: analyzing
+      set({ loadingPhase: 'analyzing' });
+
       // Fetch RAG Context with enhanced retrieval
       const ragExamples = await ragClient.retrieveCoachingExamples({
         goal: thread.metadata.goal,
@@ -227,10 +232,16 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
         })),
       ];
 
+      // Update phase: thinking
+      set({ loadingPhase: 'thinking' });
+
       // Call AI
       const response = await blackboxAI.chat(aiMessages);
       const rawContent = response.choices[0].message.content;
       const responseContent = typeof rawContent === 'string' ? rawContent : JSON.stringify(rawContent);
+
+      // Update phase: generating
+      set({ loadingPhase: 'generating' });
 
       // Parse structured response
       const structuredResponse = parseStructuredResponse(responseContent);
@@ -258,12 +269,14 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
       set({
         threads: get().threads.map((t) => (t.id === thread.id ? finalThread : t)),
         isLoading: false,
+        loadingPhase: null,
       });
 
       await storage.saveThread(finalThread);
     } catch (error) {
       set({
         isLoading: false,
+        loadingPhase: null,
         error: error instanceof Error ? error.message : 'Erreur lors de l\'envoi',
       });
     }
@@ -320,10 +333,14 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
       threads: threads.map((t) => (t.id === thread.id ? updatedThread : t)),
       pendingAttachments: [],
       isLoading: true,
+      loadingPhase: 'connecting',
       error: null,
     });
 
     try {
+      // Update phase: analyzing
+      set({ loadingPhase: 'analyzing' });
+
       // Get RAG examples
       const ragExamples = await ragClient.retrieveCoachingExamples({
         goal: thread.metadata.goal,
@@ -384,10 +401,16 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
         },
       ];
 
+      // Update phase: thinking
+      set({ loadingPhase: 'thinking' });
+
       // Call AI
       const response = await blackboxAI.chat(aiMessages);
       const rawContent = response.choices[0].message.content;
       const responseContent = typeof rawContent === 'string' ? rawContent : JSON.stringify(rawContent);
+
+      // Update phase: generating
+      set({ loadingPhase: 'generating' });
 
       // Parse structured response
       const structuredResponse = parseStructuredResponse(responseContent);
@@ -421,6 +444,7 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
       set({
         threads: get().threads.map((t) => (t.id === thread.id ? finalThread : t)),
         isLoading: false,
+        loadingPhase: null,
       });
 
       await storage.saveThread(finalThread);
@@ -428,6 +452,7 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
       console.error(error); // Log error
       set({
         isLoading: false,
+        loadingPhase: null,
         error: error instanceof Error ? error.message : 'Erreur lors de l\'analyse',
       });
     }
@@ -471,6 +496,8 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
       threads: [],
       activeThreadId: null,
       pendingAttachments: [],
+      isLoading: false,
+      loadingPhase: null,
       preferences: DEFAULT_PREFERENCES,
     });
   },
@@ -620,6 +647,7 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
       activeThreadId: null,
       pendingAttachments: [],
       isLoading: false,
+      loadingPhase: null,
       error: null,
       preferences: DEFAULT_PREFERENCES,
     });
@@ -631,6 +659,7 @@ export const useActiveThread = () =>
   useCoachStore((s) => s.threads.find((t) => t.id === s.activeThreadId) || null);
 export const useThreads = () => useCoachStore((s) => s.threads);
 export const useIsCoachLoading = () => useCoachStore((s) => s.isLoading);
+export const useLoadingPhase = () => useCoachStore((s) => s.loadingPhase);
 export const usePendingAttachments = () => useCoachStore((s) => s.pendingAttachments);
 
 // Context Question Selectors (Iterative)

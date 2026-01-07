@@ -14,7 +14,7 @@ const OUTPUT_FILE = path.join(DATA_DIR, 'ocr_cache.json');
 // Gemini Vision API endpoint (via Blackbox)
 const API_URL = 'https://api.blackbox.ai/chat/completions';
 const API_KEY = process.env.EXPO_PUBLIC_BLACKBOX_API_KEY || '';
-const MODEL = 'blackboxai/google/gemini-2.5-flash';
+const MODEL = 'blackboxai/google/gemini-3-pro-preview';
 
 interface OcrCache {
   [filename: string]: {

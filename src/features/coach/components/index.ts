@@ -5,6 +5,7 @@
 
 export { AttachmentPreview } from './AttachmentPreview';
 export { ChatInputBar } from './ChatInputBar';
+export { ChunkReplyButton } from './ChunkReplyButton';
 export { CoachCard } from './CoachCard';
 export { ContextQuestionsCard } from './ContextQuestionsCard';
 export { MarkdownText } from './MarkdownText';
@@ -13,4 +14,5 @@ export { MessageFeedback } from './MessageFeedback';
 export { QuickChip } from './QuickChip';
 export { ReplyCard } from './ReplyCard';
 export { ShimmerLoader } from './ShimmerLoader';
+export { WingmanTypingIndicator } from './WingmanTypingIndicator';
 

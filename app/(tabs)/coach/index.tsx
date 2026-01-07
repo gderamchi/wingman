@@ -31,10 +31,11 @@ import {
     MessageBubble,
     MessageFeedback,
     ReplyCard,
-    ShimmerLoader,
+    WingmanTypingIndicator,
     useActiveThread,
     useCoachStore,
     useIsCoachLoading,
+    useLoadingPhase,
     usePendingAttachments,
 } from '@/src/features/coach';
 import { QuickChip } from '@/src/features/coach/components/QuickChip';
@@ -51,6 +52,7 @@ export default function CoachChatScreen() {
 
   const activeThread = useActiveThread();
   const isLoading = useIsCoachLoading();
+  const loadingPhase = useLoadingPhase();
   // const pendingAttachment = usePendingAttachment(); // REMOVED
   const {
     initialize,
@@ -79,14 +81,15 @@ export default function CoachChatScreen() {
   const pendingAttachments = usePendingAttachments();
 
   const handleSendMessage = async (text: string) => {
+    const messageToSend = text;
+    setInputText(''); // Clear input immediately for better UX
     if (pendingAttachments.length > 0) {
       // Send images + optional user comment
-      await sendMediaForAnalysis(pendingAttachments, text);
+      await sendMediaForAnalysis(pendingAttachments, messageToSend);
     } else {
       // Regular text message
-      await sendMessage(text);
+      await sendMessage(messageToSend);
     }
-    setInputText('');
   };
 
   const handlePickImage = async () => {
@@ -202,6 +205,13 @@ export default function CoachChatScreen() {
     setPreviewImage(attachment);
   };
 
+  const handleChunkReply = (content: string) => {
+    // Prefix the input with context reference
+    const prefix = `En référence à: "${content}"\n\n`;
+    setInputText(prefix);
+    // Could also scroll to input or focus it here
+  };
+
   const renderMessageContent = (message: CoachMessage) => {
     // Simple text message
     if (typeof message.content === 'string') {
@@ -236,6 +246,7 @@ export default function CoachChatScreen() {
           <CoachCard
             summary={structured.contextSummary}
             initiallyExpanded={true} // Expand latest analysis
+            onReply={handleChunkReply}
           />
         )}
 
@@ -249,9 +260,9 @@ export default function CoachChatScreen() {
                 <View key={q.id} style={styles.questionBlock}>
                    <Text style={styles.questionText}>{q.question}</Text>
                    <View style={styles.chipsContainer}>
-                      {q.chips.map((chip) => (
+                      {q.chips.map((chip, chipIndex) => (
                          <QuickChip
-                            key={chip.id}
+                            key={chip.id || `chip-${q.id}-${chipIndex}`}
                             label={chip.label}
                             onPress={() => handleChipPress(chip.value)}
                          />
@@ -357,6 +368,13 @@ export default function CoachChatScreen() {
                  </Text>
               </View>
            }
+           ListFooterComponent={
+             isLoading ? (
+               <View style={styles.typingIndicatorContainer}>
+                 <WingmanTypingIndicator isVisible={isLoading} phase={loadingPhase} />
+               </View>
+             ) : null
+           }
          />
 
          {/* Attachment Preview (Horizontal Scroll) */}
@@ -380,8 +398,7 @@ export default function CoachChatScreen() {
             </View>
          )}
 
-         {/* Loading Shimmer */}
-         <ShimmerLoader isVisible={isLoading} />
+
 
          {/* Input Bar */}
          <ChatInputBar
@@ -565,5 +582,9 @@ const styles = StyleSheet.create({
   fullScreenImage: {
     width: '100%',
     height: '100%',
+  },
+  typingIndicatorContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
   },
 });
