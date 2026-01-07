@@ -139,9 +139,7 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
     await storage.saveThread(newThread);
     await storage.saveActiveThreadId(newThread.id);
 
-    // Auto-inject the first question to start the conversation
-    await get().injectNextQuestionAsMessage();
-
+    // Questions will be asked naturally after first user interaction if context is insufficient
     return newThread.id;
   },
 
