@@ -6,6 +6,7 @@
 export { AttachmentPreview } from './AttachmentPreview';
 export { ChatInputBar } from './ChatInputBar';
 export { CoachCard } from './CoachCard';
+export { ContextQuestionsCard } from './ContextQuestionsCard';
 export { MarkdownText } from './MarkdownText';
 export { MessageBubble } from './MessageBubble';
 export { MessageFeedback } from './MessageFeedback';

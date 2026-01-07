@@ -14,6 +14,8 @@ export interface CoachThread {
   updatedAt: string;
   messages: CoachMessage[];
   metadata: ThreadMetadata;
+  /** Proactive question system context */
+  context?: ThreadContext;
 }
 
 export interface ThreadMetadata {
@@ -113,6 +115,56 @@ export interface ClarificationQuestion {
   question: string;
   /** Quick-answer chip options */
   chips: QuickChipData[];
+}
+
+// ============================================================
+// Thread Context Types (Proactive Question System)
+// ============================================================
+
+export interface TargetInfo {
+  name?: string;
+  platform?: DetectedPlatform;
+  relationship?: 'match' | 'friend' | 'colleague' | 'stranger' | 'ex' | 'unknown';
+  knownDuration?: 'just_met' | 'days' | 'weeks' | 'months' | 'years';
+  firstContact?: 'app' | 'irl' | 'social_media' | 'through_friends';
+}
+
+export type ConversationGoal =
+  | 'get_date'
+  | 'revive'
+  | 'seduce'
+  | 'friendzone_escape'
+  | 'just_chatting'
+  | 'unknown';
+
+export interface ThreadContext {
+  /** Information about the target person */
+  targetInfo: TargetInfo;
+  /** User's goal for this conversation */
+  conversationGoal: ConversationGoal;
+  /** Who sent the last message */
+  lastMessageFrom?: 'user' | 'target';
+  /** How urgent is the response needed */
+  urgency?: 'immediate' | 'today' | 'no_rush';
+  /** IDs of questions already asked */
+  askedQuestionIds: string[];
+  /** IDs of questions that were answered */
+  answeredQuestionIds: string[];
+  /** Completeness score (0-100) */
+  completenessScore: number;
+}
+
+export interface ContextualQuestion {
+  id: string;
+  category: 'target_identity' | 'relationship' | 'goal' | 'timing' | 'history';
+  priority: number; // 1-10, higher = more important
+  question: string;
+  chips: QuickChipData[];
+  /** Condition for asking this question */
+  condition?: {
+    requires?: string[]; // IDs of questions that must be answered first
+    excludeIf?: string[]; // Don't ask if these questions were answered
+  };
 }
 
 export interface QuickChipData {
