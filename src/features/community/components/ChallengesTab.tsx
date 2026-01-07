@@ -11,193 +11,396 @@ export function ChallengesTab() {
       showsVerticalScrollIndicator={false}
     >
       {/* Timer Section */}
-      <View className="px-4 py-6">
-        <View className="flex-row items-center gap-2 mb-3">
-          <MaterialCommunityIcons name="timer-outline" size={16} color="#8B5CF6" />
-          <Text className="text-gray-400 text-xs font-medium uppercase tracking-wider">
+      <View style={{ paddingHorizontal: 20, paddingVertical: 24 }}>
+        <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 16 }}>
+          <MaterialCommunityIcons name="timer-outline" size={18} color="#8B5CF6" />
+          <Text style={{ color: '#9CA3AF', fontSize: 12, fontWeight: '600', letterSpacing: 1, textTransform: 'uppercase' }}>
             Temps Restant
           </Text>
         </View>
 
-        <View className="flex-row gap-3">
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'center', gap: 8 }}>
           {/* Days */}
-          <View className="flex-1">
-            <View className="h-14 bg-[#1A1A2E] rounded-xl border border-white/5 items-center justify-center mb-2">
-              <Text className="text-white text-xl font-bold">02</Text>
+          <View style={{ flex: 1 }}>
+            <View style={{
+              height: 64,
+              backgroundColor: 'rgba(26, 26, 46, 0.8)',
+              borderRadius: 16,
+              borderWidth: 1,
+              borderColor: 'rgba(139, 92, 246, 0.15)',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 8
+            }}>
+              <Text style={{ color: 'white', fontSize: 28, fontWeight: '700' }}>02</Text>
             </View>
-            <Text className="text-gray-500 text-xs text-center font-medium">Jours</Text>
+            <Text style={{ color: '#6B7280', fontSize: 11, textAlign: 'center', fontWeight: '500' }}>Jours</Text>
           </View>
+
+          <Text style={{ color: '#4B5563', fontSize: 24, fontWeight: '600', marginBottom: 20 }}>:</Text>
 
           {/* Hours */}
-          <View className="flex-1">
-            <View className="h-14 bg-[#1A1A2E] rounded-xl border border-white/5 items-center justify-center mb-2">
-              <Text className="text-white text-xl font-bold">04</Text>
+          <View style={{ flex: 1 }}>
+            <View style={{
+              height: 64,
+              backgroundColor: 'rgba(26, 26, 46, 0.8)',
+              borderRadius: 16,
+              borderWidth: 1,
+              borderColor: 'rgba(139, 92, 246, 0.15)',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 8
+            }}>
+              <Text style={{ color: 'white', fontSize: 28, fontWeight: '700' }}>04</Text>
             </View>
-            <Text className="text-gray-500 text-xs text-center font-medium">Heures</Text>
+            <Text style={{ color: '#6B7280', fontSize: 11, textAlign: 'center', fontWeight: '500' }}>Heures</Text>
           </View>
+
+          <Text style={{ color: '#4B5563', fontSize: 24, fontWeight: '600', marginBottom: 20 }}>:</Text>
 
           {/* Minutes */}
-          <View className="flex-1">
-            <View className="h-14 bg-[#1A1A2E] rounded-xl border border-white/5 items-center justify-center mb-2">
-              <Text className="text-white text-xl font-bold">15</Text>
+          <View style={{ flex: 1 }}>
+            <View style={{
+              height: 64,
+              backgroundColor: 'rgba(26, 26, 46, 0.8)',
+              borderRadius: 16,
+              borderWidth: 1,
+              borderColor: 'rgba(139, 92, 246, 0.15)',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 8
+            }}>
+              <Text style={{ color: 'white', fontSize: 28, fontWeight: '700' }}>15</Text>
             </View>
-            <Text className="text-gray-500 text-xs text-center font-medium">Mn</Text>
+            <Text style={{ color: '#6B7280', fontSize: 11, textAlign: 'center', fontWeight: '500' }}>Min</Text>
           </View>
 
+          <Text style={{ color: '#4B5563', fontSize: 24, fontWeight: '600', marginBottom: 20 }}>:</Text>
+
           {/* Seconds */}
-          <View className="flex-1">
-            <View className="h-14 bg-[#1A1A2E] rounded-xl border border-white/5 items-center justify-center mb-2">
-              <Text className="text-white text-xl font-bold">32</Text>
+          <View style={{ flex: 1 }}>
+            <View style={{
+              height: 64,
+              backgroundColor: 'rgba(26, 26, 46, 0.8)',
+              borderRadius: 16,
+              borderWidth: 1,
+              borderColor: 'rgba(139, 92, 246, 0.15)',
+              alignItems: 'center',
+              justifyContent: 'center',
+              marginBottom: 8
+            }}>
+              <Text style={{ color: 'white', fontSize: 28, fontWeight: '700' }}>32</Text>
             </View>
-            <Text className="text-gray-500 text-xs text-center font-medium">Sec</Text>
+            <Text style={{ color: '#6B7280', fontSize: 11, textAlign: 'center', fontWeight: '500' }}>Sec</Text>
           </View>
         </View>
       </View>
 
       {/* Level Progress Card */}
-      <View className="px-4 mb-6">
+      <View style={{ paddingHorizontal: 20, marginBottom: 24 }}>
         <LinearGradient
-          colors={["#261834", "#1e122a"]}
-          className="rounded-2xl p-4 border border-white/5 flex-row items-center gap-4 relative overflow-hidden"
+          colors={["#2A1B3D", "#1E1429"]}
+          style={{
+            borderRadius: 20,
+            padding: 20,
+            borderWidth: 1,
+            borderColor: 'rgba(139, 92, 246, 0.2)',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 16,
+            position: 'relative',
+            overflow: 'hidden',
+          }}
         >
           {/* Decorative glow */}
-          <View className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-purple-600/10 rounded-full blur-2xl" />
+          <View style={{
+            position: 'absolute',
+            top: -20,
+            right: -20,
+            width: 100,
+            height: 100,
+            backgroundColor: 'rgba(139, 92, 246, 0.15)',
+            borderRadius: 50,
+          }} />
 
-          <View className="flex-1 z-10">
-            <View className="mb-3 pr-2">
-              <Text className="text-white text-base font-bold mb-1" numberOfLines={1} adjustsFontSizeToFit>
+          <View style={{ flex: 1, zIndex: 10 }}>
+            <View style={{ marginBottom: 12, paddingRight: 8 }}>
+              <Text style={{ color: 'white', fontSize: 17, fontWeight: '700', marginBottom: 4 }} numberOfLines={1}>
                 Niveau 4: Casanova en herbe
               </Text>
-              <Text className="text-purple-400 text-sm font-medium">
+              <Text style={{ color: '#A78BFA', fontSize: 14, fontWeight: '600' }}>
                 450 / 1000 XP
               </Text>
             </View>
 
             {/* Progress Bar */}
-            <View className="h-2 bg-[#362249] rounded-full overflow-hidden mb-2">
+            <View style={{
+              height: 8,
+              backgroundColor: 'rgba(54, 34, 73, 0.8)',
+              borderRadius: 4,
+              overflow: 'hidden',
+              marginBottom: 12,
+            }}>
               <LinearGradient
                 colors={["#8B5CF6", "#A78BFA"]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 0 }}
-                style={{ width: "45%", height: "100%" }}
+                style={{ width: "45%", height: "100%", borderRadius: 4 }}
               />
             </View>
 
-            <Pressable className="flex-row items-center gap-1 self-start">
-              <Text className="text-gray-400 text-xs font-medium">Voir les rangs</Text>
+            <Pressable style={{ flexDirection: 'row', alignItems: 'center', gap: 6, alignSelf: 'flex-start' }}>
+              <Text style={{ color: '#9CA3AF', fontSize: 13, fontWeight: '500' }}>Voir les rangs</Text>
               <MaterialCommunityIcons name="arrow-right" size={14} color="#9CA3AF" />
             </Pressable>
           </View>
 
-          {/* Badge Placeholder */}
-           <View className="w-16 h-16 bg-[#362249] rounded-full border-2 border-[#4A3260] items-center justify-center shadow-lg">
-             <MaterialCommunityIcons name="shield-star" size={32} color="#FBBF24" />
-           </View>
+          {/* Badge */}
+          <View style={{
+            width: 64,
+            height: 64,
+            backgroundColor: 'rgba(54, 34, 73, 0.9)',
+            borderRadius: 32,
+            borderWidth: 2,
+            borderColor: 'rgba(139, 92, 246, 0.4)',
+            alignItems: 'center',
+            justifyContent: 'center',
+            shadowColor: '#8B5CF6',
+            shadowOffset: { width: 0, height: 0 },
+            shadowOpacity: 0.3,
+            shadowRadius: 8,
+          }}>
+            <MaterialCommunityIcons name="shield-star" size={32} color="#FBBF24" />
+          </View>
         </LinearGradient>
       </View>
 
       {/* Filter Chips */}
-      <View className="pl-4 mb-6">
-        <ScrollView horizontal showsHorizontalScrollIndicator={false} className="gap-3 pr-4">
-          <Pressable className="flex-row items-center gap-2 bg-[#8B5CF6] h-9 px-4 rounded-full shadow-lg shadow-purple-500/20">
+      <View style={{ paddingLeft: 20, marginBottom: 20 }}>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ gap: 10, paddingRight: 20 }}>
+          <Pressable style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 8,
+            backgroundColor: '#8B5CF6',
+            height: 40,
+            paddingHorizontal: 18,
+            borderRadius: 20,
+            shadowColor: '#8B5CF6',
+            shadowOffset: { width: 0, height: 4 },
+            shadowOpacity: 0.3,
+            shadowRadius: 8,
+          }}>
             <MaterialCommunityIcons name="calendar-today" size={16} color="white" />
-            <Text className="text-white text-sm font-bold">Hebdo</Text>
+            <Text style={{ color: 'white', fontSize: 14, fontWeight: '600' }}>Hebdo</Text>
           </Pressable>
 
-          <Pressable className="flex-row items-center gap-2 bg-[#2d1b3e] h-9 px-4 rounded-full border border-white/5">
-            <MaterialCommunityIcons name="weather-sunny" size={16} color="#CBD5E1" />
-            <Text className="text-slate-300 text-sm font-medium">Quotidien</Text>
+          <Pressable style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 8,
+            backgroundColor: 'rgba(45, 27, 62, 0.8)',
+            height: 40,
+            paddingHorizontal: 18,
+            borderRadius: 20,
+            borderWidth: 1,
+            borderColor: 'rgba(255, 255, 255, 0.08)',
+          }}>
+            <MaterialCommunityIcons name="weather-sunny" size={16} color="#9CA3AF" />
+            <Text style={{ color: '#9CA3AF', fontSize: 14, fontWeight: '500' }}>Quotidien</Text>
           </Pressable>
 
-          <Pressable className="flex-row items-center gap-2 bg-[#2d1b3e] h-9 px-4 rounded-full border border-white/5">
-            <MaterialCommunityIcons name="infinity" size={16} color="#CBD5E1" />
-             <Text className="text-slate-300 text-sm font-medium">Total</Text>
+          <Pressable style={{
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 8,
+            backgroundColor: 'rgba(45, 27, 62, 0.8)',
+            height: 40,
+            paddingHorizontal: 18,
+            borderRadius: 20,
+            borderWidth: 1,
+            borderColor: 'rgba(255, 255, 255, 0.08)',
+          }}>
+            <MaterialCommunityIcons name="infinity" size={16} color="#9CA3AF" />
+            <Text style={{ color: '#9CA3AF', fontSize: 14, fontWeight: '500' }}>Total</Text>
           </Pressable>
         </ScrollView>
       </View>
 
       {/* Challenges List */}
-      <View className="px-4 gap-3">
-        {/* Challenge 1 */}
-        <View className="bg-[#1A1A2E] rounded-xl p-4 border border-white/5 flex-row items-center gap-4">
-          <View className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 items-center justify-center">
+      <View style={{ paddingHorizontal: 20, gap: 12 }}>
+        {/* Challenge 1 - In Progress */}
+        <View style={{
+          backgroundColor: 'rgba(26, 26, 46, 0.9)',
+          borderRadius: 16,
+          padding: 16,
+          borderWidth: 1,
+          borderColor: 'rgba(139, 92, 246, 0.15)',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 14,
+        }}>
+          <View style={{
+            width: 48,
+            height: 48,
+            borderRadius: 14,
+            backgroundColor: 'rgba(139, 92, 246, 0.12)',
+            borderWidth: 1,
+            borderColor: 'rgba(139, 92, 246, 0.25)',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
             <MaterialCommunityIcons name="broom" size={24} color="#8B5CF6" />
           </View>
 
-          <View className="flex-1">
-            <View className="flex-row items-center gap-2 mb-1">
-              <Text className="text-white text-base font-bold">Relance Propre</Text>
-              <View className="bg-purple-500/20 px-1.5 py-0.5 rounded">
-                <Text className="text-purple-400 text-[10px] font-bold">+50 PTS</Text>
+          <View style={{ flex: 1 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+              <Text style={{ color: 'white', fontSize: 15, fontWeight: '600' }}>Relance Propre</Text>
+              <View style={{
+                backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                paddingHorizontal: 8,
+                paddingVertical: 3,
+                borderRadius: 6,
+              }}>
+                <Text style={{ color: '#A78BFA', fontSize: 10, fontWeight: '700' }}>+50 PTS</Text>
               </View>
             </View>
-            <Text className="text-gray-400 text-sm" numberOfLines={1}>
+            <Text style={{ color: '#6B7280', fontSize: 13 }} numberOfLines={1}>
               Relancer après 3 jours de silence
             </Text>
           </View>
 
-          <View className="items-end gap-1">
-             <Text className="text-white text-sm font-bold">1 / 3</Text>
-             <View className="w-16 h-1.5 bg-[#362249] rounded-full overflow-hidden">
-                <View className="h-full bg-[#8B5CF6] w-1/3" />
-             </View>
+          <View style={{ alignItems: 'flex-end', gap: 6 }}>
+            <Text style={{ color: 'white', fontSize: 14, fontWeight: '700' }}>1 / 3</Text>
+            <View style={{
+              width: 56,
+              height: 5,
+              backgroundColor: 'rgba(54, 34, 73, 0.8)',
+              borderRadius: 3,
+              overflow: 'hidden',
+            }}>
+              <View style={{ height: '100%', width: '33%', backgroundColor: '#8B5CF6', borderRadius: 3 }} />
+            </View>
           </View>
         </View>
 
-        {/* Challenge 2 */}
-        <View className="bg-[#1A1A2E] rounded-xl p-4 border border-white/5 flex-row items-center gap-4">
-          <View className="w-12 h-12 rounded-xl bg-purple-500/10 border border-purple-500/20 items-center justify-center">
+        {/* Challenge 2 - Not Started */}
+        <View style={{
+          backgroundColor: 'rgba(26, 26, 46, 0.9)',
+          borderRadius: 16,
+          padding: 16,
+          borderWidth: 1,
+          borderColor: 'rgba(255, 255, 255, 0.05)',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 14,
+        }}>
+          <View style={{
+            width: 48,
+            height: 48,
+            borderRadius: 14,
+            backgroundColor: 'rgba(139, 92, 246, 0.12)',
+            borderWidth: 1,
+            borderColor: 'rgba(139, 92, 246, 0.25)',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
             <MaterialCommunityIcons name="calendar-check" size={24} color="#8B5CF6" />
           </View>
 
-          <View className="flex-1">
-            <View className="flex-row items-center gap-2 mb-1">
-              <Text className="text-white text-base font-bold">Date Proposée</Text>
-              <View className="bg-purple-500/20 px-1.5 py-0.5 rounded">
-                <Text className="text-purple-400 text-[10px] font-bold">+100 PTS</Text>
+          <View style={{ flex: 1 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+              <Text style={{ color: 'white', fontSize: 15, fontWeight: '600' }}>Date Proposée</Text>
+              <View style={{
+                backgroundColor: 'rgba(139, 92, 246, 0.2)',
+                paddingHorizontal: 8,
+                paddingVertical: 3,
+                borderRadius: 6,
+              }}>
+                <Text style={{ color: '#A78BFA', fontSize: 10, fontWeight: '700' }}>+100 PTS</Text>
               </View>
             </View>
-            <Text className="text-gray-400 text-sm" numberOfLines={1}>
+            <Text style={{ color: '#6B7280', fontSize: 13 }} numberOfLines={1}>
               Proposer un rendez-vous avec confiance
             </Text>
           </View>
 
-          <View className="items-end gap-1">
-             <Text className="text-white text-sm font-bold">0 / 1</Text>
-             <View className="w-16 h-1.5 bg-[#362249] rounded-full overflow-hidden">
-                <View className="h-full bg-white/10 w-0" />
-             </View>
+          <View style={{ alignItems: 'flex-end', gap: 6 }}>
+            <Text style={{ color: 'white', fontSize: 14, fontWeight: '700' }}>0 / 1</Text>
+            <View style={{
+              width: 56,
+              height: 5,
+              backgroundColor: 'rgba(54, 34, 73, 0.8)',
+              borderRadius: 3,
+              overflow: 'hidden',
+            }}>
+              <View style={{ height: '100%', width: '0%', backgroundColor: 'rgba(255,255,255,0.1)', borderRadius: 3 }} />
+            </View>
           </View>
         </View>
 
-        {/* Challenge 3: Completed */}
-        <View className="bg-[#1A1A2E]/50 rounded-xl p-4 border border-white/5 flex-row items-center gap-4 opacity-70">
-          <View className="w-12 h-12 rounded-xl bg-emerald-500/10 border border-emerald-500/20 items-center justify-center">
+        {/* Challenge 3 - Completed */}
+        <View style={{
+          backgroundColor: 'rgba(26, 26, 46, 0.5)',
+          borderRadius: 16,
+          padding: 16,
+          borderWidth: 1,
+          borderColor: 'rgba(52, 211, 153, 0.15)',
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 14,
+          opacity: 0.85,
+        }}>
+          <View style={{
+            width: 48,
+            height: 48,
+            borderRadius: 14,
+            backgroundColor: 'rgba(52, 211, 153, 0.12)',
+            borderWidth: 1,
+            borderColor: 'rgba(52, 211, 153, 0.25)',
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
             <MaterialCommunityIcons name="check-circle" size={24} color="#34D399" />
           </View>
 
-          <View className="flex-1">
-            <View className="flex-row items-center gap-2 mb-1">
-               <Text className="text-gray-300 text-base font-bold line-through decoration-gray-500">
-                 Première Impression
-               </Text>
+          <View style={{ flex: 1 }}>
+            <View style={{ flexDirection: 'row', alignItems: 'center', gap: 8, marginBottom: 4 }}>
+              <Text style={{ color: '#9CA3AF', fontSize: 15, fontWeight: '600', textDecorationLine: 'line-through' }}>
+                Première Impression
+              </Text>
             </View>
-            <Text className="text-gray-500 text-sm">Complété</Text>
+            <Text style={{ color: '#6B7280', fontSize: 13 }}>Complété</Text>
           </View>
 
-          <View>
-             <View className="bg-emerald-500/10 px-3 py-1.5 rounded-lg border border-emerald-500/20">
-               <Text className="text-emerald-400 text-xs font-bold">Réclamé</Text>
-             </View>
+          <View style={{
+            backgroundColor: 'rgba(52, 211, 153, 0.12)',
+            paddingHorizontal: 12,
+            paddingVertical: 6,
+            borderRadius: 8,
+            borderWidth: 1,
+            borderColor: 'rgba(52, 211, 153, 0.25)',
+          }}>
+            <Text style={{ color: '#34D399', fontSize: 12, fontWeight: '700' }}>Réclamé</Text>
           </View>
         </View>
       </View>
 
       {/* Privacy Footer */}
-      <View className="px-8 py-6 items-center">
-        <View className="flex-row items-center gap-2 bg-[#2d1b3e] px-3 py-1.5 rounded-full border border-white/5">
+      <View style={{ paddingHorizontal: 32, paddingVertical: 24, alignItems: 'center' }}>
+        <View style={{
+          flexDirection: 'row',
+          alignItems: 'center',
+          gap: 8,
+          backgroundColor: 'rgba(45, 27, 62, 0.6)',
+          paddingHorizontal: 14,
+          paddingVertical: 8,
+          borderRadius: 20,
+          borderWidth: 1,
+          borderColor: 'rgba(255, 255, 255, 0.05)',
+        }}>
           <MaterialCommunityIcons name="lock" size={12} color="#64748B" />
-          <Text className="text-slate-500 text-xs font-medium">
+          <Text style={{ color: '#64748B', fontSize: 11, fontWeight: '500' }}>
             Confidentialité absolue : vos données ne sont pas partagées.
           </Text>
         </View>

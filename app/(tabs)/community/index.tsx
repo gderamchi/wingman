@@ -135,12 +135,18 @@ export default function CommunityFeedScreen() {
                 <ActivityIndicator color="#8B5CF6" />
               </View>
             ) : posts.length === 0 ? (
-              <View style={[styles.centerLoading, { flex: 1, justifyContent: 'center' }]}>
-                <View style={styles.emptyIconContainer}>
-                  <Ionicons name="chatbubbles-outline" size={40} color="#8B5CF6" />
+              <View style={styles.emptyStateContainer}>
+                <View style={styles.emptyIconWrapper}>
+                  <View style={styles.emptyIconContainer}>
+                    <Ionicons name="chatbubbles-outline" size={36} color="#8B5CF6" />
+                  </View>
+                  <View style={styles.emptyIconGlow} />
                 </View>
-                <Text style={styles.emptyText}>
+                <Text style={styles.emptyTitle}>
                   {t("community.emptyFeed")}
+                </Text>
+                <Text style={styles.emptySubtitle}>
+                  Partage tes expériences avec la communauté
                 </Text>
               </View>
             ) : (
@@ -190,12 +196,10 @@ function TabButton({
   return (
     <Pressable
       onPress={onPress}
-      style={[
+      style={({ pressed }) => [
         styles.tabButton,
-        isActive && {
-          backgroundColor: 'rgba(139, 92, 246, 0.1)',
-          borderColor: 'rgba(139, 92, 246, 0.3)'
-        }
+        isActive && styles.tabButtonActive,
+        pressed && { opacity: 0.8 }
       ]}
     >
       <Text
@@ -206,6 +210,7 @@ function TabButton({
       >
         {label}
       </Text>
+      {isActive && <View style={styles.tabIndicatorGlow} />}
     </Pressable>
   );
 }
@@ -240,31 +245,43 @@ const styles = StyleSheet.create({
     gap: 12,
   },
   tabButton: {
-    paddingVertical: 8,
-    paddingHorizontal: 16,
-    borderRadius: 20,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    borderRadius: 24,
+    position: 'relative' as const,
+    overflow: 'hidden' as const,
+  },
+  tabButtonActive: {
+    backgroundColor: 'rgba(139, 92, 246, 0.15)',
     borderWidth: 1,
-    borderColor: 'transparent',
+    borderColor: 'rgba(139, 92, 246, 0.3)',
   },
   tabText: {
     fontSize: 15,
-    fontWeight: "600",
+    fontWeight: "600" as const,
     color: "#9CA3AF",
   },
   tabTextActive: {
     color: "white",
+    textShadowColor: 'rgba(139, 92, 246, 0.5)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 8,
   },
   tabTextInactive: {
-    color: "#9CA3AF",
+    color: "#6B7280",
   },
-  tabIndicator: {
-    // Hidden for capsule style, handled by active background in Logic if needed,
-    // but here we used underline originally. Let's switch to a capsule bg style in the component render logic or just keep text style.
-    // Actually, let's keep it simple for now and just remove the underline indicator styling if we want pure text or pill.
-    // For "premium", let's use a bottom border that is glowing or just the text change.
-    // Let's stick to the text change + subtle glow for active.
-    height: 0,
-    width: 0,
+  tabIndicatorGlow: {
+    position: 'absolute' as const,
+    bottom: 0,
+    left: '20%',
+    right: '20%',
+    height: 2,
+    backgroundColor: '#8B5CF6',
+    borderRadius: 1,
+    shadowColor: '#8B5CF6',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.8,
+    shadowRadius: 6,
   },
   filterScrollView: {
     maxHeight: 40,
@@ -305,18 +322,50 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 48,
   },
+  emptyStateContainer: {
+    alignItems: "center" as const,
+    paddingVertical: 80,
+    paddingHorizontal: 32,
+  },
+  emptyIconWrapper: {
+    position: 'relative' as const,
+    marginBottom: 20,
+  },
   emptyIconContainer: {
-    width: 80,
-    height: 80,
-    backgroundColor: "rgba(139, 92, 246, 0.1)", // bg-primary/10
-    borderRadius: 40,
-    alignItems: "center",
-    justifyContent: "center",
-    marginBottom: 16,
+    width: 72,
+    height: 72,
+    backgroundColor: "rgba(139, 92, 246, 0.15)",
+    borderRadius: 36,
+    alignItems: "center" as const,
+    justifyContent: "center" as const,
+    borderWidth: 1,
+    borderColor: "rgba(139, 92, 246, 0.25)",
+  },
+  emptyIconGlow: {
+    position: 'absolute' as const,
+    top: -8,
+    left: -8,
+    right: -8,
+    bottom: -8,
+    backgroundColor: 'rgba(139, 92, 246, 0.1)',
+    borderRadius: 48,
+    zIndex: -1,
+  },
+  emptyTitle: {
+    color: "white",
+    fontSize: 16,
+    fontWeight: "600" as const,
+    textAlign: "center" as const,
+    marginBottom: 8,
+  },
+  emptySubtitle: {
+    color: "#6B7280",
+    fontSize: 14,
+    textAlign: "center" as const,
   },
   emptyText: {
-    color: "#9CA3AF", // text-gray-400
-    textAlign: "center",
+    color: "#9CA3AF",
+    textAlign: "center" as const,
   },
   placeholderContainer: {
     flex: 1,

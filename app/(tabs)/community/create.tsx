@@ -9,6 +9,7 @@ import {
     KeyboardAvoidingView,
     Platform,
     Pressable,
+    ScrollView,
     StyleSheet,
     Switch,
     Text,
@@ -62,7 +63,12 @@ export default function CreatePostScreen() {
         <View style={{ width: 40 }} />
       </View>
 
-      <View style={styles.content}>
+      <ScrollView
+        style={styles.content}
+        contentContainerStyle={styles.contentContainer}
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled"
+      >
         {/* Content input */}
         <View style={styles.inputContainer}>
           <Text style={styles.label}>
@@ -130,7 +136,7 @@ export default function CreatePostScreen() {
             et ce que tu veux accomplir.
           </Text>
         </View>
-      </View>
+      </ScrollView>
 
       {/* Submit button */}
       <View style={styles.footer}>
@@ -193,7 +199,10 @@ const styles = StyleSheet.create({
   },
   content: {
     flex: 1,
+  },
+  contentContainer: {
     paddingHorizontal: 24,
+    paddingBottom: 20,
   },
   inputContainer: {
     marginBottom: 24,
