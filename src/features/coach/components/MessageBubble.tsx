@@ -9,13 +9,15 @@ import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { CoachMessage, MessageAttachment } from '../types';
 import { MarkdownText } from './MarkdownText';
+import { MessageFeedback } from './MessageFeedback';
 
 interface MessageBubbleProps {
   message: CoachMessage;
   onAttachmentPress?: (attachment: MessageAttachment) => void;
+  onFeedback?: (rating: 'helpful' | 'not_helpful') => void;
 }
 
-export function MessageBubble({ message, onAttachmentPress }: MessageBubbleProps) {
+export function MessageBubble({ message, onAttachmentPress, onFeedback }: MessageBubbleProps) {
   const isUser = message.role === 'user';
   const hasAttachments = message.attachments && message.attachments.length > 0;
 
@@ -43,38 +45,48 @@ export function MessageBubble({ message, onAttachmentPress }: MessageBubbleProps
         </View>
       )}
 
-      <View style={[styles.bubble, isUser ? styles.userBubble : styles.coachBubble]}>
-        {/* Image attachments */}
-        {hasAttachments && (
-          <View style={styles.attachmentsContainer}>
-            {message.attachments!.map((attachment) => (
-              <Pressable
-                key={attachment.id}
-                onPress={() => onAttachmentPress?.(attachment)}
-                style={styles.attachmentWrapper}
-              >
-                <Image source={{ uri: attachment.uri }} style={styles.attachmentImage} />
-                <View style={styles.attachmentOverlay}>
-                  <Ionicons name="image" size={12} color="white" />
-                  <Text style={styles.attachmentLabel}>Capture</Text>
-                </View>
-              </Pressable>
-            ))}
-          </View>
-        )}
+      <View style={{ maxWidth: '75%' }}>
+          <View style={[styles.bubble, isUser ? styles.userBubble : styles.coachBubble]}>
+            {/* Image attachments */}
+            {hasAttachments && (
+              <View style={styles.attachmentsContainer}>
+                {message.attachments!.map((attachment) => (
+                  <Pressable
+                    key={attachment.id}
+                    onPress={() => onAttachmentPress?.(attachment)}
+                    style={styles.attachmentWrapper}
+                  >
+                    <Image source={{ uri: attachment.uri }} style={styles.attachmentImage} />
+                    <View style={styles.attachmentOverlay}>
+                      <Ionicons name="image" size={12} color="white" />
+                      <Text style={styles.attachmentLabel}>Capture</Text>
+                    </View>
+                  </Pressable>
+                ))}
+              </View>
+            )}
 
-        {/* Text content */}
-        {textContent && (
-          isUser ? (
-            <Text style={[styles.text, styles.userText]}>
-              {textContent}
-            </Text>
-          ) : (
-            <MarkdownText style={styles.coachText}>
-              {textContent}
-            </MarkdownText>
-          )
-        )}
+            {/* Text content */}
+            {textContent && (
+              isUser ? (
+                <Text style={[styles.text, styles.userText]}>
+                  {textContent}
+                </Text>
+              ) : (
+                <MarkdownText style={styles.coachText}>
+                  {textContent}
+                </MarkdownText>
+              )
+            )}
+          </View>
+
+          {/* Feedback */}
+          {!isUser && onFeedback && (
+            <MessageFeedback
+               feedback={message.feedback}
+               onFeedback={onFeedback}
+            />
+          )}
       </View>
 
       {/* User avatar */}
@@ -119,7 +131,7 @@ const styles = StyleSheet.create({
     opacity: 0.5,
   },
   bubble: {
-    maxWidth: '75%',
+    width: '100%',
     borderRadius: 16,
     paddingHorizontal: 16,
     paddingVertical: 12,

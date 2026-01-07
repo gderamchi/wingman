@@ -26,6 +26,7 @@ import {
     ChatInputBar,
     CoachCard,
     MessageBubble,
+    MessageFeedback,
     ReplyCard,
     ShimmerLoader,
     useActiveThread,
@@ -52,6 +53,7 @@ export default function CoachChatScreen() {
     setPendingAttachment,
     clearPendingAttachment,
     createThread,
+    submitFeedback,
   } = useCoachStore();
 
   useEffect(() => {
@@ -127,6 +129,24 @@ export default function CoachChatScreen() {
 
     return (
       <View style={styles.structuredContainer}>
+        {/* Language & Platform Badge */}
+        {structured.detectedLanguage && (
+          <View style={styles.badgeContainer}>
+             <View style={styles.badge}>
+                <Text style={styles.badgeText}>
+                   {structured.detectedLanguage.toUpperCase()}
+                </Text>
+             </View>
+             {structured.detectedPlatform && (
+                <View style={styles.badge}>
+                   <Text style={styles.badgeText}>
+                      {structured.detectedPlatform.charAt(0).toUpperCase() + structured.detectedPlatform.slice(1)}
+                   </Text>
+                </View>
+             )}
+          </View>
+        )}
+
         {/* 1. Context Summary Card */}
         {structured.contextSummary && (
           <CoachCard
@@ -174,6 +194,14 @@ export default function CoachChatScreen() {
             ))}
           </View>
         )}
+
+        {/* Global Feedback for Structured Analysis */}
+        <View style={styles.feedbackContainer}>
+            <MessageFeedback
+               feedback={message.feedback}
+               onFeedback={(rating) => submitFeedback(message.id, rating)}
+            />
+        </View>
       </View>
     );
   };
@@ -183,7 +211,10 @@ export default function CoachChatScreen() {
 
     return (
       <View>
-        <MessageBubble message={item} />
+        <MessageBubble
+           message={item}
+           onFeedback={(rating) => submitFeedback(item.id, rating)}
+        />
         {isStructured && renderMessageContent(item)}
       </View>
     );
@@ -373,5 +404,29 @@ const styles = StyleSheet.create({
      flexDirection: 'row',
      flexWrap: 'wrap',
      gap: 8,
+  },
+  badgeContainer: {
+     flexDirection: 'row',
+     gap: 8,
+     marginHorizontal: 16,
+     marginBottom: 8,
+  },
+  badge: {
+     backgroundColor: 'rgba(139, 92, 246, 0.1)',
+     paddingHorizontal: 8,
+     paddingVertical: 4,
+     borderRadius: 6,
+     borderWidth: 1,
+     borderColor: 'rgba(139, 92, 246, 0.3)',
+  },
+  badgeText: {
+     color: '#A78BFA',
+     fontSize: 10,
+     fontWeight: '700',
+  },
+  feedbackContainer: {
+     marginHorizontal: 16,
+     marginTop: 8,
+     marginBottom: 16,
   }
 });

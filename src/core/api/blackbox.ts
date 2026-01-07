@@ -1,5 +1,6 @@
-import { ChatCompletionRequest, ChatCompletionResponse, Message } from './types';
-export type { Message };
+import { buildAnalysisPrompt, parseStructuredResponse } from '@/src/features/coach/stores/coachPrompts';
+import { AnalysisContext, AnalysisResult, ChatCompletionRequest, ChatCompletionResponse, Message } from './types';
+export type { AnalysisContext, AnalysisResult, Message, ReplySuggestion } from './types';
 
 export class BlackboxAIClient {
   private apiKey: string;
@@ -130,6 +131,69 @@ export class BlackboxAIClient {
     }
     // Existing implementation logic would go here
      return "Refine not implemented in this snippet";
+  }
+
+  /**
+   * Builds the system prompt using the shared coach prompts
+   */
+  buildSystemPrompt(context: AnalysisContext): string {
+    // We map AnalysisContext to the params expected by buildAnalysisPrompt
+    // Note: Defaulting missing params for now
+    return buildAnalysisPrompt(
+        { goal: context.goal, style: context.style }, // metadata
+        {
+          useEmojis: true,
+          replyLength: 'medium',
+          defaultTone: 'playful',
+          interfaceLanguage: 'fr'
+        }, // preferences
+        '', // ragContext
+        '', // principles
+        context.additionalContext // platformContext
+    );
+  }
+
+  /**
+   * Builds the user message content with the image
+   */
+  buildUserMessage(imageBase64: string, context: AnalysisContext): any[] {
+      const userInstructions = context.userQuestion
+        ? `\nQUESTION SPÉCIFIQUE DE L'UTILISATEUR: "${context.userQuestion}"`
+        : "";
+
+      return [
+        {
+          type: "text",
+          text: `Analyse cette conversation.${userInstructions}`
+        },
+        {
+          type: "image_url",
+          image_url: {
+            url: `data:image/jpeg;base64,${imageBase64}`
+          }
+        }
+      ];
+  }
+
+  /**
+   * Parses the AI response
+   */
+  parseAnalysisResponse(content: string): AnalysisResult | null {
+      const parsed = parseStructuredResponse(content);
+      if (!parsed) return null;
+
+      // Adapt StructuredCoachResponse to AnalysisResult
+      return {
+          detectedPlatform: parsed.detectedPlatform,
+          summary: parsed.contextSummary.summary,
+          dynamic: parsed.contextSummary.dynamic,
+          risk: parsed.contextSummary.mainRisk,
+          suggestions: (parsed.replySuggestions || []).map(s => ({
+              text: s.text,
+              explanation: s.whyItWorks,
+              tone: s.tone
+          }))
+      } as unknown as AnalysisResult;
   }
 }
 

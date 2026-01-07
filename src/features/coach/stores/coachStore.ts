@@ -15,6 +15,7 @@ import type {
     CoachStoreState,
     CoachThread,
     MessageAttachment,
+    UserFeedback,
     UserPreferences
 } from '../types';
 import { buildAnalysisPrompt, buildCoachSystemPrompt, parseStructuredResponse } from './coachPrompts';
@@ -35,6 +36,7 @@ interface CoachStoreActions {
   // Messaging
   sendMessage: (content: string) => Promise<void>;
   sendImageForAnalysis: (imageBase64: string, imageUri: string, userComment?: string) => Promise<void>;
+  submitFeedback: (messageId: string, rating: 'helpful' | 'not_helpful', reason?: string) => Promise<void>;
 
   // Attachments
   setPendingAttachment: (attachment: MessageAttachment | null) => void;
@@ -54,6 +56,7 @@ const DEFAULT_PREFERENCES: UserPreferences = {
   defaultTone: 'playful',
   replyLength: 'medium',
   useEmojis: true,
+  interfaceLanguage: 'fr',
 };
 
 export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, get) => ({
@@ -382,6 +385,32 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
       pendingAttachment: null,
       preferences: DEFAULT_PREFERENCES,
     });
+  },
+
+  submitFeedback: async (messageId: string, rating: 'helpful' | 'not_helpful', reason?: string) => {
+    const { threads, activeThreadId } = get();
+    const thread = threads.find((t) => t.id === activeThreadId);
+    if (!thread) return;
+
+    const feedback: UserFeedback = {
+      rating,
+      reason,
+      createdAt: new Date().toISOString(),
+    };
+
+    const updatedMessages = thread.messages.map((m) =>
+      m.id === messageId ? { ...m, feedback } : m
+    );
+
+    const updatedThread = { ...thread, messages: updatedMessages };
+
+    // Update state
+    set({
+      threads: threads.map((t) => (t.id === thread.id ? updatedThread : t)),
+    });
+
+    // Persist
+    await storage.saveThread(updatedThread);
   },
 
   // Reset store (without clearing storage)

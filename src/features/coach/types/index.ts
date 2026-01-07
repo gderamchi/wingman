@@ -33,6 +33,14 @@ export interface CoachMessage {
   createdAt: string;
   /** Attachments (images) */
   attachments?: MessageAttachment[];
+  /** User feedback on this message */
+  feedback?: UserFeedback;
+}
+
+export interface UserFeedback {
+  rating: 'helpful' | 'not_helpful';
+  reason?: string;
+  createdAt: string;
 }
 
 export type MessageContent =
@@ -176,6 +184,8 @@ export interface UserPreferences {
   useEmojis: boolean;
   /** Custom preferences confirmed by user */
   customPreferences?: string[];
+  /** Interface language for advice (independent of conversation language) */
+  interfaceLanguage: 'fr' | 'en';
 }
 
 // ============================================================

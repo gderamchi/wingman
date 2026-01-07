@@ -88,7 +88,7 @@ const styles = StyleSheet.create({
     borderTopColor: 'rgba(255, 255, 255, 0.05)',
   },
   attachButton: {
-    marginBottom: 4,
+    marginBottom: 2,
   },
   attachButtonInner: {
     width: 40,
@@ -120,7 +120,7 @@ const styles = StyleSheet.create({
     textAlignVertical: 'center',
   },
   sendButton: {
-    marginBottom: 4,
+    marginBottom: 2,
   },
   sendButtonGradient: {
     width: 40,

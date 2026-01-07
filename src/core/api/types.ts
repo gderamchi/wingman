@@ -40,3 +40,27 @@ export interface ChatCompletionResponse {
     total_tokens: number;
   };
 }
+
+export interface ReplySuggestion {
+  id?: string;
+  text: string;
+  explanation?: string;
+  tone?: string;
+  whyItWorks?: string;
+}
+
+export interface AnalysisResult {
+  detectedPlatform?: string;
+  detectedLanguage?: string;
+  summary?: string;
+  dynamic?: string;
+  risk?: string;
+  suggestions: ReplySuggestion[];
+}
+
+export interface AnalysisContext {
+  goal: 'dating' | 'social' | 'professional';
+  style: 'playful' | 'direct' | 'empathetic';
+  additionalContext?: string;
+  userQuestion?: string;
+}
