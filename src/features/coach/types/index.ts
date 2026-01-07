@@ -55,6 +55,10 @@ export interface MessageAttachment {
 
 export interface StructuredCoachResponse {
   type: 'structured';
+  /** Detected platform from screenshot */
+  detectedPlatform?: DetectedPlatform;
+  /** Detected language from conversation */
+  detectedLanguage?: DetectedLanguage;
   /** Context analysis summary */
   contextSummary: ContextSummary;
   /** Clarification questions (max 3-5 per turn) */
@@ -64,6 +68,9 @@ export interface StructuredCoachResponse {
   /** Outcome tracking prompt */
   outcomePrompt?: OutcomePrompt;
 }
+
+export type DetectedPlatform = 'tinder' | 'whatsapp' | 'instagram' | 'bumble' | 'hinge' | 'sms' | 'other';
+export type DetectedLanguage = 'fr' | 'en' | 'es' | 'it' | 'other';
 
 export interface ContextSummary {
   /** Brief summary of the conversation dynamic (2-4 lines) */
@@ -93,10 +100,10 @@ export interface ClarificationQuestion {
   /** The question text */
   question: string;
   /** Quick-answer chip options */
-  chips: QuickChip[];
+  chips: QuickChipData[];
 }
 
-export interface QuickChip {
+export interface QuickChipData {
   id: string;
   label: string;
   /** Value sent when chip is tapped */
@@ -109,6 +116,8 @@ export interface ReadyReply {
   text: string;
   /** Tone indicator */
   tone: ReplyTone;
+  /** Principle IDs applied in this suggestion */
+  principleIds?: string[];
   /** Why this reply works (1 line) */
   whyItWorks: string;
   /** Risk to avoid (1 line) */

@@ -79,6 +79,17 @@ export function ReplyCard({ reply, index, isSelected, onSelect, onUse }: ReplyCa
           </View>
         </View>
 
+        {/* Principle Tags */}
+        {reply.principleIds && reply.principleIds.length > 0 && (
+          <View style={styles.principleContainer}>
+            {reply.principleIds.slice(0, 4).map((pid) => (
+              <View key={pid} style={styles.principleTag}>
+                <Text style={styles.principleText}>{pid}</Text>
+              </View>
+            ))}
+          </View>
+        )}
+
         {/* Reply text */}
         <Text style={[styles.replyText, isSelected && styles.selectedText]}>
           "{reply.text}"
@@ -228,5 +239,25 @@ const styles = StyleSheet.create({
     color: '#8B5CF6',
     fontSize: 14,
     fontWeight: '600',
+  },
+  principleContainer: {
+    flexDirection: 'row',
+    flexWrap: 'wrap',
+    gap: 6,
+    marginBottom: 10,
+  },
+  principleTag: {
+    backgroundColor: 'rgba(139, 92, 246, 0.15)',
+    paddingHorizontal: 8,
+    paddingVertical: 3,
+    borderRadius: 6,
+    borderWidth: 1,
+    borderColor: 'rgba(139, 92, 246, 0.3)',
+  },
+  principleText: {
+    color: '#C084FC',
+    fontSize: 10,
+    fontWeight: '700',
+    letterSpacing: 0.5,
   },
 });

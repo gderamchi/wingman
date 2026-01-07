@@ -1,6 +1,7 @@
 /**
  * Coach Prompts
  * AI prompt templates for structured coach behavior
+ * Enhanced with principle citation and platform context
  */
 
 import type { StructuredCoachResponse, ThreadMetadata, UserPreferences } from '../types';
@@ -12,7 +13,8 @@ export function buildCoachSystemPrompt(
   metadata: ThreadMetadata,
   preferences: UserPreferences,
   ragContext: string = '',
-  principles: string = ''
+  principles: string = '',
+  platformContext: string = ''
 ): string {
   const goalDescriptions: Record<string, string> = {
     dating: 'rencontres amoureuses et séduction',
@@ -35,13 +37,15 @@ CONTEXTE:
 
 ${principles}
 
+${platformContext}
+
 ${ragContext}
 
 RÈGLES DE BASE:
 1. Sois conversationnel et naturel
 2. Pose des questions de clarification si besoin (max 3-5 par tour)
 3. Propose des variantes de réponses quand demandé
-4. Explique brièvement pourquoi tes suggestions fonctionnent
+4. Explique brièvement pourquoi tes suggestions fonctionnent ET cite les principes appliqués [P01], [P05], etc.
 5. Réponds en français
 
 IMPORTANT: Tu es un coach, pas un robot. Incarne les principes du "STATE" (insolence, détachement, fun).`;
@@ -54,7 +58,8 @@ export function buildAnalysisPrompt(
   metadata: ThreadMetadata,
   preferences: UserPreferences,
   ragContext: string = '',
-  principles: string = ''
+  principles: string = '',
+  platformContext: string = ''
 ): string {
   const goalDescriptions: Record<string, string> = {
     dating: 'rencontres amoureuses et séduction',
@@ -77,28 +82,39 @@ CONTEXTE DE L'UTILISATEUR:
 
 ${principles}
 
+${platformContext}
+
 ${ragContext}
 
 INSTRUCTIONS - Après avoir analysé l'image:
 
-1. RÉSUMÉ DU CONTEXTE (2-4 lignes):
+1. DÉTECTION DE CONTEXTE:
+   - Identifie la plateforme (Tinder, WhatsApp, Instagram, SMS, autre)
+   - Identifie la langue de la conversation (FR, EN, ES, autre)
+
+2. RÉSUMÉ DU CONTEXTE (2-4 lignes):
    - Dynamique: qui investit le plus, niveau d'intérêt, tensions/objections
    - Stade: début, relance, ghost, après vu, proposition date, etc.
    - Risque principal: trop needy, trop froid, pas clair, etc.
 
-2. QUESTIONS DE CLARIFICATION (3-5 max):
+3. QUESTIONS DE CLARIFICATION (3-5 max):
    - Pose des questions utiles pour mieux conseiller
    - Propose des boutons rapides pour chaque question
    - Exemples: "On s'est déjà vus ?", "C'est un match récent ?", "Elle/il a ghost ?"
 
-3. SUGGESTIONS DE RÉPONSES (3-4):
+4. SUGGESTIONS DE RÉPONSES (3-4):
    - Texte prêt à envoyer
    - Variantes: soft ↔ direct, drôle ↔ sérieux
-   - Pour chaque: 1 ligne "pourquoi ça marche" + 1 risque à éviter
+   - Pour chaque:
+     • Liste des principes appliqués: [P01], [P05], [P12]
+     • 1 ligne "pourquoi ça marche"
+     • 1 risque à éviter
 
 RÉPONDS EN JSON avec cette structure:
 {
   "type": "structured",
+  "detectedPlatform": "tinder|whatsapp|instagram|sms|other",
+  "detectedLanguage": "fr|en|es|other",
   "contextSummary": {
     "summary": "résumé 2-4 lignes",
     "dynamic": "qui investit, intérêt, tensions",
@@ -121,7 +137,8 @@ RÉPONDS EN JSON avec cette structure:
       "id": "r1",
       "text": "Texte de la réponse",
       "tone": "playful|direct|soft|flirty|casual",
-      "whyItWorks": "Pourquoi cette réponse est efficace",
+      "principleIds": ["P01", "P05", "P12"],
+      "whyItWorks": "Pourquoi cette réponse est efficace + quels principes elle applique",
       "riskToAvoid": "Ce qu'il faut éviter avec cette approche"
     }
   ]
@@ -157,6 +174,8 @@ export function parseStructuredResponse(content: string): StructuredCoachRespons
     if (parsed.type === 'structured' || parsed.contextSummary) {
       return {
         type: 'structured',
+        detectedPlatform: parsed.detectedPlatform,
+        detectedLanguage: parsed.detectedLanguage,
         contextSummary: parsed.contextSummary,
         clarificationQuestions: parsed.clarificationQuestions,
         replySuggestions: parsed.replySuggestions,

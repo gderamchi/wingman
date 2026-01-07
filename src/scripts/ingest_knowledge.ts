@@ -12,6 +12,13 @@ const OUTPUT_DIR = path.join(__dirname, '../features/coach/data');
 const OUTPUT_FILE = path.join(OUTPUT_DIR, 'knowledge_base.json');
 const OCR_CACHE_FILE = path.join(DATA_DIR, 'ocr_cache.json');
 
+interface Principle {
+  id: string;           // P01, P02, etc.
+  text: string;         // Full principle text
+  shortName: string;    // Brief label for UI
+  category: 'style' | 'timing' | 'mindset' | 'content' | 'logistics';
+}
+
 interface Conversation {
   id: string;
   source: string;
@@ -23,24 +30,119 @@ interface Conversation {
   tags: string[];
 }
 
+interface PlatformContext {
+  name: string;
+  characteristics: string[];
+  commonMistakes: string[];
+}
+
 interface KnowledgeBase {
-  principles: string[];
+  principles: Principle[];
+  platforms: { [key: string]: PlatformContext };
   conversations: Conversation[];
   stats: {
     totalConversations: number;
+    totalPrinciples: number;
     sources: { [key: string]: number };
     generatedAt: string;
   };
 }
 
-// Parse principles from text file
-function parsePrinciples(text: string): string[] {
-  return text
+// Parse principles from text file into indexed objects
+function parsePrinciples(text: string): Principle[] {
+  const rawPrinciples = text
     .split('\n')
     .map(line => line.trim())
     .filter(line => line.startsWith('-'))
     .map(line => line.substring(1).trim())
-    .filter(line => line.length > 0);
+    .filter(line => line.length > 0 && !line.startsWith('----')); // Skip dividers
+
+  return rawPrinciples.map((text, index) => {
+    const id = `P${String(index + 1).padStart(2, '0')}`;
+    const shortName = extractShortName(text);
+    const category = inferCategory(text);
+    return { id, text, shortName, category };
+  });
+}
+
+// Extract short name from principle text
+function extractShortName(text: string): string {
+  // First part before parenthesis or up to 30 chars
+  const match = text.match(/^([^(]+)/);
+  const base = match ? match[1].trim() : text;
+  return base.length > 35 ? base.substring(0, 32) + '...' : base;
+}
+
+// Infer category from principle content
+function inferCategory(text: string): Principle['category'] {
+  const lower = text.toLowerCase();
+  if (lower.includes('message') || lower.includes('court') || lower.includes('phrase')) return 'style';
+  if (lower.includes('vendredi') || lower.includes('samedi') || lower.includes('72h')) return 'timing';
+  if (lower.includes('confiance') || lower.includes('détach') || lower.includes('needy') || lower.includes('prix')) return 'mindset';
+  if (lower.includes('rendez-vous') || lower.includes('logistique') || lower.includes('heure')) return 'logistics';
+  return 'content';
+}
+
+// Platform-specific context (hardcoded, not from data)
+function getPlatformContexts(): { [key: string]: PlatformContext } {
+  return {
+    tinder: {
+      name: 'Tinder',
+      characteristics: [
+        "Elle scroll vite, tu as 3 messages pour capter son attention",
+        "Les openers originaux performent mieux que 'Salut ça va'",
+        "Le bio et les photos comptent autant que le texte",
+        "Propose rapidement de passer sur Instagram ou WhatsApp"
+      ],
+      commonMistakes: [
+        "Juste 'Salut ça va' comme opener",
+        "Compliment physique direct en premier message",
+        "Trop de messages sans proposer de date"
+      ]
+    },
+    whatsapp: {
+      name: 'WhatsApp',
+      characteristics: [
+        "Tu as déjà le numéro = elle a de l'intérêt confirmé",
+        "Les vocaux peuvent être stratégiques pour créer du lien",
+        "Les 'vu' sont visibles, joue avec le timing",
+        "Tu peux être plus direct qu'sur les apps"
+      ],
+      commonMistakes: [
+        "Envoyer des pavés de texte",
+        "Répondre instantanément à chaque message",
+        "Ignorer les signes de désintérêt"
+      ]
+    },
+    instagram: {
+      name: 'Instagram',
+      characteristics: [
+        "Elle peut voir ton profil = DHV passif via tes posts",
+        "Les stories sont des occasions de relance naturelles",
+        "Les réactions aux stories = opener soft et non-invasif",
+        "Les DM requests peuvent être ignorés, sois patient"
+      ],
+      commonMistakes: [
+        "Liker 50 photos d'un coup avant d'écrire",
+        "Réagir à toutes ses stories",
+        "Message trop formel type 'Bonjour, je me permets...'"
+      ]
+    },
+    street: {
+      name: 'Approche de rue',
+      characteristics: [
+        "Premier message = rappeler le contexte de la rencontre",
+        "Elle t'a donné son num = déjà intéressée, pas besoin de resell",
+        "Le délai avant le premier message compte (pas trop vite, pas 3 jours)",
+        "Message le soir même ou le lendemain"
+      ],
+      commonMistakes: [
+        "Attendre plusieurs jours avant d'écrire",
+        "'C'était super de te rencontrer' (trop formel)",
+        "Ne pas rappeler le contexte (elle a peut-être oublié)"
+      ]
+    }
+  };
 }
 
 // Parse conversations from all.txt (Le State format)
@@ -244,9 +346,11 @@ function main() {
 
   const kb: KnowledgeBase = {
     principles: [],
+    platforms: getPlatformContexts(),
     conversations: [],
     stats: {
       totalConversations: 0,
+      totalPrinciples: 0,
       sources: {},
       generatedAt: new Date().toISOString(),
     },
@@ -256,7 +360,7 @@ function main() {
   const principesPath = path.join(DATA_DIR, 'Principes textgame.txt');
   if (fs.existsSync(principesPath)) {
     kb.principles = parsePrinciples(fs.readFileSync(principesPath, 'utf-8'));
-    console.log(`✅ Parsed ${kb.principles.length} principles`);
+    console.log(`✅ Parsed ${kb.principles.length} indexed principles`);
   }
 
   // 2. Parse le_state/telegram/all.txt
@@ -297,21 +401,27 @@ function main() {
   kb.conversations.push(...ocrConversations.values());
   console.log(`✅ Added ${ocrConversations.size} OCR-based conversations`);
 
-  // 6. Calculate stats
+  // 6. Add platform contexts
+  console.log(`✅ Added ${Object.keys(kb.platforms).length} platform contexts`);
+
+  // 7. Calculate stats
   kb.stats.totalConversations = kb.conversations.length;
+  kb.stats.totalPrinciples = kb.principles.length;
   for (const conv of kb.conversations) {
     kb.stats.sources[conv.source] = (kb.stats.sources[conv.source] || 0) + 1;
   }
 
-  // 7. Write output
+  // 8. Write output
   fs.writeFileSync(OUTPUT_FILE, JSON.stringify(kb, null, 2));
 
   console.log('\n======================================');
   console.log(`💾 Saved to: ${OUTPUT_FILE}`);
   console.log(`📊 Stats:`);
-  console.log(`   - Principles: ${kb.principles.length}`);
+  console.log(`   - Principles: ${kb.stats.totalPrinciples} (indexed with IDs)`);
+  console.log(`   - Platforms: ${Object.keys(kb.platforms).length}`);
   console.log(`   - Conversations: ${kb.stats.totalConversations}`);
   console.log(`   - Sources:`, kb.stats.sources);
 }
 
 main();
+

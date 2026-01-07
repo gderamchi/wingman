@@ -66,18 +66,19 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
   preferences: DEFAULT_PREFERENCES,
 
   // Initialize store from local storage
+  // Note: We intentionally DO NOT restore activeThreadId to improve UX
+  // Users should start fresh and access history via the threads list
   initialize: async () => {
     try {
-      const [threads, preferences, activeThreadId] = await Promise.all([
+      const [threads, preferences] = await Promise.all([
         storage.loadThreads(),
         storage.loadPreferences(),
-        storage.loadActiveThreadId(),
       ]);
 
       set({
         threads,
         preferences: preferences || DEFAULT_PREFERENCES,
-        activeThreadId,
+        activeThreadId: null, // Always start fresh for better UX
       });
     } catch (error) {
       console.error('[CoachStore] Failed to initialize:', error);
@@ -173,17 +174,19 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
     });
 
     try {
-      // Fetch RAG Context
+      // Fetch RAG Context with enhanced retrieval
       const ragExamples = await ragClient.retrieveCoachingExamples({
         goal: thread.metadata.goal,
         style: thread.metadata.style,
+        userMessage: content,
       });
       const ragContext = ragClient.formatExamplesForPrompt(ragExamples);
       const principles = ragClient.formatPrinciplesForPrompt();
+      const platformContext = ''; // No platform detected for text messages
 
       // Build messages for AI
       const aiMessages: Message[] = [
-        { role: 'system', content: buildCoachSystemPrompt(thread.metadata, preferences, ragContext, principles) },
+        { role: 'system', content: buildCoachSystemPrompt(thread.metadata, preferences, ragContext, principles, platformContext) },
         ...updatedMessages.map((m) => ({
           role: m.role as 'user' | 'assistant' | 'system',
           content: typeof m.content === 'string' ? m.content : JSON.stringify(m.content),
@@ -192,7 +195,8 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
 
       // Call AI
       const response = await blackboxAI.chat(aiMessages);
-      const responseContent = response.choices[0].message.content;
+      const rawContent = response.choices[0].message.content;
+      const responseContent = typeof rawContent === 'string' ? rawContent : JSON.stringify(rawContent);
 
       // Parse structured response
       const structuredResponse = parseStructuredResponse(responseContent);
@@ -278,17 +282,20 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
     });
 
     try {
-      // Get RAG examples (will be empty for now)
+      // Get RAG examples with rich context (platform will be detected from image)
       const ragExamples = await ragClient.retrieveCoachingExamples({
         goal: thread.metadata.goal,
         style: thread.metadata.style,
+        userMessage: userComment,
       });
 
       const ragContext = ragClient.formatExamplesForPrompt(ragExamples);
       const principles = ragClient.formatPrinciplesForPrompt();
+      // Platform context will be auto-detected by AI, but we can provide context for common ones
+      const platformContext = ragClient.formatPlatformContext(undefined); // AI will detect
 
-      // Build analysis prompt
-      const systemPrompt = buildAnalysisPrompt(thread.metadata, preferences, ragContext, principles);
+      // Build analysis prompt with all context
+      const systemPrompt = buildAnalysisPrompt(thread.metadata, preferences, ragContext, principles, platformContext);
 
       const aiMessages: Message[] = [
         { role: 'system', content: systemPrompt },
@@ -313,7 +320,8 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
 
       // Call AI
       const response = await blackboxAI.chat(aiMessages);
-      const responseContent = response.choices[0].message.content;
+      const rawContent = response.choices[0].message.content;
+      const responseContent = typeof rawContent === 'string' ? rawContent : JSON.stringify(rawContent);
 
       // Parse structured response
       const structuredResponse = parseStructuredResponse(responseContent);

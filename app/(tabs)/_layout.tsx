@@ -51,15 +51,6 @@ export default function TabLayout() {
         }}
       />
       <Tabs.Screen
-        name="history"
-        options={{
-          title: t("history.title"),
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="time" size={size} color={color} />
-          ),
-        }}
-      />
-      <Tabs.Screen
         name="profile"
         options={{
           title: t("profile.title"),
@@ -70,12 +61,6 @@ export default function TabLayout() {
       />
       <Tabs.Screen
         name="settings"
-        options={{
-          href: null,
-        }}
-      />
-      <Tabs.Screen
-        name="history/[id]"
         options={{
           href: null,
         }}

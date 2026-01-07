@@ -1,12 +1,17 @@
+/**
+ * RAG Client
+ * Facade for knowledge retrieval and prompt formatting
+ */
 
-import { ConversationExample, knowledgeService } from './knowledgeService';
+import {
+    knowledgeService,
+    type Conversation,
+    type Principle,
+    type RetrievalContext
+} from './knowledgeService';
 
-export interface RagContext {
-  goal: string;
-  style: string;
-}
-
-export type RetrievedExample = ConversationExample;
+export type { RetrievalContext } from './knowledgeService';
+export type RetrievedExample = Conversation;
 
 class RagClient {
   private enabled = true;
@@ -17,52 +22,72 @@ class RagClient {
   }
 
   /**
-   * Retrieve relevant coaching examples based on user context
+   * Retrieve relevant coaching examples based on rich context
    */
-  async retrieveCoachingExamples(context: RagContext): Promise<RetrievedExample[]> {
+  async retrieveCoachingExamples(context: RetrievalContext): Promise<Conversation[]> {
     if (!this.enabled) return [];
-
-    // Simulate query using context tags
-    // e.g. "dating playful" -> finds conversations tagged with these or similar keywords
-    const query = `${context.goal} ${context.style}`;
-
-    // In real implementation, this would call vector DB
-    // Here we use local knowledge service
-    return knowledgeService.findRelevantConversations(query, 2);
+    return knowledgeService.findRelevantConversations(context, 3);
   }
 
   /**
-   * Get the global principles ("The Bible")
+   * Get the indexed principles ("The Bible")
    */
-  getPrinciples(): string[] {
+  getPrinciples(): Principle[] {
     return knowledgeService.getPrinciples();
+  }
+
+  /**
+   * Get principle by ID for citation
+   */
+  getPrincipleById(id: string): Principle | undefined {
+    return knowledgeService.getPrincipleById(id);
+  }
+
+  /**
+   * Format principles for injection into LLM prompt (with IDs)
+   */
+  formatPrinciplesForPrompt(): string {
+    const principles = this.getPrinciples();
+    return `
+PRINCIPES FONDAMENTAUX (LA BIBLE):
+Chaque suggestion de réponse DOIT citer les principes appliqués par leur ID (ex: [P01], [P05]).
+${principles.map(p => `[${p.id}] ${p.shortName}: ${p.text}`).join('\n')}
+`;
   }
 
   /**
    * Format examples for injection into LLM prompt
    */
-  formatExamplesForPrompt(examples: RetrievedExample[]): string {
+  formatExamplesForPrompt(examples: Conversation[]): string {
     if (examples.length === 0) return '';
 
     const formattedExamples = knowledgeService.formatForPrompt(examples);
 
     return `
 EXEMPLES DE RÉFÉRENCE (LE "STATE"):
-Utilise ces conversations comme modèles de style (insolent, direct, détaché):
+Ces conversations montrent le style à suivre (insolent, direct, détaché):
 ${formattedExamples}
 `;
   }
 
   /**
-   * Format principles for injection
+   * Format platform-specific context
    */
-  formatPrinciplesForPrompt(): string {
-     const principles = this.getPrinciples();
-     return `
-PRINCIPES FONDAMENTAUX (LA BIBLE):
-Respecte impérativement ces règles:
-${principles.map(p => `- ${p}`).join('\n')}
-`;
+  formatPlatformContext(platform?: string): string {
+    if (!platform) return '';
+    return knowledgeService.formatPlatformContext(platform);
+  }
+
+  /**
+   * Detect platform from image analysis result
+   */
+  detectPlatformFromUI(uiDescription: string): string | undefined {
+    const lower = uiDescription.toLowerCase();
+    if (lower.includes('tinder') || lower.includes('flame') || lower.includes('swipe')) return 'tinder';
+    if (lower.includes('whatsapp') || lower.includes('vert clair') || lower.includes('green bubbles')) return 'whatsapp';
+    if (lower.includes('instagram') || lower.includes('dm') || lower.includes('story reply')) return 'instagram';
+    if (lower.includes('bumble') || lower.includes('hinge')) return 'tinder'; // Similar dynamics
+    return undefined;
   }
 }
 
