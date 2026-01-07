@@ -44,3 +44,8 @@ yarn-error.*
 # generated native folders
 /ios
 /android
+
+# BMAD
+_bmad/
+_bmad-output/
+.agent/
