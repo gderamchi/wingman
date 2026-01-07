@@ -9,7 +9,6 @@ import { useAuthStore } from "@/src/features/auth/stores/authStore";
 const STYLES = [
   { id: "playful", icon: "sparkles", color: "#F59E0B" },
   { id: "direct", icon: "flash", color: "#EF4444" },
-  { id: "empathetic", icon: "heart-circle", color: "#10B981" },
 ] as const;
 
 export default function StyleScreen() {

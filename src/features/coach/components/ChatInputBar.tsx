@@ -5,7 +5,7 @@
 
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
-import React, { useState } from 'react';
+import React from 'react';
 import { useTranslation } from 'react-i18next';
 import {
     ActivityIndicator,
@@ -20,25 +20,34 @@ interface ChatInputBarProps {
   onAttach: () => void;
   isLoading?: boolean;
   placeholder?: string;
+  hasAttachments?: boolean;
+  value: string;
+  onChangeText: (text: string) => void;
 }
 
-export function ChatInputBar({ onSend, onAttach, isLoading, placeholder }: ChatInputBarProps) {
+export function ChatInputBar({
+  onSend,
+  onAttach,
+  isLoading,
+  placeholder,
+  hasAttachments,
+  value,
+  onChangeText
+}: ChatInputBarProps) {
   const { t } = useTranslation();
-  const [text, setText] = useState('');
 
   const handleSend = () => {
-    const trimmed = text.trim();
-    if (!trimmed || isLoading) return;
+    const trimmed = value.trim();
+    if ((!trimmed && !hasAttachments) || isLoading) return;
     onSend(trimmed);
-    setText('');
   };
 
-  const canSend = text.trim().length > 0 && !isLoading;
+  const canSend = (value.trim().length > 0 || hasAttachments) && !isLoading;
 
   return (
     <View style={styles.container}>
       {/* Attachment button */}
-      <Pressable onPress={onAttach} style={styles.attachButton} disabled={isLoading}>
+      <Pressable onPress={onAttach} onLongPress={onAttach} style={styles.attachButton} disabled={isLoading}>
         <View style={styles.attachButtonInner}>
           <Ionicons name="add" size={24} color="#8B5CF6" />
         </View>
@@ -47,8 +56,8 @@ export function ChatInputBar({ onSend, onAttach, isLoading, placeholder }: ChatI
       {/* Input field */}
       <View style={styles.inputWrapper}>
         <TextInput
-          value={text}
-          onChangeText={setText}
+          value={value}
+          onChangeText={onChangeText}
           placeholder={placeholder || t('coach.input.placeholder', 'Écris un message...')}
           placeholderTextColor="#6B7280"
           multiline

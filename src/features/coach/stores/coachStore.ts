@@ -1,13 +1,9 @@
-/**
- * Coach Store
- * Zustand store for thread management, messaging, and persistence
- */
-
 import { create } from 'zustand';
 
 import type { Message } from '@/src/core/api/blackbox';
 import { blackboxAI } from '@/src/core/api/blackbox';
 
+import { Directory, File, Paths } from 'expo-file-system';
 import * as storage from '../services/coachStorage';
 import { ragClient } from '../services/ragClient';
 import type {
@@ -23,6 +19,28 @@ import { buildAnalysisPrompt, buildCoachSystemPrompt, parseStructuredResponse } 
 // Generate unique IDs
 const generateId = () => `${Date.now()}-${Math.random().toString(36).slice(2, 9)}`;
 
+// Helper to save attachment to permanent storage
+const saveAttachmentToStorage = async (uri: string, id: string, type: 'image' | 'audio', mimeType?: string): Promise<string> => {
+  try {
+    const dirName = type === 'image' ? 'images' : 'audio';
+    const extension = type === 'image' ? 'jpg' : (mimeType?.split('/')[1] || 'm4a'); // Default to m4a or infer from mime
+
+    const mediaDir = new Directory(Paths.document, dirName);
+    if (!mediaDir.exists) {
+      mediaDir.create({ intermediates: true });
+    }
+
+    const sourceFile = new File(uri);
+    const destinationFile = new File(mediaDir, `${id}.${extension}`);
+    sourceFile.copy(destinationFile);
+
+    return destinationFile.uri;
+  } catch (error) {
+    console.error(`Failed to save ${type}:`, error);
+    return uri; // Fallback to original URI
+  }
+};
+
 interface CoachStoreActions {
   // Initialization
   initialize: () => Promise<void>;
@@ -35,12 +53,14 @@ interface CoachStoreActions {
 
   // Messaging
   sendMessage: (content: string) => Promise<void>;
-  sendImageForAnalysis: (imageBase64: string, imageUri: string, userComment?: string) => Promise<void>;
+  sendMediaForAnalysis: (attachments: MessageAttachment[], userComment?: string) => Promise<void>;
   submitFeedback: (messageId: string, rating: 'helpful' | 'not_helpful', reason?: string) => Promise<void>;
 
   // Attachments
-  setPendingAttachment: (attachment: MessageAttachment | null) => void;
-  clearPendingAttachment: () => void;
+  setPendingAttachments: (attachments: MessageAttachment[]) => void;
+  addPendingAttachments: (attachments: MessageAttachment[]) => void;
+  removePendingAttachment: (id: string) => void;
+  clearPendingAttachments: () => void;
 
   // Preferences
   updatePreferences: (prefs: Partial<UserPreferences>) => Promise<void>;
@@ -63,25 +83,24 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
   // Initial state
   threads: [],
   activeThreadId: null,
-  pendingAttachment: null,
+  pendingAttachments: [],
   isLoading: false,
   error: null,
   preferences: DEFAULT_PREFERENCES,
 
   // Initialize store from local storage
-  // Note: We intentionally DO NOT restore activeThreadId to improve UX
-  // Users should start fresh and access history via the threads list
   initialize: async () => {
     try {
-      const [threads, preferences] = await Promise.all([
+      const [threads, preferences, activeThreadId] = await Promise.all([
         storage.loadThreads(),
         storage.loadPreferences(),
+        storage.loadActiveThreadId(),
       ]);
 
       set({
         threads,
         preferences: preferences || DEFAULT_PREFERENCES,
-        activeThreadId: null, // Always start fresh for better UX
+        activeThreadId: activeThreadId || null,
       });
     } catch (error) {
       console.error('[CoachStore] Failed to initialize:', error);
@@ -238,8 +257,8 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
     }
   },
 
-  // Send an image for analysis
-  sendImageForAnalysis: async (imageBase64, imageUri, userComment) => {
+  // Send media (images/audio) for analysis
+  sendMediaForAnalysis: async (attachments, userComment) => {
     const { threads, activeThreadId, preferences } = get();
 
     // Create thread if needed
@@ -250,16 +269,24 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
     const thread = get().getActiveThread();
     if (!thread) return;
 
-    // Add user message with image attachment
-    const attachment: MessageAttachment = {
-      id: generateId(),
-      type: 'image',
-      uri: imageUri,
-      base64: imageBase64,
-    };
-
     // Use user's comment if provided, otherwise use default placeholder
-    const messageContent = userComment?.trim() || 'Analyse cette conversation et suggère-moi des réponses.';
+    const messageContent = userComment?.trim();
+
+    // Process attachments: Save to storage and remove base64
+    const storedAttachments: MessageAttachment[] = await Promise.all(
+      attachments.map(async (att) => {
+        const savedUri = await saveAttachmentToStorage(att.uri, att.id, att.type, att.mimeType);
+        // Return without base64 to save space
+        return {
+          id: att.id,
+          type: att.type,
+          uri: savedUri,
+          mimeType: att.mimeType,
+          duration: att.duration,
+          fileName: att.fileName,
+        };
+      })
+    );
 
     const userMessage: CoachMessage = {
       id: generateId(),
@@ -267,7 +294,7 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
       role: 'user',
       content: messageContent,
       createdAt: new Date().toISOString(),
-      attachments: [attachment],
+      attachments: storedAttachments,
     };
 
     const updatedMessages = [...thread.messages, userMessage];
@@ -279,13 +306,13 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
 
     set({
       threads: threads.map((t) => (t.id === thread.id ? updatedThread : t)),
-      pendingAttachment: null,
+      pendingAttachments: [],
       isLoading: true,
       error: null,
     });
 
     try {
-      // Get RAG examples with rich context (platform will be detected from image)
+      // Get RAG examples
       const ragExamples = await ragClient.retrieveCoachingExamples({
         goal: thread.metadata.goal,
         style: thread.metadata.style,
@@ -294,30 +321,54 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
 
       const ragContext = ragClient.formatExamplesForPrompt(ragExamples);
       const principles = ragClient.formatPrinciplesForPrompt();
-      // Platform context will be auto-detected by AI, but we can provide context for common ones
-      const platformContext = ragClient.formatPlatformContext(undefined); // AI will detect
+      const platformContext = ragClient.formatPlatformContext(undefined);
 
-      // Build analysis prompt with all context
+      // Build analysis prompt
       const systemPrompt = buildAnalysisPrompt(thread.metadata, preferences, ragContext, principles, platformContext);
+
+      // Construct content array with original base64 for AI
+      // Note: We use the `attachments` argument which still has base64
+      const contentArray: any[] = attachments.map(att => {
+        if (att.type === 'image') {
+          return {
+            type: 'image_url',
+            image_url: {
+              url: att.base64?.startsWith('data:')
+                ? att.base64
+                : `data:image/png;base64,${att.base64 || ''}`,
+            },
+          };
+        } else if (att.type === 'audio') {
+           // For Gemini via Blackbox, we'll try sending as image_url data uri with audio mime type
+           // OR standard OpenAI audio format if supported.
+           // Given the plan assumption:
+           return {
+              type: 'image_url', // HACK: Using image_url interface for general file data transmission if API supports it
+              image_url: {
+                 url: att.base64?.startsWith('data:')
+                 ? att.base64
+                 : `data:${att.mimeType || 'audio/mpeg'};base64,${att.base64 || ''}`
+              }
+           };
+        }
+        return null;
+      }).filter(Boolean);
+
+      // Add text at the end
+      const defaultText = attachments.some(a => a.type === 'audio')
+        ? 'Analyse cet enregistrement audio (ton, émotion, contenu) et suggère-moi la meilleure façon de répondre.'
+        : 'Analyse ces captures d\'écran de conversation (timeline chronologique) et suggère-moi des réponses.';
+
+      contentArray.push({
+        type: 'text',
+        text: userComment?.trim() || defaultText,
+      });
 
       const aiMessages: Message[] = [
         { role: 'system', content: systemPrompt },
         {
           role: 'user',
-          content: [
-            {
-              type: 'image_url',
-              image_url: {
-                url: imageBase64.startsWith('data:')
-                  ? imageBase64
-                  : `data:image/png;base64,${imageBase64}`,
-              },
-            },
-            {
-              type: 'text',
-              text: userComment?.trim() || 'Analyse cette conversation et suggère-moi des réponses.',
-            },
-          ],
+          content: contentArray,
         },
       ];
 
@@ -352,6 +403,7 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
 
       await storage.saveThread(finalThread);
     } catch (error) {
+      console.error(error); // Log error
       set({
         isLoading: false,
         error: error instanceof Error ? error.message : 'Erreur lors de l\'analyse',
@@ -359,14 +411,28 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
     }
   },
 
-  // Set pending attachment
-  setPendingAttachment: (attachment) => {
-    set({ pendingAttachment: attachment });
+  // Set pending attachments (replace)
+  setPendingAttachments: (attachments) => {
+    set({ pendingAttachments: attachments });
   },
 
-  // Clear pending attachment
-  clearPendingAttachment: () => {
-    set({ pendingAttachment: null });
+  // Add pending attachments (append)
+  addPendingAttachments: (attachments) => {
+    set((state) => ({
+      pendingAttachments: [...state.pendingAttachments, ...attachments]
+    }));
+  },
+
+  // Remove single attachment
+  removePendingAttachment: (id) => {
+    set((state) => ({
+      pendingAttachments: state.pendingAttachments.filter(a => a.id !== id)
+    }));
+  },
+
+  // Clear pending attachments
+  clearPendingAttachments: () => {
+    set({ pendingAttachments: [] });
   },
 
   // Update preferences
@@ -382,7 +448,7 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
     set({
       threads: [],
       activeThreadId: null,
-      pendingAttachment: null,
+      pendingAttachments: [],
       preferences: DEFAULT_PREFERENCES,
     });
   },
@@ -418,7 +484,7 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
     set({
       threads: [],
       activeThreadId: null,
-      pendingAttachment: null,
+      pendingAttachments: [],
       isLoading: false,
       error: null,
       preferences: DEFAULT_PREFERENCES,
@@ -431,4 +497,4 @@ export const useActiveThread = () =>
   useCoachStore((s) => s.threads.find((t) => t.id === s.activeThreadId) || null);
 export const useThreads = () => useCoachStore((s) => s.threads);
 export const useIsCoachLoading = () => useCoachStore((s) => s.isLoading);
-export const usePendingAttachment = () => useCoachStore((s) => s.pendingAttachment);
+export const usePendingAttachments = () => useCoachStore((s) => s.pendingAttachments);

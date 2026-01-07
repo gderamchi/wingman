@@ -4,6 +4,8 @@
  */
 
 import { Ionicons } from '@expo/vector-icons';
+import * as DocumentPicker from 'expo-document-picker';
+import * as FileSystem from 'expo-file-system/legacy';
 import * as ImagePicker from 'expo-image-picker';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useRef } from 'react';
@@ -13,11 +15,12 @@ import {
     FlatList,
     Image,
     KeyboardAvoidingView,
+    Modal,
     Platform,
     Pressable,
     StyleSheet,
     Text,
-    View,
+    View
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 
@@ -32,7 +35,7 @@ import {
     useActiveThread,
     useCoachStore,
     useIsCoachLoading,
-    usePendingAttachment
+    usePendingAttachments,
 } from '@/src/features/coach';
 import { QuickChip } from '@/src/features/coach/components/QuickChip';
 import type { CoachMessage, ReadyReply, StructuredCoachResponse } from '@/src/features/coach/types';
@@ -43,15 +46,19 @@ export default function CoachChatScreen() {
   const insets = useSafeAreaInsets();
   const flatListRef = useRef<FlatList>(null);
 
+  const [inputText, setInputText] = React.useState('');
+  const [previewImage, setPreviewImage] = React.useState<any>(null);
+
   const activeThread = useActiveThread();
   const isLoading = useIsCoachLoading();
-  const pendingAttachment = usePendingAttachment();
+  // const pendingAttachment = usePendingAttachment(); // REMOVED
   const {
     initialize,
     sendMessage,
-    sendImageForAnalysis,
-    setPendingAttachment,
-    clearPendingAttachment,
+    sendMediaForAnalysis,
+    addPendingAttachments,
+    removePendingAttachment,
+    clearPendingAttachments,
     createThread,
     submitFeedback,
   } = useCoachStore();
@@ -69,17 +76,42 @@ export default function CoachChatScreen() {
     }
   }, [activeThread?.messages.length]);
 
+  const pendingAttachments = usePendingAttachments();
+
   const handleSendMessage = async (text: string) => {
-    if (pendingAttachment) {
-      // Send image + optional user comment
-      await sendImageForAnalysis(pendingAttachment.base64!, pendingAttachment.uri, text);
+    if (pendingAttachments.length > 0) {
+      // Send images + optional user comment
+      await sendMediaForAnalysis(pendingAttachments, text);
     } else {
       // Regular text message
       await sendMessage(text);
     }
+    setInputText('');
   };
 
   const handlePickImage = async () => {
+    // Show option picker (using generic alert for simplicity, could be a modal)
+    Alert.alert(
+      t('coach.attachment.title', 'Ajouter une pièce jointe'),
+      t('coach.attachment.message', 'Que veux-tu envoyer ?'),
+      [
+        {
+          text: t('coach.attachment.cancel', 'Annuler'),
+          style: 'cancel',
+        },
+        {
+          text: t('coach.attachment.audio', 'Fichier Audio'),
+          onPress: handlePickAudio,
+        },
+        {
+          text: t('coach.attachment.image', 'Images'),
+          onPress: pickImages,
+        },
+      ]
+    );
+  };
+
+  const pickImages = async () => {
     try {
       const permission = await ImagePicker.requestMediaLibraryPermissionsAsync();
       if (!permission.granted) {
@@ -89,20 +121,67 @@ export default function CoachChatScreen() {
 
       const result = await ImagePicker.launchImageLibraryAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        allowsMultipleSelection: true,
+        selectionLimit: 50,
         base64: true,
-        quality: 0.8,
+        quality: 0.5,
       });
 
-      if (!result.canceled && result.assets[0].base64) {
-        setPendingAttachment({
-          id: Date.now().toString(),
+      if (!result.canceled && result.assets.length > 0) {
+        const newAttachments: any[] = result.assets.map(asset => ({
+          id: Date.now().toString() + Math.random().toString(),
           type: 'image',
-          uri: result.assets[0].uri,
-          base64: result.assets[0].base64,
-        });
+          uri: asset.uri,
+          base64: asset.base64,
+        }));
+
+        addPendingAttachments(newAttachments);
       }
     } catch (error) {
        console.error('Image picker error', error);
+    }
+  };
+
+  const handlePickAudio = async () => {
+    try {
+      const result = await DocumentPicker.getDocumentAsync({
+        type: ['audio/*', 'video/mp4', 'video/mpeg'], // Some audio is detected as video
+        copyToCacheDirectory: true,
+        multiple: false,
+      });
+
+      if (!result.canceled && result.assets && result.assets.length > 0) {
+        const asset = result.assets[0];
+
+        // Check size (20MB = 20 * 1024 * 1024 bytes)
+        const size = asset.size || 0;
+        if (size > 20 * 1024 * 1024) {
+          Alert.alert(
+            t('coach.attachment.error.title', 'Fichier trop volumineux'),
+            t('coach.attachment.error.message', 'La taille maximum est de 20MB.')
+          );
+          return;
+        }
+
+        // Read as base64
+        const base64 = await FileSystem.readAsStringAsync(asset.uri, {
+          encoding: 'base64',
+        });
+
+        const newAttachment: any = {
+          id: Date.now().toString() + Math.random().toString(),
+          type: 'audio',
+          uri: asset.uri,
+          base64: base64,
+          mimeType: asset.mimeType,
+          fileName: asset.name,
+          duration: 0, // Duration not easily available without extra lib
+        };
+
+        addPendingAttachments([newAttachment]);
+      }
+    } catch (error) {
+      console.error('Audio picker error', error);
     }
   };
 
@@ -115,7 +194,12 @@ export default function CoachChatScreen() {
   };
 
   const handleChipPress = (value: string) => {
-    sendMessage(value);
+    // Append to input instead of sending immediately
+    setInputText(prev => (prev ? prev + " " + value : value));
+  };
+
+  const handleAttachmentPress = (attachment: any) => {
+    setPreviewImage(attachment);
   };
 
   const renderMessageContent = (message: CoachMessage) => {
@@ -214,6 +298,7 @@ export default function CoachChatScreen() {
         <MessageBubble
            message={item}
            onFeedback={(rating) => submitFeedback(item.id, rating)}
+           onAttachmentPress={handleAttachmentPress}
         />
         {isStructured && renderMessageContent(item)}
       </View>
@@ -247,7 +332,7 @@ export default function CoachChatScreen() {
       <KeyboardAvoidingView
          behavior={Platform.OS === 'ios' ? 'padding' : undefined}
          style={styles.keyboardView}
-         keyboardVerticalOffset={Platform.OS === 'ios' ? 0 : 0}
+         keyboardVerticalOffset={Platform.OS === 'ios' ? 90 : 0}
       >
          <FlatList
            ref={flatListRef}
@@ -274,12 +359,25 @@ export default function CoachChatScreen() {
            }
          />
 
-         {/* Attachment Preview */}
-         {pendingAttachment && (
-            <AttachmentPreview
-               attachment={pendingAttachment}
-               onRemove={clearPendingAttachment}
-            />
+         {/* Attachment Preview (Horizontal Scroll) */}
+         {pendingAttachments.length > 0 && (
+            <View style={{ maxHeight: 120 }}>
+              <FlatList
+                data={pendingAttachments}
+                horizontal
+                showsHorizontalScrollIndicator={false}
+                contentContainerStyle={{ paddingHorizontal: 16 }}
+                keyExtractor={(item) => item.id}
+                renderItem={({ item }) => (
+                  <View style={{ marginRight: 12 }}>
+                    <AttachmentPreview
+                      attachment={item}
+                      onRemove={() => removePendingAttachment(item.id)}
+                    />
+                  </View>
+                )}
+              />
+            </View>
          )}
 
          {/* Loading Shimmer */}
@@ -287,11 +385,34 @@ export default function CoachChatScreen() {
 
          {/* Input Bar */}
          <ChatInputBar
+            value={inputText}
+            onChangeText={setInputText}
             onSend={handleSendMessage}
             onAttach={handlePickImage}
             isLoading={isLoading}
+            hasAttachments={pendingAttachments.length > 0}
          />
       </KeyboardAvoidingView>
+
+      {/* Image Preview Modal */}
+      <Modal
+        visible={!!previewImage}
+        transparent={true}
+        onRequestClose={() => setPreviewImage(null)}
+      >
+        <View style={styles.modalContainer}>
+          <Pressable style={styles.closeButton} onPress={() => setPreviewImage(null)}>
+            <Ionicons name="close-circle" size={40} color="white" />
+          </Pressable>
+          {previewImage && (
+            <Image
+              source={{ uri: previewImage.uri }}
+              style={styles.fullScreenImage}
+              resizeMode="contain"
+            />
+          )}
+        </View>
+      </Modal>
     </View>
   );
 }
@@ -428,5 +549,21 @@ const styles = StyleSheet.create({
      marginHorizontal: 16,
      marginTop: 8,
      marginBottom: 16,
-  }
+  },
+  modalContainer: {
+    flex: 1,
+    backgroundColor: 'rgba(0,0,0,0.9)',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  closeButton: {
+    position: 'absolute',
+    top: 50,
+    right: 20,
+    zIndex: 10,
+  },
+  fullScreenImage: {
+    width: '100%',
+    height: '100%',
+  },
 });

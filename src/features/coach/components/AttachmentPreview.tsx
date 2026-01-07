@@ -16,10 +16,18 @@ interface AttachmentPreviewProps {
 }
 
 export function AttachmentPreview({ attachment, onRemove, isUploading }: AttachmentPreviewProps) {
+  const isAudio = attachment.type === 'audio';
+
   return (
     <View style={styles.container}>
-      <View style={styles.imageWrapper}>
-        <Image source={{ uri: attachment.uri }} style={styles.image} />
+      <View style={[styles.imageWrapper, isAudio && styles.audioWrapper]}>
+        {isAudio ? (
+           <View style={styles.audioPlaceholder}>
+             <Ionicons name="musical-note" size={32} color="#8B5CF6" />
+           </View>
+        ) : (
+           <Image source={{ uri: attachment.uri }} style={styles.image} />
+        )}
 
         {/* Loading overlay */}
         {isUploading && (
@@ -38,8 +46,8 @@ export function AttachmentPreview({ attachment, onRemove, isUploading }: Attachm
 
         {/* Type indicator */}
         <View style={styles.typeIndicator}>
-          <Ionicons name="image" size={12} color="#8B5CF6" />
-          <Text style={styles.typeText}>Capture</Text>
+          <Ionicons name={isAudio ? "mic" : "image"} size={12} color="#8B5CF6" />
+          <Text style={styles.typeText}>{isAudio ? 'Audio' : 'Capture'}</Text>
         </View>
       </View>
     </View>
@@ -60,6 +68,16 @@ const styles = StyleSheet.create({
     backgroundColor: '#1A1A2E',
     borderWidth: 1,
     borderColor: 'rgba(255, 255, 255, 0.1)',
+  },
+  audioWrapper: {
+    borderStyle: 'dashed',
+    borderColor: '#8B5CF6',
+  },
+  audioPlaceholder: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: 'rgba(139, 92, 246, 0.1)',
   },
   image: {
     width: '100%',

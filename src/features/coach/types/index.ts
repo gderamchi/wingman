@@ -49,12 +49,16 @@ export type MessageContent =
 
 export interface MessageAttachment {
   id: string;
-  type: 'image';
+  type: 'image' | 'audio';
   uri: string;
   /** Base64 for sending to AI */
   base64?: string;
   /** Thumbnail for display */
   thumbnailUri?: string;
+  /** Audio specific metadata */
+  mimeType?: string;
+  duration?: number;
+  fileName?: string;
 }
 
 // ============================================================
@@ -214,8 +218,8 @@ export interface CoachStoreState {
   threads: CoachThread[];
   /** Currently active thread ID */
   activeThreadId: string | null;
-  /** Pending attachment (before send) */
-  pendingAttachment: MessageAttachment | null;
+  /** Pending attachments (before send) */
+  pendingAttachments: MessageAttachment[];
   /** Is AI currently responding */
   isLoading: boolean;
   /** Error message if any */

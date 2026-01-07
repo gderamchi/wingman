@@ -15,6 +15,9 @@ import "@/src/i18n";
 import { changeLanguage } from "@/src/i18n";
 import { verifyInstallation } from "nativewind";
 
+import { useSubscriptionStore } from "@/src/features/subscription/stores/subscriptionStore";
+
+
 export { ErrorBoundary } from "expo-router";
 
 export const unstable_settings = {
@@ -106,6 +109,9 @@ export default function RootLayout() {
     console.log("[ROOT] Mounting RootLayout, calling initialize...");
     initialize().then(() => console.log("[ROOT] Initialize completed"))
       .catch(err => console.error("[ROOT] Initialize failed:", err));
+
+    // Initialize subscription store
+    useSubscriptionStore.getState().initialize();
   }, [initialize]);
 
   // Handle font loading errors
