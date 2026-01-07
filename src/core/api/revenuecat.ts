@@ -2,7 +2,7 @@ import { Platform } from "react-native";
 import Purchases, {
     CustomerInfo,
     PurchasesOffering,
-    PurchasesPackage,
+    PurchasesPackage
 } from "react-native-purchases";
 
 // RevenueCat API Keys
@@ -24,6 +24,30 @@ class RevenueCatService {
   private initialized = false;
 
   /**
+   * Helper to mask API key for logging
+   */
+  private maskKey(key: string): string {
+    if (!key) return "(empty)";
+    if (key.length < 8) return "******";
+    return `${key.slice(0, 4)}...${key.slice(-4)}`;
+  }
+
+  /**
+   * Helper to handle RevenueCat errors
+   */
+  private handleError(context: string, error: unknown): void {
+    const purchasesError = error as { code?: number; message?: string };
+
+    // Code 10 is NetworkError in RevenueCat
+    if (purchasesError.code === 10) {
+      console.warn(`[RevenueCat] Network error in ${context}. Check internet connection.`);
+      return;
+    }
+
+    console.error(`[RevenueCat] Failed to ${context}:`, error);
+  }
+
+  /**
    * Initialize RevenueCat SDK
    */
   async initialize(userId?: string): Promise<void> {
@@ -31,8 +55,10 @@ class RevenueCatService {
 
     const apiKey = Platform.OS === "ios" ? REVENUECAT_API_KEY_IOS : REVENUECAT_API_KEY_ANDROID;
 
+    console.log(`[RevenueCat] Initializing with API Key: ${this.maskKey(apiKey)} (User: ${userId ?? "anonymous"})`);
+
     if (!apiKey) {
-      console.warn("RevenueCat API key not configured");
+      console.warn("[RevenueCat] API key not configured. Check your .env file.");
       return;
     }
 
@@ -46,9 +72,9 @@ class RevenueCatService {
       }
 
       this.initialized = true;
-      console.log("RevenueCat initialized successfully");
+      console.log("[RevenueCat] initialized successfully");
     } catch (error) {
-      console.error("Failed to initialize RevenueCat:", error);
+      this.handleError("initialize", error);
     }
   }
 
@@ -60,7 +86,7 @@ class RevenueCatService {
       const { customerInfo } = await Purchases.logIn(userId);
       return customerInfo;
     } catch (error) {
-      console.error("Failed to login to RevenueCat:", error);
+      this.handleError("login", error);
       return null;
     }
   }
@@ -72,7 +98,7 @@ class RevenueCatService {
     try {
       await Purchases.logOut();
     } catch (error) {
-      console.error("Failed to logout from RevenueCat:", error);
+      this.handleError("logout", error);
     }
   }
 
@@ -81,10 +107,16 @@ class RevenueCatService {
    */
   async getOfferings(): Promise<PurchasesOffering | null> {
     try {
+      if (!this.initialized) {
+        // Try to re-initialize if needed, or just return null
+        // Here we just warn
+        console.warn("[RevenueCat] Cannot get offerings: Not initialized");
+        return null;
+      }
       const offerings = await Purchases.getOfferings();
       return offerings.current;
     } catch (error) {
-      console.error("Failed to get offerings:", error);
+      this.handleError("get offerings", error);
       return null;
     }
   }
@@ -96,7 +128,7 @@ class RevenueCatService {
     try {
       return await Purchases.getCustomerInfo();
     } catch (error) {
-      console.error("Failed to get customer info:", error);
+      this.handleError("get customer info", error);
       return null;
     }
   }
@@ -109,7 +141,14 @@ class RevenueCatService {
       const customerInfo = await Purchases.getCustomerInfo();
       return customerInfo.entitlements.active[ENTITLEMENTS.PRO] !== undefined;
     } catch (error) {
-      console.error("Failed to check pro access:", error);
+      // Don't log error for network issues on simple checks
+      const purchasesError = error as { code?: number };
+      if (purchasesError.code === 10) {
+        // Silent or warn
+        console.warn("[RevenueCat] Network error checking pro access.");
+      } else {
+        console.error("Failed to check pro access:", error);
+      }
       return false;
     }
   }
@@ -126,13 +165,14 @@ class RevenueCatService {
       const { customerInfo } = await Purchases.purchasePackage(pkg);
       return { success: true, customerInfo };
     } catch (error: unknown) {
-      const purchaseError = error as { userCancelled?: boolean; message?: string };
+      const purchaseError = error as { userCancelled?: boolean; message?: string; code?: number };
 
       if (purchaseError.userCancelled) {
         return { success: false, customerInfo: null, error: "cancelled" };
       }
 
-      console.error("Purchase failed:", error);
+      this.handleError("purchase package", error);
+
       return {
         success: false,
         customerInfo: null,
@@ -154,7 +194,7 @@ class RevenueCatService {
       const hasAccess = customerInfo.entitlements.active[ENTITLEMENTS.PRO] !== undefined;
       return { success: hasAccess, customerInfo };
     } catch (error: unknown) {
-      console.error("Restore failed:", error);
+      this.handleError("restore purchases", error);
       return {
         success: false,
         customerInfo: null,
@@ -177,7 +217,7 @@ class RevenueCatService {
 
       return null;
     } catch (error) {
-      console.error("Failed to get expiration date:", error);
+      this.handleError("get expiration date", error);
       return null;
     }
   }
@@ -191,7 +231,7 @@ class RevenueCatService {
       const proEntitlement = customerInfo.entitlements.active[ENTITLEMENTS.PRO];
       return proEntitlement?.periodType === "TRIAL";
     } catch (error) {
-      console.error("Failed to check trial status:", error);
+      this.handleError("check trial status", error);
       return false;
     }
   }

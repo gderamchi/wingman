@@ -50,7 +50,7 @@ export default function SignupScreen() {
 
     try {
       await signUp(email, password);
-      router.replace("/(onboarding)");
+      // router.replace("/(onboarding)"); // Handled by root layout
     } catch (err) {
       // Error is handled by the store
     }

@@ -131,11 +131,11 @@ export default function CommunityFeedScreen() {
             }
           >
             {isLoading && posts.length === 0 ? (
-              <View style={styles.centerLoading}>
+              <View style={[styles.centerLoading, { flex: 1, justifyContent: 'center' }]}>
                 <ActivityIndicator color="#8B5CF6" />
               </View>
             ) : posts.length === 0 ? (
-              <View style={styles.centerLoading}>
+              <View style={[styles.centerLoading, { flex: 1, justifyContent: 'center' }]}>
                 <View style={styles.emptyIconContainer}>
                   <Ionicons name="chatbubbles-outline" size={40} color="#8B5CF6" />
                 </View>
@@ -188,7 +188,16 @@ function TabButton({
   onPress: () => void;
 }) {
   return (
-    <Pressable onPress={onPress} style={styles.tabButton}>
+    <Pressable
+      onPress={onPress}
+      style={[
+        styles.tabButton,
+        isActive && {
+          backgroundColor: 'rgba(139, 92, 246, 0.1)',
+          borderColor: 'rgba(139, 92, 246, 0.3)'
+        }
+      ]}
+    >
       <Text
         style={[
           styles.tabText,
@@ -197,7 +206,6 @@ function TabButton({
       >
         {label}
       </Text>
-      {isActive && <View style={styles.tabIndicator} />}
     </Pressable>
   );
 }
@@ -212,36 +220,51 @@ const styles = StyleSheet.create({
   header: {
     paddingHorizontal: 24,
     paddingTop: 64,
-    paddingBottom: 16,
+    paddingBottom: 24,
+    alignItems: 'center', // Center content
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 28,
+    fontWeight: "700",
     color: "white",
+    textAlign: 'center',
+    textShadowColor: 'rgba(139, 92, 246, 0.5)',
+    textShadowOffset: { width: 0, height: 0 },
+    textShadowRadius: 10,
   },
   tabsContainer: {
     flexDirection: "row",
     paddingHorizontal: 24,
-    marginBottom: 16,
+    marginBottom: 24,
+    justifyContent: 'center',
+    gap: 12,
   },
   tabButton: {
-    marginRight: 16,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: 'transparent',
   },
   tabText: {
-    fontSize: 16,
-    fontWeight: "500",
-    paddingBottom: 8,
+    fontSize: 15,
+    fontWeight: "600",
+    color: "#9CA3AF",
   },
   tabTextActive: {
     color: "white",
   },
   tabTextInactive: {
-    color: "#6B7280", // text-gray-500
+    color: "#9CA3AF",
   },
   tabIndicator: {
-    height: 2,
-    backgroundColor: "#8B5CF6", // bg-primary
-    borderRadius: 9999,
+    // Hidden for capsule style, handled by active background in Logic if needed,
+    // but here we used underline originally. Let's switch to a capsule bg style in the component render logic or just keep text style.
+    // Actually, let's keep it simple for now and just remove the underline indicator styling if we want pure text or pill.
+    // For "premium", let's use a bottom border that is glowing or just the text change.
+    // Let's stick to the text change + subtle glow for active.
+    height: 0,
+    width: 0,
   },
   filterScrollView: {
     maxHeight: 40,

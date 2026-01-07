@@ -8,7 +8,7 @@ export function LeaderboardTab() {
     <View style={{ flex: 1, backgroundColor: "#0F0F1A" }}>
       <ScrollView
         style={{ flex: 1 }}
-        contentContainerStyle={{ paddingBottom: 100 }}
+        contentContainerStyle={{ paddingBottom: 120 }}
         showsVerticalScrollIndicator={false}
       >
         {/* Header Summary */}
@@ -46,18 +46,20 @@ export function LeaderboardTab() {
                    <View className="absolute top-2 right-2 bg-black/20 px-2 py-0.5 rounded-full">
                      <Text className="text-white text-[10px] font-bold">Actuel</Text>
                    </View>
-                   <MaterialCommunityIcons name="trophy" size={48} color="white" style={{ marginBottom: 8 }} />
+                   <MaterialCommunityIcons name="trophy" size={44} color="white" style={{ marginBottom: 4 }} />
                    <Text className="text-white text-lg font-bold tracking-wide">Or</Text>
                    <Text className="text-yellow-100 text-xs font-medium">Top 20%</Text>
                 </LinearGradient>
               </View>
 
               {/* Next Tier */}
-              <View className="w-[140px] opacity-40 scale-90">
+              <View className="w-[140px] opacity-60 scale-90">
                 <LinearGradient colors={["#22D3EE", "#3B82F6"]} className="rounded-2xl p-4 h-32 items-center justify-center relative">
                    <MaterialCommunityIcons name="diamond-stone" size={40} color="white" />
                    <Text className="text-white font-bold mt-1">Diamant</Text>
-                   <MaterialCommunityIcons name="lock" size={18} color="rgba(255,255,255,0.8)" style={{ position: 'absolute', bottom: 8 }} />
+                   <View className="absolute bottom-2 bg-black/30 rounded-full p-1">
+                      <MaterialCommunityIcons name="lock" size={14} color="white" />
+                   </View>
                 </LinearGradient>
               </View>
            </ScrollView>
@@ -79,7 +81,7 @@ export function LeaderboardTab() {
         {/* Podium */}
         <View className="px-5 pt-8 pb-4 relative items-end justify-center flex-row gap-4">
            {/* Background Glow */}
-           <View className="absolute top-1/2 left-1/2 w-full h-full bg-purple-500/10 blur-3xl rounded-full -z-10" style={{ transform: [{translateX: '-50%'}, {translateY: '-50%'}] }} />
+           <View className="absolute top-1/2 left-1/2 w-64 h-64 bg-purple-500/10 blur-3xl rounded-full -z-10" style={{ transform: [{translateX: '-50%'}, {translateY: '-50%'}] }} />
 
            {/* Rank 2 */}
            <View className="items-center w-1/3">

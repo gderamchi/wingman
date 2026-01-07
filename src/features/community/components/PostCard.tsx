@@ -97,10 +97,17 @@ export function PostCard({ post, onPress }: PostCardProps) {
 
 const styles = StyleSheet.create({
   card: {
-    backgroundColor: "#1A1A2E", // bg-dark-50
-    borderRadius: 16,
+    backgroundColor: 'rgba(30, 30, 46, 0.7)', // Glassmorphism background
+    borderRadius: 24,
     padding: 16,
     marginBottom: 16,
+    borderWidth: 1,
+    borderColor: 'rgba(139, 92, 246, 0.15)',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 4,
   },
   header: {
     flexDirection: "row",
@@ -108,43 +115,51 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
   avatarContainer: {
-    width: 40,
-    height: 40,
-    backgroundColor: "rgba(139, 92, 246, 0.2)", // bg-primary/20
-    borderRadius: 20,
+    width: 44,
+    height: 44,
+    backgroundColor: "rgba(139, 92, 246, 0.1)",
+    borderRadius: 22,
     alignItems: "center",
     justifyContent: "center",
     marginRight: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(139, 92, 246, 0.2)',
   },
   avatar: {
-    width: 40,
-    height: 40,
-    borderRadius: 20,
+    width: 44,
+    height: 44,
+    borderRadius: 22,
   },
   avatarPlaceholder: {
-    color: "#8B5CF6", // text-primary
-    fontWeight: "600",
+    color: "#A78BFA",
+    fontWeight: "700",
+    fontSize: 16,
   },
   headerText: {
     flex: 1,
   },
   authorName: {
     color: "white",
-    fontWeight: "500",
+    fontWeight: "600",
+    fontSize: 16,
+    marginBottom: 2,
   },
   timestamp: {
-    color: "#6B7280", // text-gray-500
+    color: "#9CA3AF",
     fontSize: 12,
   },
   categoryBadge: {
-    backgroundColor: "rgba(139, 92, 246, 0.2)", // bg-primary/20
-    paddingHorizontal: 8,
-    paddingVertical: 4,
-    borderRadius: 9999,
+    backgroundColor: "rgba(139, 92, 246, 0.1)",
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+    borderRadius: 12,
+    borderWidth: 1,
+    borderColor: 'rgba(139, 92, 246, 0.2)',
   },
   categoryText: {
-    color: "#8B5CF6", // text-primary
-    fontSize: 12,
+    color: "#A78BFA",
+    fontSize: 11,
+    fontWeight: "600",
   },
   content: {
     color: "white",

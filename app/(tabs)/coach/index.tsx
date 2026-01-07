@@ -36,9 +36,10 @@ import {
     useCoachStore,
     useIsCoachLoading,
     useLoadingPhase,
-    usePendingAttachments,
+    usePendingAttachments
 } from '@/src/features/coach';
 import { QuickChip } from '@/src/features/coach/components/QuickChip';
+import { SuggestedActions } from '@/src/features/coach/components/SuggestedActions';
 import type { CoachMessage, ReadyReply, StructuredCoachResponse } from '@/src/features/coach/types';
 
 export default function CoachChatScreen() {
@@ -351,23 +352,31 @@ export default function CoachChatScreen() {
            renderItem={renderItem}
            keyExtractor={(item) => item.id}
            contentContainerStyle={styles.listContent}
-           ListEmptyComponent={
-              <View style={styles.emptyContainer}>
-                 <View style={styles.logoWrapper}>
-                    <Image
-                      source={require("@/assets/logo.png")}
-                      style={styles.emptyLogo}
-                      resizeMode="contain"
-                    />
-                 </View>
-                 <Text style={styles.emptyTitle}>
-                    {t('coach.empty.title', 'Prêt à progresser ?')}
-                 </Text>
-                 <Text style={styles.emptySubtitle}>
-                    {t('coach.empty.subtitle', 'Envoie une capture de conversation pour commencer.')}
-                 </Text>
-              </View>
-           }
+            ListEmptyComponent={
+               <View style={styles.emptyContainer}>
+                  <View style={styles.logoWrapper}>
+                     <Image
+                       source={require("@/assets/logo.png")}
+                       style={styles.emptyLogo}
+                       resizeMode="contain"
+                     />
+                     <View style={styles.logoGlow} />
+                  </View>
+                  <Text style={styles.emptyTitle}>
+                     {t('coach.empty.title', 'Prêt à progresser ?')}
+                  </Text>
+                  <Text style={styles.emptySubtitle}>
+                     {t('coach.empty.subtitle', 'Commence par envoyer une capture de conversation.')}
+                  </Text>
+
+                  {/* Suggested Actions */}
+                  <View style={styles.suggestionsContainer}>
+                     <SuggestedActions
+                        onPressAnalyze={handlePickImage}
+                     />
+                  </View>
+               </View>
+            }
            ListFooterComponent={
              isLoading ? (
                <View style={styles.typingIndicatorContainer}>
@@ -487,18 +496,32 @@ const styles = StyleSheet.create({
   logoWrapper: {
     width: 80,
     height: 80,
-    borderRadius: 40,
     backgroundColor: 'rgba(139, 92, 246, 0.1)',
     alignItems: 'center',
     justifyContent: 'center',
     marginBottom: 24,
     borderWidth: 1,
     borderColor: 'rgba(139, 92, 246, 0.3)',
-    overflow: 'hidden',
+    borderRadius: 40,
+    // Add shadow/glow manually without overflow hidden to let glow spread
+    shadowColor: '#8B5CF6',
+    shadowOffset: { width: 0, height: 0 },
+    shadowOpacity: 0.5,
+    shadowRadius: 20,
+    elevation: 10,
+  },
+  logoGlow: {
+     position: 'absolute',
+     width: '100%',
+     height: '100%',
+     borderRadius: 40,
+     backgroundColor: 'rgba(139, 92, 246, 0.1)',
+     zIndex: -1,
   },
   emptyLogo: {
-    width: 56,
-    height: 56,
+    width: 48,
+    height: 48,
+    tintColor: '#A78BFA', // Tint logo for better integration if it's white/monochrome
   },
   emptyTitle: {
     color: 'white',
@@ -512,6 +535,11 @@ const styles = StyleSheet.create({
     fontSize: 16,
     textAlign: 'center',
     lineHeight: 24,
+    maxWidth: 280,
+  },
+  suggestionsContainer: {
+     width: '100%',
+     marginTop: 0, // Handled inside SuggestedActions margin
   },
   structuredContainer: {
      marginBottom: 16,

@@ -61,11 +61,11 @@ export function ChallengesTab() {
           className="rounded-2xl p-4 border border-white/5 flex-row items-center gap-4 relative overflow-hidden"
         >
           {/* Decorative glow */}
-          <View className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-purple-600/20 rounded-full blur-2xl" />
+          <View className="absolute top-0 right-0 -mt-4 -mr-4 w-24 h-24 bg-purple-600/10 rounded-full blur-2xl" />
 
           <View className="flex-1 z-10">
-            <View className="mb-3">
-              <Text className="text-white text-base font-bold mb-1">
+            <View className="mb-3 pr-2">
+              <Text className="text-white text-base font-bold mb-1" numberOfLines={1} adjustsFontSizeToFit>
                 Niveau 4: Casanova en herbe
               </Text>
               <Text className="text-purple-400 text-sm font-medium">

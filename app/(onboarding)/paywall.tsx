@@ -69,7 +69,7 @@ export default function PaywallScreen() {
       const success = await purchase(pkg);
       if (success) {
         await updateProfile({ onboarding_completed: true });
-        router.replace("/(tabs)");
+        // router.replace("/(tabs)"); // Handled by root layout
       }
     } catch (error) {
       console.error("Purchase error:", error);
@@ -83,7 +83,7 @@ export default function PaywallScreen() {
       if (success) {
         await updateProfile({ onboarding_completed: true });
         Alert.alert(t("paywall.restoreSuccess"), t("paywall.restoreSuccessMessage"));
-        router.replace("/(tabs)");
+        // router.replace("/(tabs)"); // Handled by root layout
       } else {
         Alert.alert(t("paywall.noRestore"), t("paywall.noRestoreMessage"));
       }
@@ -96,7 +96,7 @@ export default function PaywallScreen() {
   const handleSkip = async () => {
     try {
       await updateProfile({ onboarding_completed: true });
-      router.replace("/(tabs)");
+      // router.replace("/(tabs)"); // Handled by root layout
     } catch (error) {
       console.error("Skip error:", error);
       // Even if profile update fails, we should probably let them in?

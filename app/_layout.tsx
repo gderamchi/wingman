@@ -1,10 +1,11 @@
 import "../global.css";
+import "@/src/nativewind-setup";
 
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { DarkTheme, ThemeProvider } from "@react-navigation/native";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { useFonts } from "expo-font";
-import { Stack } from "expo-router";
+import { Stack, useRouter, useSegments } from "expo-router";
 import * as SplashScreen from "expo-splash-screen";
 import { useEffect } from "react";
 import "react-native-reanimated";
@@ -57,8 +58,13 @@ export default function RootLayout() {
     ...FontAwesome.font,
   });
 
+  const segments = useSegments();
+  const router = useRouter();
+
   const initialize = useAuthStore((state) => state.initialize);
   const isInitialized = useAuthStore((state) => state.isInitialized);
+  // Get session and profile from store
+  const session = useAuthStore((state) => state.session);
   const profile = useAuthStore((state) => state.profile);
 
   // Sync language with profile
@@ -126,6 +132,41 @@ export default function RootLayout() {
     }
   }, [loaded, isInitialized]);
 
+  // Centralized Route Protection
+  useEffect(() => {
+    if (!isInitialized) return;
+
+    const inAuthGroup = segments[0] === "(auth)";
+    const inOnboardingGroup = segments[0] === "(onboarding)";
+    // const inTabsGroup = segments[0] === "(tabs)";
+
+    if (!session) {
+      // If user is not signed in and not in the auth group, redirect to welcome
+      if (!inAuthGroup) {
+        // Use replace to ensure we can't go back to protected routes
+        router.replace("/(auth)/welcome");
+      }
+    } else {
+      // User is signed in
+      const isOnboardingCompleted = profile?.onboarding_completed;
+
+      if (!isOnboardingCompleted) {
+        // Use redirect to onboarding if needed
+        if (!inOnboardingGroup) {
+          router.replace("/(onboarding)");
+        }
+      } else {
+        // User is signed in and onboarding is complete
+        // If they are in auth or onboarding, redirect to tabs
+        // Exception: Allow paywall access
+        const isPaywall = segments[1] === "paywall";
+        if (inAuthGroup || (inOnboardingGroup && !isPaywall)) {
+          router.replace("/(tabs)");
+        }
+      }
+    }
+  }, [isInitialized, session, profile, segments, router]);
+
   if (!loaded || !isInitialized) {
     return null;
   }
@@ -133,10 +174,11 @@ export default function RootLayout() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider value={WingmanDarkTheme}>
-        <Stack screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="(auth)" />
-          <Stack.Screen name="(onboarding)" />
-          <Stack.Screen name="(tabs)" />
+        <Stack screenOptions={{ headerShown: false, gestureEnabled: false, animation: 'fade' }}>
+          <Stack.Screen name="(auth)" options={{ gestureEnabled: false }} />
+          <Stack.Screen name="(onboarding)" options={{ gestureEnabled: false }} />
+          <Stack.Screen name="(tabs)" options={{ gestureEnabled: false }} />
+          <Stack.Screen name="preferences" options={{ animation: 'slide_from_right', gestureEnabled: true }} />
         </Stack>
       </ThemeProvider>
     </QueryClientProvider>

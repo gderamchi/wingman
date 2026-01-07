@@ -95,13 +95,18 @@ export function CoachCard({ summary, initiallyExpanded = false, onReply }: Coach
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#1A1A2E',
+    backgroundColor: 'rgba(30, 30, 46, 0.95)', // Semi-transparent effect
     borderRadius: 16,
     borderWidth: 1,
-    borderColor: 'rgba(255, 255, 255, 0.05)',
+    borderColor: 'rgba(139, 92, 246, 0.15)', // Subtle purple highlight
     marginHorizontal: 16,
-    marginBottom: 12,
+    marginBottom: 16,
     overflow: 'hidden',
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 5,
   },
   header: {
     flexDirection: 'row',
