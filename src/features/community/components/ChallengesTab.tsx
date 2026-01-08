@@ -1,9 +1,44 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
-import { Pressable, ScrollView, Text, View } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Alert, Pressable, ScrollView, Text, View } from "react-native";
+
+// Calculate time remaining until end of week (Sunday 23:59:59)
+function getTimeUntilEndOfWeek(): { days: number; hours: number; minutes: number; seconds: number } {
+  const now = new Date();
+  const endOfWeek = new Date();
+  const dayOfWeek = now.getDay(); // 0 = Sunday
+  const daysUntilSunday = dayOfWeek === 0 ? 0 : 7 - dayOfWeek;
+  endOfWeek.setDate(now.getDate() + daysUntilSunday);
+  endOfWeek.setHours(23, 59, 59, 999);
+
+  const diff = endOfWeek.getTime() - now.getTime();
+  if (diff <= 0) return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+
+  const seconds = Math.floor((diff / 1000) % 60);
+  const minutes = Math.floor((diff / 1000 / 60) % 60);
+  const hours = Math.floor((diff / 1000 / 60 / 60) % 24);
+  const days = Math.floor(diff / 1000 / 60 / 60 / 24);
+
+  return { days, hours, minutes, seconds };
+}
 
 export function ChallengesTab() {
+  const [timeRemaining, setTimeRemaining] = useState(getTimeUntilEndOfWeek());
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setTimeRemaining(getTimeUntilEndOfWeek());
+    }, 1000);
+    return () => clearInterval(interval);
+  }, []);
+
+  const handleChallengePress = (challengeName: string) => {
+    Alert.alert(challengeName, "Détails du défi à venir...");
+  };
+
+  const formatNumber = (n: number) => n.toString().padStart(2, '0');
+
   return (
     <ScrollView
       style={{ flex: 1, backgroundColor: "#0F0F1A" }}
@@ -32,7 +67,7 @@ export function ChallengesTab() {
               justifyContent: 'center',
               marginBottom: 8
             }}>
-              <Text style={{ color: 'white', fontSize: 28, fontWeight: '700' }}>02</Text>
+              <Text style={{ color: 'white', fontSize: 28, fontWeight: '700' }}>{formatNumber(timeRemaining.days)}</Text>
             </View>
             <Text style={{ color: '#6B7280', fontSize: 11, textAlign: 'center', fontWeight: '500' }}>Jours</Text>
           </View>
@@ -51,7 +86,7 @@ export function ChallengesTab() {
               justifyContent: 'center',
               marginBottom: 8
             }}>
-              <Text style={{ color: 'white', fontSize: 28, fontWeight: '700' }}>04</Text>
+              <Text style={{ color: 'white', fontSize: 28, fontWeight: '700' }}>{formatNumber(timeRemaining.hours)}</Text>
             </View>
             <Text style={{ color: '#6B7280', fontSize: 11, textAlign: 'center', fontWeight: '500' }}>Heures</Text>
           </View>
@@ -70,7 +105,7 @@ export function ChallengesTab() {
               justifyContent: 'center',
               marginBottom: 8
             }}>
-              <Text style={{ color: 'white', fontSize: 28, fontWeight: '700' }}>15</Text>
+              <Text style={{ color: 'white', fontSize: 28, fontWeight: '700' }}>{formatNumber(timeRemaining.minutes)}</Text>
             </View>
             <Text style={{ color: '#6B7280', fontSize: 11, textAlign: 'center', fontWeight: '500' }}>Min</Text>
           </View>
@@ -89,7 +124,7 @@ export function ChallengesTab() {
               justifyContent: 'center',
               marginBottom: 8
             }}>
-              <Text style={{ color: 'white', fontSize: 28, fontWeight: '700' }}>32</Text>
+              <Text style={{ color: 'white', fontSize: 28, fontWeight: '700' }}>{formatNumber(timeRemaining.seconds)}</Text>
             </View>
             <Text style={{ color: '#6B7280', fontSize: 11, textAlign: 'center', fontWeight: '500' }}>Sec</Text>
           </View>
@@ -230,16 +265,19 @@ export function ChallengesTab() {
       {/* Challenges List */}
       <View style={{ paddingHorizontal: 20, gap: 12 }}>
         {/* Challenge 1 - In Progress */}
-        <View style={{
-          backgroundColor: 'rgba(26, 26, 46, 0.9)',
-          borderRadius: 16,
-          padding: 16,
-          borderWidth: 1,
-          borderColor: 'rgba(139, 92, 246, 0.15)',
-          flexDirection: 'row',
-          alignItems: 'center',
-          gap: 14,
-        }}>
+        <Pressable
+          onPress={() => handleChallengePress('Relance Propre')}
+          style={({ pressed }) => ({
+            backgroundColor: pressed ? 'rgba(26, 26, 46, 1)' : 'rgba(26, 26, 46, 0.9)',
+            borderRadius: 16,
+            padding: 16,
+            borderWidth: 1,
+            borderColor: 'rgba(139, 92, 246, 0.15)',
+            flexDirection: 'row',
+            alignItems: 'center',
+            gap: 14,
+          })}
+        >
           <View style={{
             width: 48,
             height: 48,
@@ -282,7 +320,7 @@ export function ChallengesTab() {
               <View style={{ height: '100%', width: '33%', backgroundColor: '#8B5CF6', borderRadius: 3 }} />
             </View>
           </View>
-        </View>
+        </Pressable>
 
         {/* Challenge 2 - Not Started */}
         <View style={{

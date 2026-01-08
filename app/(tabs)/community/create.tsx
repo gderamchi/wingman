@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -6,6 +7,7 @@ import { useTranslation } from "react-i18next";
 import {
     ActivityIndicator,
     Alert,
+    Image,
     KeyboardAvoidingView,
     Platform,
     Pressable,
@@ -17,15 +19,81 @@ import {
     View,
 } from "react-native";
 
+import { supabase } from "@/src/core/api/supabase";
 import { useCommunityStore } from "@/src/features/community/stores/communityStore";
+
+interface Attachment {
+  uri: string;
+  type: "image";
+}
 
 export default function CreatePostScreen() {
   const { t } = useTranslation();
   const [content, setContent] = useState("");
   const [isAnonymous, setIsAnonymous] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [attachments, setAttachments] = useState<Attachment[]>([]);
+  const [isUploading, setIsUploading] = useState(false);
 
   const createPost = useCommunityStore((s) => s.createPost);
+
+  const handlePickImage = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permissionResult.granted) {
+      Alert.alert("Erreur", "Permission d'accès aux photos requise");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      quality: 0.8,
+    });
+
+    if (!result.canceled && result.assets.length > 0) {
+      const newAttachment: Attachment = {
+        uri: result.assets[0].uri,
+        type: "image",
+      };
+      setAttachments([...attachments, newAttachment]);
+    }
+  };
+
+  const handleRemoveAttachment = (index: number) => {
+    setAttachments(attachments.filter((_, i) => i !== index));
+  };
+
+  const uploadImage = async (uri: string): Promise<string | null> => {
+    try {
+      const response = await fetch(uri);
+      const blob = await response.blob();
+
+      const fileExt = uri.split('.').pop() || 'jpg';
+      const fileName = `${Date.now()}_${Math.random().toString(36).substring(7)}.${fileExt}`;
+      const filePath = `post-attachments/${fileName}`;
+
+      const { error: uploadError } = await supabase.storage
+        .from('community')
+        .upload(filePath, blob, {
+          contentType: `image/${fileExt}`,
+          upsert: false,
+        });
+
+      if (uploadError) {
+        console.error('Upload error:', uploadError);
+        return null;
+      }
+
+      const { data } = supabase.storage
+        .from('community')
+        .getPublicUrl(filePath);
+
+      return data.publicUrl;
+    } catch (error) {
+      console.error('Upload error:', error);
+      return null;
+    }
+  };
 
   const handleSubmit = async () => {
     if (!content.trim()) {
@@ -34,7 +102,19 @@ export default function CreatePostScreen() {
     }
 
     setIsSubmitting(true);
-    const postId = await createPost(content.trim(), undefined, isAnonymous);
+
+    // Upload attachments first
+    let screenshotUrl: string | undefined;
+    if (attachments.length > 0) {
+      setIsUploading(true);
+      const uploadedUrl = await uploadImage(attachments[0].uri);
+      setIsUploading(false);
+      if (uploadedUrl) {
+        screenshotUrl = uploadedUrl;
+      }
+    }
+
+    const postId = await createPost(content.trim(), screenshotUrl, isAnonymous);
     setIsSubmitting(false);
 
     if (postId) {
@@ -89,20 +169,37 @@ export default function CreatePostScreen() {
           </Text>
         </View>
 
-        {/* Screenshot upload (placeholder) */}
-        <Pressable style={styles.uploadCard}>
+        {/* Attachments Preview */}
+        {attachments.length > 0 && (
+          <View style={styles.attachmentsContainer}>
+            {attachments.map((attachment, index) => (
+              <View key={index} style={styles.attachmentPreview}>
+                <Image source={{ uri: attachment.uri }} style={styles.attachmentImage} />
+                <Pressable
+                  onPress={() => handleRemoveAttachment(index)}
+                  style={styles.removeAttachmentButton}
+                >
+                  <Ionicons name="close-circle" size={24} color="#EF4444" />
+                </Pressable>
+              </View>
+            ))}
+          </View>
+        )}
+
+        {/* Screenshot upload */}
+        <Pressable style={styles.uploadCard} onPress={handlePickImage}>
           <View style={styles.uploadIconContainer}>
             <Ionicons name="image-outline" size={24} color="#8B5CF6" />
           </View>
           <View style={styles.uploadInfo}>
             <Text style={styles.uploadTitle}>
-              Ajouter une capture (optionnel)
+              {attachments.length > 0 ? "Ajouter une autre image" : "Ajouter une capture (optionnel)"}
             </Text>
             <Text style={styles.uploadSubtitle}>
               Ta capture sera floutée automatiquement
             </Text>
           </View>
-          <Ionicons name="chevron-forward" size={20} color="#6B7280" />
+          <Ionicons name="add-circle-outline" size={24} color="#8B5CF6" />
         </Pressable>
 
         {/* Anonymous toggle */}
@@ -343,5 +440,32 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginLeft: 8,
     letterSpacing: 0.5,
+  },
+  attachmentsContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    gap: 12,
+    marginBottom: 16,
+  },
+  attachmentPreview: {
+    position: "relative",
+    width: 100,
+    height: 100,
+    borderRadius: 16,
+    overflow: "hidden",
+    borderWidth: 1,
+    borderColor: "rgba(139, 92, 246, 0.3)",
+  },
+  attachmentImage: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
+  },
+  removeAttachmentButton: {
+    position: "absolute",
+    top: 4,
+    right: 4,
+    backgroundColor: "rgba(0, 0, 0, 0.6)",
+    borderRadius: 12,
   },
 });

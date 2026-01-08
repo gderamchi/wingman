@@ -1,4 +1,5 @@
 import { Ionicons } from "@expo/vector-icons";
+import * as ImagePicker from "expo-image-picker";
 import { LinearGradient } from "expo-linear-gradient";
 import { router } from "expo-router";
 import { useState } from "react";
@@ -6,9 +7,11 @@ import { useTranslation } from "react-i18next";
 import {
     ActivityIndicator,
     Alert,
+    Image,
     KeyboardAvoidingView,
     Platform,
     Pressable,
+    ScrollView,
     StyleSheet,
     Text,
     TextInput,
@@ -27,6 +30,55 @@ export default function EditProfileScreen() {
 
   const [displayName, setDisplayName] = useState(profile?.display_name ?? "");
   const [username, setUsername] = useState(profile?.username ?? "");
+  const [avatarUri, setAvatarUri] = useState<string | null>(profile?.avatar_url ?? null);
+  const [mainGoal, setMainGoal] = useState(profile?.main_goal ?? "");
+  const [communicationStyle, setCommunicationStyle] = useState(profile?.communication_style ?? "");
+
+  const handleChangePhoto = async () => {
+    const permissionResult = await ImagePicker.requestMediaLibraryPermissionsAsync();
+    if (!permissionResult.granted) {
+      Alert.alert(t("common.error"), "Permission to access photos is required.");
+      return;
+    }
+
+    const result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [1, 1],
+      quality: 0.8,
+    });
+
+    if (!result.canceled && result.assets.length > 0) {
+      setAvatarUri(result.assets[0].uri);
+      // TODO: Upload to storage and update profile
+    }
+  };
+
+  const handleChangeGoal = () => {
+    Alert.alert(
+      t("settings.editProfile.mainGoal"),
+      t("settings.editProfile.selectGoal", "Choisissez votre objectif"),
+      [
+        { text: t("onboarding.goal.dating"), onPress: () => setMainGoal("dating") },
+        { text: t("onboarding.goal.social"), onPress: () => setMainGoal("social") },
+        { text: t("onboarding.goal.professional"), onPress: () => setMainGoal("professional") },
+        { text: t("common.cancel"), style: "cancel" },
+      ]
+    );
+  };
+
+  const handleChangeStyle = () => {
+    Alert.alert(
+      t("settings.editProfile.style"),
+      t("settings.editProfile.selectStyle", "Choisissez votre style"),
+      [
+        { text: t("onboarding.style.playful"), onPress: () => setCommunicationStyle("playful") },
+        { text: t("onboarding.style.direct"), onPress: () => setCommunicationStyle("direct") },
+        { text: t("onboarding.style.empathetic"), onPress: () => setCommunicationStyle("empathetic") },
+        { text: t("common.cancel"), style: "cancel" },
+      ]
+    );
+  };
 
   const handleSave = async () => {
     if (!displayName.trim()) {
@@ -38,6 +90,9 @@ export default function EditProfileScreen() {
       await updateProfile({
         display_name: displayName.trim(),
         username: username.trim() || null,
+        main_goal: mainGoal || undefined,
+        communication_style: communicationStyle || undefined,
+        // avatar_url: avatarUri, // TODO: Upload and save avatar URL
       });
       router.back();
     } catch (error) {
@@ -50,6 +105,11 @@ export default function EditProfileScreen() {
       behavior={Platform.OS === "ios" ? "padding" : "height"}
       style={styles.container}
     >
+      <ScrollView
+        style={{ flex: 1 }}
+        contentContainerStyle={{ flexGrow: 1 }}
+        keyboardShouldPersistTaps="handled"
+      >
       {/* Header */}
       <View style={[styles.header, { paddingTop: Math.max(insets.top, 24) }]}>
         <Pressable
@@ -67,19 +127,25 @@ export default function EditProfileScreen() {
       <View style={styles.content}>
         {/* Avatar */}
         <View style={styles.avatarContainer}>
-          <Pressable style={{ position: "relative" }}>
-            <View style={styles.avatarPlaceholder}>
-              <Text style={styles.avatarText}>
-                {displayName.charAt(0).toUpperCase() || "U"}
-              </Text>
-            </View>
+          <Pressable style={{ position: "relative" }} onPress={handleChangePhoto}>
+            {avatarUri ? (
+              <Image source={{ uri: avatarUri }} style={styles.avatarImage} />
+            ) : (
+              <View style={styles.avatarPlaceholder}>
+                <Text style={styles.avatarText}>
+                  {displayName.charAt(0).toUpperCase() || "U"}
+                </Text>
+              </View>
+            )}
             <View style={styles.cameraIconContainer}>
               <Ionicons name="camera" size={16} color="#fff" />
             </View>
           </Pressable>
-          <Text style={styles.changePhotoText}>
-            {t("settings.editProfile.changePhoto")}
-          </Text>
+          <Pressable onPress={handleChangePhoto}>
+            <Text style={styles.changePhotoText}>
+              {t("settings.editProfile.changePhoto")}
+            </Text>
+          </Pressable>
         </View>
 
         {/* Display name */}
@@ -114,31 +180,45 @@ export default function EditProfileScreen() {
         <View style={styles.preferencesContainer}>
           <Text style={styles.sectionTitle}>{t("settings.editProfile.preferences")}</Text>
 
-          <View style={styles.preferenceCard}>
-            <Text style={styles.preferenceLabel}>{t("settings.editProfile.mainGoal")}</Text>
-            <Text style={styles.preferenceValue}>
-              {profile?.main_goal === "dating"
-                ? t("onboarding.goal.dating")
-                : profile?.main_goal === "social"
-                ? t("onboarding.goal.social")
-                : profile?.main_goal === "professional"
-                ? t("onboarding.goal.professional")
-                : "Non défini"}
-            </Text>
-          </View>
+          <Pressable onPress={handleChangeGoal}>
+            {({ pressed }) => (
+              <View style={[styles.preferenceCard, pressed && styles.preferenceCardPressed]}>
+                <Text style={styles.preferenceLabel}>{t("settings.editProfile.mainGoal")}</Text>
+                <View style={styles.preferenceRight}>
+                  <Text style={styles.preferenceValue}>
+                    {mainGoal === "dating"
+                      ? t("onboarding.goal.dating")
+                      : mainGoal === "social"
+                      ? t("onboarding.goal.social")
+                      : mainGoal === "professional"
+                      ? t("onboarding.goal.professional")
+                      : "Non défini"}
+                  </Text>
+                  <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
+                </View>
+              </View>
+            )}
+          </Pressable>
 
-          <View style={styles.preferenceCard}>
-            <Text style={styles.preferenceLabel}>{t("settings.editProfile.style")}</Text>
-            <Text style={styles.preferenceValue}>
-              {profile?.communication_style === "playful"
-                ? t("onboarding.style.playful")
-                : profile?.communication_style === "direct"
-                ? t("onboarding.style.direct")
-                : profile?.communication_style === "empathetic"
-                ? t("onboarding.style.empathetic")
-                : "Non défini"}
-            </Text>
-          </View>
+          <Pressable onPress={handleChangeStyle}>
+            {({ pressed }) => (
+              <View style={[styles.preferenceCard, pressed && styles.preferenceCardPressed]}>
+                <Text style={styles.preferenceLabel}>{t("settings.editProfile.style")}</Text>
+                <View style={styles.preferenceRight}>
+                  <Text style={styles.preferenceValue}>
+                    {communicationStyle === "playful"
+                      ? t("onboarding.style.playful")
+                      : communicationStyle === "direct"
+                      ? t("onboarding.style.direct")
+                      : communicationStyle === "empathetic"
+                      ? t("onboarding.style.empathetic")
+                      : "Non défini"}
+                  </Text>
+                  <Ionicons name="chevron-forward" size={16} color="#9CA3AF" />
+                </View>
+              </View>
+            )}
+          </Pressable>
         </View>
       </View>
 
@@ -161,6 +241,7 @@ export default function EditProfileScreen() {
           </LinearGradient>
         </Pressable>
       </View>
+      </ScrollView>
     </KeyboardAvoidingView>
   );
 }
@@ -318,6 +399,23 @@ const styles = StyleSheet.create({
     color: "#A78BFA",
     fontWeight: "500",
     fontSize: 15,
+    marginRight: 8,
+  },
+  preferenceCardPressed: {
+    backgroundColor: "rgba(139, 92, 246, 0.1)",
+    borderColor: "rgba(139, 92, 246, 0.2)",
+  },
+  preferenceRight: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  avatarImage: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    backgroundColor: "#1A1A2E",
+    borderWidth: 2,
+    borderColor: "rgba(139, 92, 246, 0.5)",
   },
   footer: {
     paddingHorizontal: 24,

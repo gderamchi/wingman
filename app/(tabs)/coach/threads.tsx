@@ -28,7 +28,7 @@ export default function ThreadsScreen() {
 
   const threads = useThreads();
   const activeThread = useActiveThread();
-  const { deleteThread, createThread, selectThread, initialize } = useCoachStore();
+  const { deleteThread, createThread, selectThread, updateThread, initialize } = useCoachStore();
 
   useEffect(() => {
     initialize();
@@ -65,6 +65,26 @@ export default function ThreadsScreen() {
     );
   };
 
+  const handleRenameThread = (threadId: string, currentTitle: string) => {
+    Alert.prompt(
+      t('coach.threads.rename', 'Renommer'),
+      t('coach.threads.renameMessage', 'Nouveau nom de la conversation'),
+      [
+        { text: t('common.cancel'), style: 'cancel' },
+        {
+          text: t('common.save', 'Enregistrer'),
+          onPress: async (newTitle?: string) => {
+            if (newTitle?.trim()) {
+              await updateThread(threadId, { title: newTitle.trim() });
+            }
+          },
+        },
+      ],
+      'plain-text',
+      currentTitle || ''
+    );
+  };
+
   const renderItem = ({ item }: { item: any }) => {
     const isActive = activeThread?.id === item.id;
     const date = new Date(item.updatedAt);
@@ -92,16 +112,28 @@ export default function ThreadsScreen() {
           </Text>
         </View>
 
-        <Pressable
-          onPress={(e) => {
-            e.stopPropagation();
-            handleDeleteThread(item.id);
-          }}
-          style={styles.deleteButton}
-          hitSlop={10}
-        >
-          <Ionicons name="trash-outline" size={20} color="#6B7280" />
-        </Pressable>
+        <View style={styles.actionButtons}>
+          <Pressable
+            onPress={(e) => {
+              e.stopPropagation();
+              handleRenameThread(item.id, item.title);
+            }}
+            style={styles.actionButton}
+            hitSlop={10}
+          >
+            <Ionicons name="pencil-outline" size={18} color="#6B7280" />
+          </Pressable>
+          <Pressable
+            onPress={(e) => {
+              e.stopPropagation();
+              handleDeleteThread(item.id);
+            }}
+            style={styles.actionButton}
+            hitSlop={10}
+          >
+            <Ionicons name="trash-outline" size={20} color="#6B7280" />
+          </Pressable>
+        </View>
       </Pressable>
     );
   };
@@ -224,9 +256,13 @@ const styles = StyleSheet.create({
     color: '#6B7280',
     fontSize: 12,
   },
-  deleteButton: {
+  actionButtons: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+  },
+  actionButton: {
     padding: 8,
-    marginRight: -8,
   },
   emptyContainer: {
     alignItems: 'center',

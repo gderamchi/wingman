@@ -7,6 +7,7 @@ import type { Post, PostReply, Profile } from "@/src/types/database";
 
 export interface PostWithAuthor extends Post {
   author: Pick<Profile, "id" | "username" | "display_name" | "avatar_url">;
+  userLiked?: boolean;
 }
 
 export interface ReplyWithAuthor extends PostReply {
@@ -38,6 +39,7 @@ interface CommunityState {
   fetchReplies: (postId: string, userId?: string) => Promise<void>;
   createReply: (postId: string, content: string) => Promise<void>;
   voteReply: (replyId: string, voteType: "up" | "down") => Promise<void>;
+  likePost: (postId: string) => Promise<void>;
 
   setCategory: (category: string | null) => void;
   clearError: () => void;
@@ -52,6 +54,7 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
   isLoadingReplies: false,
   category: null,
   error: null,
+  _isVoting: false, // Internal lock to prevent race conditions
 
   // Fetch all posts
   fetchPosts: async (category) => {
@@ -90,11 +93,11 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
 
       const { data, error } = await queryBuilder;
 
-      console.log("[CommunityStore] Query completed", { 
-        hasData: !!data, 
+      console.log("[CommunityStore] Query completed", {
+        hasData: !!data,
         dataLength: data?.length,
         hasError: !!error,
-        errorMessage: error?.message 
+        errorMessage: error?.message
       });
 
       if (error) {
@@ -113,11 +116,11 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
       set({ posts, error: null });
     } catch (error) {
       let errorMessage = "Failed to load posts";
-      
+
       if (error instanceof Error) {
         errorMessage = error.message;
         console.error("[CommunityStore] Caught error:", error.message, error.stack);
-        
+
         // Provide more actionable error messages
         if (error.message.includes("not configured") || error.message.includes("Supabase")) {
           errorMessage = "Database connection error. Please check your configuration.";
@@ -236,8 +239,15 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
         userVote: userVotes[reply.id] ?? null,
       })) as ReplyWithAuthor[];
 
+      // Sort by score (upvotes - downvotes) descending
+      const sortedReplies = repliesWithVotes.sort((a, b) => {
+        const scoreA = (a.upvotes || 0) - (a.downvotes || 0);
+        const scoreB = (b.upvotes || 0) - (b.downvotes || 0);
+        return scoreB - scoreA;
+      });
+
       set({
-        replies: repliesWithVotes,
+        replies: sortedReplies,
         isLoadingReplies: false,
       });
     } catch (error) {
@@ -277,6 +287,13 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
 
   // Vote on reply
   voteReply: async (replyId, voteType) => {
+    // Prevent concurrent votes
+    if ((get() as any)._isVoting) {
+      console.log("[CommunityStore] Vote already in progress, skipping...");
+      return;
+    }
+    (set as any)({ _isVoting: true });
+
     try {
       const { data: { user } } = await supabase.auth.getUser();
       if (!user) throw new Error("Not authenticated");
@@ -383,6 +400,73 @@ export const useCommunityStore = create<CommunityState>((set, get) => ({
     } catch (error) {
       set({
         error: error instanceof Error ? error.message : "Failed to vote",
+      });
+    } finally {
+      (set as any)({ _isVoting: false });
+    }
+  },
+
+  // Like a post (toggle)
+  likePost: async (postId) => {
+    try {
+      const { data: { user } } = await supabase.auth.getUser();
+      if (!user) throw new Error("Not authenticated");
+
+      const { posts, selectedPost } = get();
+      const post = posts.find((p) => p.id === postId) || selectedPost;
+      if (!post) return;
+
+      const isCurrentlyLiked = post.userLiked === true;
+
+      if (isCurrentlyLiked) {
+        // Unlike: Remove the like
+        await supabase
+          .from("post_likes")
+          .delete()
+          .eq("user_id", user.id)
+          .eq("post_id", postId);
+
+        // Decrement likes_count
+        await supabase
+          .from("posts")
+          .update({ likes_count: (post.likes_count || 1) - 1 } as any)
+          .eq("id", postId);
+      } else {
+        // Like: Insert a new like
+        await supabase
+          .from("post_likes")
+          .upsert({
+            user_id: user.id,
+            post_id: postId,
+          } as any);
+
+        // Increment likes_count
+        await supabase
+          .from("posts")
+          .update({ likes_count: (post.likes_count || 0) + 1 } as any)
+          .eq("id", postId);
+      }
+
+      // Update local state
+      const newLikeState = !isCurrentlyLiked;
+      const newLikesCount = isCurrentlyLiked
+        ? (post.likes_count || 1) - 1
+        : (post.likes_count || 0) + 1;
+
+      set({
+        posts: posts.map((p) =>
+          p.id === postId
+            ? { ...p, userLiked: newLikeState, likes_count: newLikesCount }
+            : p
+        ),
+        selectedPost:
+          selectedPost?.id === postId
+            ? { ...selectedPost, userLiked: newLikeState, likes_count: newLikesCount }
+            : selectedPost,
+      });
+    } catch (error) {
+      set({
+        error: error instanceof Error ? error.message : "Failed to like post",
       });
     }
   },

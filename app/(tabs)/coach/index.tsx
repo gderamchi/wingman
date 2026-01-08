@@ -50,6 +50,7 @@ export default function CoachChatScreen() {
 
   const [inputText, setInputText] = React.useState('');
   const [previewImage, setPreviewImage] = React.useState<any>(null);
+  const [isUploading, setIsUploading] = React.useState(false);
 
   const activeThread = useActiveThread();
   const isLoading = useIsCoachLoading();
@@ -132,17 +133,23 @@ export default function CoachChatScreen() {
       });
 
       if (!result.canceled && result.assets.length > 0) {
-        const newAttachments: any[] = result.assets.map(asset => ({
-          id: Date.now().toString() + Math.random().toString(),
-          type: 'image',
-          uri: asset.uri,
-          base64: asset.base64,
-        }));
+        setIsUploading(true);
+        try {
+          const newAttachments: any[] = result.assets.map(asset => ({
+            id: Date.now().toString() + Math.random().toString(),
+            type: 'image',
+            uri: asset.uri,
+            base64: asset.base64,
+          }));
 
-        addPendingAttachments(newAttachments);
+          addPendingAttachments(newAttachments);
+        } finally {
+          setIsUploading(false);
+        }
       }
     } catch (error) {
        console.error('Image picker error', error);
+       setIsUploading(false);
     }
   };
 
@@ -167,25 +174,31 @@ export default function CoachChatScreen() {
           return;
         }
 
-        // Read as base64
-        const base64 = await FileSystem.readAsStringAsync(asset.uri, {
-          encoding: 'base64',
-        });
+        setIsUploading(true);
+        try {
+          // Read as base64
+          const base64 = await FileSystem.readAsStringAsync(asset.uri, {
+            encoding: 'base64',
+          });
 
-        const newAttachment: any = {
-          id: Date.now().toString() + Math.random().toString(),
-          type: 'audio',
-          uri: asset.uri,
-          base64: base64,
-          mimeType: asset.mimeType,
-          fileName: asset.name,
-          duration: 0, // Duration not easily available without extra lib
-        };
+          const newAttachment: any = {
+            id: Date.now().toString() + Math.random().toString(),
+            type: 'audio',
+            uri: asset.uri,
+            base64: base64,
+            mimeType: asset.mimeType,
+            fileName: asset.name,
+            duration: 0, // Duration not easily available without extra lib
+          };
 
-        addPendingAttachments([newAttachment]);
+          addPendingAttachments([newAttachment]);
+        } finally {
+          setIsUploading(false);
+        }
       }
     } catch (error) {
       console.error('Audio picker error', error);
+      setIsUploading(false);
     }
   };
 
@@ -415,7 +428,7 @@ export default function CoachChatScreen() {
             onChangeText={setInputText}
             onSend={handleSendMessage}
             onAttach={handlePickImage}
-            isLoading={isLoading}
+            isLoading={isLoading || isUploading}
             hasAttachments={pendingAttachments.length > 0}
          />
       </KeyboardAvoidingView>

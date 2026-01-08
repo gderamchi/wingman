@@ -1,9 +1,27 @@
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import React from "react";
-import { ScrollView, Text, View } from "react-native";
+import React, { useState } from "react";
+import { Alert, Pressable, ScrollView, Text, View } from "react-native";
+
+type TimeSection = "weekly" | "monthly" | "alltime" | "daily";
 
 export function LeaderboardTab() {
+  const [timeSection, setTimeSection] = useState<TimeSection>("weekly");
+
+  const handleUserPress = (username: string, rank: number) => {
+    Alert.alert(
+      `#${rank} ${username}`,
+      "Détails du profil à venir..."
+    );
+  };
+
+  const TIME_SECTIONS = [
+    { id: "daily" as const, label: "Jour" },
+    { id: "weekly" as const, label: "Semaine" },
+    { id: "monthly" as const, label: "Mois" },
+    { id: "alltime" as const, label: "All Time" },
+  ];
+
   return (
     <View style={{ flex: 1, backgroundColor: "#0F0F1A" }}>
       <ScrollView
@@ -21,7 +39,11 @@ export function LeaderboardTab() {
         }}>
           <View>
             <Text style={{ fontSize: 24, fontWeight: '700', color: 'white', letterSpacing: -0.5 }}>Classement</Text>
-            <Text style={{ color: '#6B7280', fontSize: 12, fontWeight: '500', marginTop: 2 }}>Ligue Hebdomadaire</Text>
+            <Text style={{ color: '#6B7280', fontSize: 12, fontWeight: '500', marginTop: 2 }}>
+              {timeSection === "weekly" ? "Ligue Hebdomadaire" :
+               timeSection === "monthly" ? "Ligue Mensuelle" :
+               timeSection === "daily" ? "Ligue Quotidienne" : "Classement Général"}
+            </Text>
           </View>
           <View style={{ alignItems: 'flex-end' }}>
             <View style={{
@@ -46,118 +68,125 @@ export function LeaderboardTab() {
         <View style={{ marginTop: 8, marginBottom: 8 }}>
           <ScrollView horizontal showsHorizontalScrollIndicator={false} contentContainerStyle={{ paddingHorizontal: 20, gap: 12, paddingBottom: 8 }}>
             {/* Previous Tier - Silver */}
-            <View style={{ width: 130, opacity: 0.5, transform: [{ scale: 0.92 }] }}>
-              <LinearGradient
-                colors={["#C0C0C0", "#9CA3AF"]}
-                style={{
-                  borderRadius: 20,
-                  padding: 16,
-                  height: 120,
-                  alignItems: 'center',
-                  justifyContent: 'center'
-                }}
-              >
-                <MaterialCommunityIcons name="medal" size={36} color="white" />
-                <Text style={{ color: 'white', fontWeight: '700', marginTop: 6, fontSize: 15 }}>Argent</Text>
-              </LinearGradient>
-            </View>
+            <Pressable onPress={() => Alert.alert("Tier Argent", "Détails du tier à venir...")}>
+              <View style={{ width: 130, opacity: 0.5, transform: [{ scale: 0.92 }] }}>
+                <LinearGradient
+                  colors={["#C0C0C0", "#9CA3AF"]}
+                  style={{
+                    borderRadius: 20,
+                    padding: 16,
+                    height: 120,
+                    alignItems: 'center',
+                    justifyContent: 'center'
+                  }}
+                >
+                  <MaterialCommunityIcons name="medal" size={36} color="white" />
+                  <Text style={{ color: 'white', fontWeight: '700', marginTop: 6, fontSize: 15 }}>Argent</Text>
+                </LinearGradient>
+              </View>
+            </Pressable>
 
             {/* Current Tier - Gold */}
-            <View style={{ width: 150 }}>
-              <LinearGradient
-                colors={["#FACC15", "#EAB308", "#CA8A04"]}
-                style={{
-                  borderRadius: 20,
-                  padding: 16,
-                  height: 140,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  position: 'relative',
-                  shadowColor: '#FACC15',
-                  shadowOffset: { width: 0, height: 4 },
-                  shadowOpacity: 0.4,
-                  shadowRadius: 12,
-                }}
-              >
-                <View style={{
-                  position: 'absolute',
-                  top: 10,
-                  right: 10,
-                  backgroundColor: 'rgba(0,0,0,0.25)',
-                  paddingHorizontal: 8,
-                  paddingVertical: 4,
-                  borderRadius: 12
-                }}>
-                  <Text style={{ color: 'white', fontSize: 10, fontWeight: '700' }}>Actuel</Text>
-                </View>
-                <MaterialCommunityIcons name="trophy" size={44} color="white" style={{ marginBottom: 4 }} />
-                <Text style={{ color: 'white', fontSize: 18, fontWeight: '700', letterSpacing: 0.5 }}>Or</Text>
-                <Text style={{ color: 'rgba(255,255,255,0.85)', fontSize: 12, fontWeight: '500' }}>Top 20%</Text>
-              </LinearGradient>
-            </View>
+            <Pressable onPress={() => Alert.alert("Tier Or", "Votre tier actuel ! Top 20%")}>
+              <View style={{ width: 150 }}>
+                <LinearGradient
+                  colors={["#FACC15", "#EAB308", "#CA8A04"]}
+                  style={{
+                    borderRadius: 20,
+                    padding: 16,
+                    height: 140,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                    shadowColor: '#FACC15',
+                    shadowOffset: { width: 0, height: 4 },
+                    shadowOpacity: 0.4,
+                    shadowRadius: 12,
+                  }}
+                >
+                  <View style={{
+                    position: 'absolute',
+                    top: 10,
+                    right: 10,
+                    backgroundColor: 'rgba(0,0,0,0.25)',
+                    paddingHorizontal: 8,
+                    paddingVertical: 4,
+                    borderRadius: 12
+                  }}>
+                    <Text style={{ color: 'white', fontSize: 10, fontWeight: '700' }}>Actuel</Text>
+                  </View>
+                  <MaterialCommunityIcons name="trophy" size={44} color="white" style={{ marginBottom: 4 }} />
+                  <Text style={{ color: 'white', fontSize: 18, fontWeight: '700', letterSpacing: 0.5 }}>Or</Text>
+                  <Text style={{ color: 'rgba(255,255,255,0.85)', fontSize: 12, fontWeight: '500' }}>Top 20%</Text>
+                </LinearGradient>
+              </View>
+            </Pressable>
 
             {/* Next Tier - Diamond */}
-            <View style={{ width: 130, opacity: 0.6, transform: [{ scale: 0.92 }] }}>
-              <LinearGradient
-                colors={["#22D3EE", "#3B82F6"]}
-                style={{
-                  borderRadius: 20,
-                  padding: 16,
-                  height: 120,
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  position: 'relative',
-                }}
-              >
-                <MaterialCommunityIcons name="diamond-stone" size={36} color="white" />
-                <Text style={{ color: 'white', fontWeight: '700', marginTop: 6, fontSize: 15 }}>Diamant</Text>
-                <View style={{
-                  position: 'absolute',
-                  bottom: 10,
-                  backgroundColor: 'rgba(0,0,0,0.35)',
-                  borderRadius: 12,
-                  padding: 4
-                }}>
-                  <MaterialCommunityIcons name="lock" size={12} color="white" />
-                </View>
-              </LinearGradient>
-            </View>
+            <Pressable onPress={() => Alert.alert("Tier Diamant", "Objectif suivant ! Top 10%")}>
+              <View style={{ width: 130, opacity: 0.6, transform: [{ scale: 0.92 }] }}>
+                <LinearGradient
+                  colors={["#22D3EE", "#3B82F6"]}
+                  style={{
+                    borderRadius: 20,
+                    padding: 16,
+                    height: 120,
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    position: 'relative',
+                  }}
+                >
+                  <MaterialCommunityIcons name="diamond-stone" size={36} color="white" />
+                  <Text style={{ color: 'white', fontWeight: '700', marginTop: 6, fontSize: 15 }}>Diamant</Text>
+                  <View style={{
+                    position: 'absolute',
+                    bottom: 10,
+                    backgroundColor: 'rgba(0,0,0,0.35)',
+                    borderRadius: 12,
+                    padding: 4
+                  }}>
+                    <MaterialCommunityIcons name="lock" size={12} color="white" />
+                  </View>
+                </LinearGradient>
+              </View>
+            </Pressable>
           </ScrollView>
         </View>
 
-        {/* Global / Friends Filter */}
+        {/* Time Section Filter - (All Time + Mensuel + Hebdo + Daily) */}
         <View style={{ paddingHorizontal: 20, paddingVertical: 10 }}>
-          <View style={{
-            flexDirection: 'row',
-            height: 44,
-            width: '100%',
-            backgroundColor: 'rgba(26, 26, 46, 0.8)',
-            borderRadius: 12,
-            padding: 4,
-            borderWidth: 1,
-            borderColor: 'rgba(255, 255, 255, 0.05)',
-          }}>
-            <View style={{
-              flex: 1,
-              backgroundColor: 'rgba(139, 92, 246, 0.2)',
-              borderRadius: 8,
-              alignItems: 'center',
-              justifyContent: 'center',
-            }}>
-              <Text style={{ color: 'white', fontSize: 13, fontWeight: '600' }}>Global</Text>
-            </View>
-            <View style={{
-              flex: 1,
-              alignItems: 'center',
-              justifyContent: 'center',
-              flexDirection: 'row',
-              gap: 6,
-              opacity: 0.5
-            }}>
-              <Text style={{ color: '#9CA3AF', fontSize: 13, fontWeight: '500' }}>Amis</Text>
-              <MaterialCommunityIcons name="lock" size={12} color="#9CA3AF" />
-            </View>
-          </View>
+          <ScrollView
+            horizontal
+            showsHorizontalScrollIndicator={false}
+            contentContainerStyle={{ gap: 8 }}
+          >
+            {TIME_SECTIONS.map((section) => (
+              <Pressable
+                key={section.id}
+                onPress={() => setTimeSection(section.id)}
+                style={{
+                  paddingHorizontal: 16,
+                  paddingVertical: 10,
+                  borderRadius: 20,
+                  backgroundColor: timeSection === section.id
+                    ? 'rgba(139, 92, 246, 0.2)'
+                    : 'rgba(26, 26, 46, 0.8)',
+                  borderWidth: 1,
+                  borderColor: timeSection === section.id
+                    ? 'rgba(139, 92, 246, 0.4)'
+                    : 'rgba(255, 255, 255, 0.05)',
+                }}
+              >
+                <Text style={{
+                  color: timeSection === section.id ? 'white' : '#9CA3AF',
+                  fontSize: 13,
+                  fontWeight: '600'
+                }}>
+                  {section.label}
+                </Text>
+              </Pressable>
+            ))}
+          </ScrollView>
         </View>
 
         {/* Podium */}
@@ -184,7 +213,7 @@ export function LeaderboardTab() {
           }} />
 
           {/* Rank 2 */}
-          <View style={{ alignItems: 'center', width: '28%' }}>
+          <Pressable onPress={() => handleUserPress("CyberPunk", 2)} style={{ alignItems: 'center', width: '28%' }}>
             <View style={{ position: 'relative', marginBottom: 10 }}>
               <LinearGradient
                 colors={["#C0C0C0", "#6B7280"]}
@@ -220,10 +249,10 @@ export function LeaderboardTab() {
             </View>
             <Text style={{ fontSize: 13, fontWeight: '700', color: 'white', textAlign: 'center' }} numberOfLines={1}>CyberPunk</Text>
             <Text style={{ fontSize: 11, color: '#8B5CF6', fontWeight: '600' }}>2,100 pts</Text>
-          </View>
+          </Pressable>
 
           {/* Rank 1 */}
-          <View style={{ alignItems: 'center', width: '32%', marginTop: -32, zIndex: 10 }}>
+          <Pressable onPress={() => handleUserPress("NeoSoul", 1)} style={{ alignItems: 'center', width: '32%', marginTop: -32, zIndex: 10 }}>
             <View style={{ position: 'relative', marginBottom: 12 }}>
               <View style={{ position: 'absolute', top: -32, left: '50%', marginLeft: -16 }}>
                 <MaterialCommunityIcons name="crown" size={32} color="#FACC15" />
@@ -264,10 +293,10 @@ export function LeaderboardTab() {
             </View>
             <Text style={{ fontSize: 15, fontWeight: '700', color: 'white', textAlign: 'center' }} numberOfLines={1}>NeoSoul</Text>
             <Text style={{ fontSize: 13, color: '#FACC15', fontWeight: '700' }}>2,450 pts</Text>
-          </View>
+          </Pressable>
 
           {/* Rank 3 */}
-          <View style={{ alignItems: 'center', width: '28%' }}>
+          <Pressable onPress={() => handleUserPress("Glitch", 3)} style={{ alignItems: 'center', width: '28%' }}>
             <View style={{ position: 'relative', marginBottom: 10 }}>
               <LinearGradient
                 colors={["#FB923C", "#EF4444"]}
@@ -303,7 +332,7 @@ export function LeaderboardTab() {
             </View>
             <Text style={{ fontSize: 13, fontWeight: '700', color: 'white', textAlign: 'center' }} numberOfLines={1}>Glitch</Text>
             <Text style={{ fontSize: 11, color: '#8B5CF6', fontWeight: '600' }}>1,950 pts</Text>
-          </View>
+          </Pressable>
         </View>
 
         {/* List Ranks 4-8 */}
@@ -315,18 +344,19 @@ export function LeaderboardTab() {
             { rank: 7, name: "NightRider", pts: "1,300" },
             { rank: 8, name: "PastelGoth", pts: "1,250" },
           ].map((item) => (
-            <View
+            <Pressable
               key={item.rank}
-              style={{
+              onPress={() => handleUserPress(item.name, item.rank)}
+              style={({ pressed }) => ({
                 flexDirection: 'row',
                 alignItems: 'center',
                 gap: 14,
                 padding: 14,
                 borderRadius: 14,
-                backgroundColor: 'rgba(255, 255, 255, 0.04)',
+                backgroundColor: pressed ? 'rgba(139, 92, 246, 0.1)' : 'rgba(255, 255, 255, 0.04)',
                 borderWidth: 1,
-                borderColor: 'rgba(255, 255, 255, 0.06)',
-              }}
+                borderColor: pressed ? 'rgba(139, 92, 246, 0.2)' : 'rgba(255, 255, 255, 0.06)',
+              })}
             >
               <Text style={{ fontSize: 13, fontWeight: '700', color: '#6B7280', width: 24, textAlign: 'center' }}>{item.rank}</Text>
               <View style={{ width: 40, height: 40, borderRadius: 20, backgroundColor: '#374151' }} />
@@ -337,7 +367,7 @@ export function LeaderboardTab() {
                 <Text style={{ fontSize: 14, fontWeight: '700', color: '#8B5CF6' }}>{item.pts}</Text>
                 <Text style={{ fontSize: 9, color: '#6B7280', textTransform: 'uppercase', fontWeight: '500' }}>pts</Text>
               </View>
-            </View>
+            </Pressable>
           ))}
         </View>
 

@@ -8,14 +8,14 @@ import * as storage from '../services/coachStorage';
 import { createDefaultThreadContext, questionService } from '../services/questionService';
 import { ragClient } from '../services/ragClient';
 import type {
-  CoachMessage,
-  CoachStoreState,
-  CoachThread,
-  ContextualQuestion,
-  MessageAttachment,
-  ThreadContext,
-  UserFeedback,
-  UserPreferences
+    CoachMessage,
+    CoachStoreState,
+    CoachThread,
+    ContextualQuestion,
+    MessageAttachment,
+    ThreadContext,
+    UserFeedback,
+    UserPreferences
 } from '../types';
 import { buildAnalysisPrompt, buildCoachSystemPrompt, parseStructuredResponse } from './coachPrompts';
 
@@ -52,6 +52,7 @@ interface CoachStoreActions {
   createThread: (goal?: string, style?: string) => Promise<string>;
   selectThread: (threadId: string) => void;
   deleteThread: (threadId: string) => Promise<void>;
+  updateThread: (threadId: string, updates: { title?: string }) => Promise<void>;
   getActiveThread: () => CoachThread | null;
 
   // Messaging
@@ -171,6 +172,25 @@ export const useCoachStore = create<CoachStoreState & CoachStoreActions>((set, g
   getActiveThread: () => {
     const { threads, activeThreadId } = get();
     return threads.find((t) => t.id === activeThreadId) || null;
+  },
+
+  // Update a thread (e.g., rename)
+  updateThread: async (threadId, updates) => {
+    const { threads } = get();
+    const thread = threads.find((t) => t.id === threadId);
+    if (!thread) return;
+
+    const updatedThread = {
+      ...thread,
+      ...updates,
+      updatedAt: new Date().toISOString(),
+    };
+
+    set({
+      threads: threads.map((t) => (t.id === threadId ? updatedThread : t)),
+    });
+
+    await storage.saveThread(updatedThread);
   },
 
   // Send a text message

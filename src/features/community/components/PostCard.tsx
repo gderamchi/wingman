@@ -9,9 +9,10 @@ import type { PostWithAuthor } from "../stores/communityStore";
 interface PostCardProps {
   post: PostWithAuthor;
   onPress: () => void;
+  onLike?: () => void;
 }
 
-export function PostCard({ post, onPress }: PostCardProps) {
+export function PostCard({ post, onPress, onLike }: PostCardProps) {
   const { t, i18n } = useTranslation();
   const authorName = post.is_anonymous
     ? t("community.post.anonymous")
@@ -84,12 +85,22 @@ export function PostCard({ post, onPress }: PostCardProps) {
             {post.replies_count}
           </Text>
         </View>
-        <View style={styles.footerItem}>
-          <Ionicons name="heart-outline" size={18} color="#6B7280" />
-          <Text style={styles.footerText}>
+        <Pressable
+          style={styles.footerItem}
+          onPress={(e) => {
+            e.stopPropagation();
+            onLike?.();
+          }}
+        >
+          <Ionicons
+            name={post.userLiked ? "heart" : "heart-outline"}
+            size={18}
+            color={post.userLiked ? "#EF4444" : "#6B7280"}
+          />
+          <Text style={[styles.footerText, post.userLiked && styles.likedText]}>
             {post.likes_count}
           </Text>
-        </View>
+        </Pressable>
       </View>
     </Pressable>
   );
@@ -204,5 +215,8 @@ const styles = StyleSheet.create({
     color: "#6B7280", // text-gray-500
     marginLeft: 4,
     fontSize: 14,
+  },
+  likedText: {
+    color: "#EF4444",
   },
 });

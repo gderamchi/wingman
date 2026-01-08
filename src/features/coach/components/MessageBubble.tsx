@@ -4,8 +4,9 @@
  */
 
 import { Ionicons } from '@expo/vector-icons';
+import * as Clipboard from 'expo-clipboard';
 import React from 'react';
-import { Image, Pressable, StyleSheet, Text, View } from 'react-native';
+import { Alert, Image, Pressable, StyleSheet, Text, View } from 'react-native';
 
 import type { CoachMessage, MessageAttachment } from '../types';
 import { MarkdownText } from './MarkdownText';
@@ -32,6 +33,13 @@ export function MessageBubble({ message, onAttachmentPress, onFeedback }: Messag
     return null;
   }
 
+  const handleCopyText = async () => {
+    if (textContent) {
+      await Clipboard.setStringAsync(textContent);
+      Alert.alert('Copié !', 'Le texte a été copié dans le presse-papiers.');
+    }
+  };
+
   return (
     <View style={[styles.container, isUser ? styles.userContainer : styles.coachContainer]}>
       {/* Coach avatar */}
@@ -46,39 +54,41 @@ export function MessageBubble({ message, onAttachmentPress, onFeedback }: Messag
       )}
 
       <View style={{ maxWidth: '75%' }}>
-          <View style={[styles.bubble, isUser ? styles.userBubble : styles.coachBubble]}>
-            {/* Image attachments */}
-            {hasAttachments && (
-              <View style={styles.attachmentsContainer}>
-                {message.attachments!.map((attachment) => (
-                  <Pressable
-                    key={attachment.id}
-                    onPress={() => onAttachmentPress?.(attachment)}
-                    style={styles.attachmentWrapper}
-                  >
-                    <Image source={{ uri: attachment.uri }} style={styles.attachmentImage} />
-                    <View style={styles.attachmentOverlay}>
-                      <Ionicons name="image" size={12} color="white" />
-                      <Text style={styles.attachmentLabel}>Capture</Text>
-                    </View>
-                  </Pressable>
-                ))}
-              </View>
-            )}
+          <Pressable onLongPress={handleCopyText} delayLongPress={500}>
+            <View style={[styles.bubble, isUser ? styles.userBubble : styles.coachBubble]}>
+              {/* Image attachments */}
+              {hasAttachments && (
+                <View style={styles.attachmentsContainer}>
+                  {message.attachments!.map((attachment) => (
+                    <Pressable
+                      key={attachment.id}
+                      onPress={() => onAttachmentPress?.(attachment)}
+                      style={styles.attachmentWrapper}
+                    >
+                      <Image source={{ uri: attachment.uri }} style={styles.attachmentImage} />
+                      <View style={styles.attachmentOverlay}>
+                        <Ionicons name="image" size={12} color="white" />
+                        <Text style={styles.attachmentLabel}>Capture</Text>
+                      </View>
+                    </Pressable>
+                  ))}
+                </View>
+              )}
 
-            {/* Text content */}
-            {textContent && (
-              isUser ? (
-                <Text style={[styles.text, styles.userText]}>
-                  {textContent}
-                </Text>
-              ) : (
-                <MarkdownText style={styles.coachText}>
-                  {textContent}
-                </MarkdownText>
-              )
-            )}
-          </View>
+              {/* Text content */}
+              {textContent && (
+                isUser ? (
+                  <Text style={[styles.text, styles.userText]}>
+                    {textContent}
+                  </Text>
+                ) : (
+                  <MarkdownText style={styles.coachText}>
+                    {textContent}
+                  </MarkdownText>
+                )
+              )}
+            </View>
+          </Pressable>
 
           {/* Feedback */}
           {!isUser && onFeedback && (

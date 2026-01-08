@@ -28,9 +28,9 @@ export default function CommunityFeedScreen() {
 
   const CATEGORIES = [
     { id: null, label: t("community.categories.all") },
-    { id: "dating", label: t("community.categories.dating") },
-    { id: "social", label: t("community.categories.social") },
-    { id: "pro", label: t("community.categories.pro") },
+    { id: "aide", label: "Demandes d'aide" },
+    { id: "sessions", label: "Propositions de sessions" },
+    { id: "addresses", label: "Bonnes adresses" },
   ];
 
   const posts = useCommunityStore((s) => s.posts);
@@ -38,6 +38,7 @@ export default function CommunityFeedScreen() {
   const category = useCommunityStore((s) => s.category);
   const fetchPosts = useCommunityStore((s) => s.fetchPosts);
   const setCategory = useCommunityStore((s) => s.setCategory);
+  const likePost = useCommunityStore((s) => s.likePost);
   const error = useCommunityStore((s) => s.error);
 
   useEffect(() => {
@@ -155,6 +156,7 @@ export default function CommunityFeedScreen() {
                   key={post.id}
                   post={post}
                   onPress={() => router.push(`/(tabs)/community/post/${post.id}`)}
+                  onLike={() => likePost(post.id)}
                 />
               ))
             )}
